@@ -6,6 +6,8 @@ import { getLegacyPage } from '../legacyPagesMap.js';
 import SectionView from '../components/SectionView.jsx';
 import SectionIndex from '../components/SectionIndex.jsx';
 import PrevNextNav from '../components/PrevNextNav.jsx';
+import ScaledCanvas from '../components/ScaledCanvas.jsx';
+import useSwipeNavigation from '../hooks/useSwipeNavigation.js';
 
 export default function SectionPage() {
   const { slug } = useParams();
@@ -28,6 +30,7 @@ export default function SectionPage() {
   const prev = index > 0 ? flatSections[index - 1] : null;
   const next = index >= 0 && index < flatSections.length - 1 ? flatSections[index + 1] : null;
   const treeNode = index >= 0 ? flatSections[index] : null;
+  const swipeHandlers = useSwipeNavigation(prev?.slug, next?.slug);
 
   if (status === 'loading') {
     return <div className="max-w-3xl mx-auto px-4 py-16 text-center text-brand-dark">Carregando...</div>;
@@ -49,7 +52,7 @@ export default function SectionPage() {
   const LegacyComponent = hasContent || hasChildren ? null : getLegacyPage(section.page_label);
 
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="flex flex-col min-h-full" onTouchStart={swipeHandlers.onTouchStart} onTouchEnd={swipeHandlers.onTouchEnd}>
       <div className="flex-1">
         {hasContent ? (
           <div className="overflow-x-auto py-8 flex justify-center">
@@ -64,10 +67,10 @@ export default function SectionPage() {
             </div>
           </div>
         ) : LegacyComponent ? (
-          <div className="overflow-x-auto py-8 flex justify-center">
-            <div className="shadow-xl shrink-0">
+          <div className="py-8 flex justify-center px-4">
+            <ScaledCanvas className="shadow-xl">
               <LegacyComponent />
-            </div>
+            </ScaledCanvas>
           </div>
         ) : (
           <div className="max-w-3xl mx-auto px-4 py-16 text-center text-brand-dark">Conteúdo em preparação.</div>

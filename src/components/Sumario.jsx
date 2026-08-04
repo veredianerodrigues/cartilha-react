@@ -42,6 +42,7 @@ export default function Sumario() {
   const { tree, loading } = useSections();
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const [desktopOpen, setDesktopOpen] = useState(false);
   const activeSlug = location.pathname.startsWith('/secao/') ? location.pathname.replace('/secao/', '') : null;
 
   const content = loading ? (
@@ -80,11 +81,38 @@ export default function Sumario() {
         </div>
       )}
 
-      <nav className="hidden md:block w-72 shrink-0 h-screen sticky top-0 overflow-y-auto border-r border-slate-200 bg-white p-4">
-        <Link to="/" className="block font-poppins font-semibold text-brand-dark text-sm mb-4">
-          Vamos conversar sobre gravidez na adolescência?
-        </Link>
-        {content}
+      {!desktopOpen && (
+        <button
+          onClick={() => setDesktopOpen(true)}
+          className="hidden md:flex fixed top-4 left-4 z-50 p-2 rounded-lg border border-slate-300 bg-white text-brand-dark leading-none shadow-sm hover:bg-[#e5f2f8] transition"
+          aria-label="Mostrar sumário"
+          aria-pressed={false}
+        >
+          ☰
+        </button>
+      )}
+
+      <nav
+        className={`hidden md:block min-w-0 shrink-0 h-screen sticky top-0 overflow-y-auto overflow-x-hidden border-r border-slate-200 bg-white transition-[width] duration-200 ${
+          desktopOpen ? 'w-72 p-4' : 'w-0 p-0 border-r-0'
+        }`}
+      >
+        <div className={`overflow-hidden transition-opacity duration-150 ${desktopOpen ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="flex items-start justify-between gap-2 mb-4">
+            <Link to="/" className="min-w-0 flex-1 font-poppins font-semibold text-brand-dark text-sm">
+              Vamos conversar sobre gravidez na adolescência?
+            </Link>
+            <button
+              onClick={() => setDesktopOpen(false)}
+              className="shrink-0 p-2 rounded-lg border border-slate-300 text-brand-dark leading-none hover:bg-[#e5f2f8] transition"
+              aria-label="Ocultar sumário"
+              aria-pressed={true}
+            >
+              ☰
+            </button>
+          </div>
+          <div>{content}</div>
+        </div>
       </nav>
     </>
   );
