@@ -1,0 +1,17 @@
+node_modules
+dist
+.git
+.gitignore
+.env
+.env.*
+npm-debug.log*
+server/data.db
+server/data.db-journal
+server/data.db-wal
+server/data.db-shm
+server/uploads/*
+!server/uploads/.gitkeep
+arquivos-dev
+*.md
+.vscode
+.idea
