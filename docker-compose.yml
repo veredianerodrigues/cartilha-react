@@ -1,9 +1,6 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: cartilha-react-app:latest
+    image: ghcr.io/veredianerodrigues/cartilha-react:latest
     container_name: cartilha-react-app
     restart: unless-stopped
     ports:
