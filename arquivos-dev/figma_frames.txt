@@ -1,0 +1,39 @@
+fileKey: 1KbxlOWuNcJx0FL5EDmvuo
+Frames (nodeId | nome):
+135:461 | 32 - REFERENCIAS
+135:501 | 33 - REFERENCIAS
+135:514 | 34 - REFERENCIAS
+135:527 | 34 - REFERENCIAS
+135:540 | 35- REFERENCIAS
+130:164 | 31 - Se eu precisar de orientação, quem pode me ajudar
+130:131 | 30 - Gravidez na adolescência e mudanças
+130:120 | 29 - Gravidez na adolescência e mudanças
+130:152 | 28 - Vamos falar sobre direitos sexuais,  reprodutivos...
+130:139 | 27 - Mitos relacionados ao anticoncepcional hormonal
+130:213 | 26 - Anticoncepcionais orais e injetáveis
+130:198 | 25 - Anticoncepcionais orais e injetáveis
+138:571 | 24 - Anticoncepcionais
+130:182 | 23 - Anticoncepcionais orais e injetáveis
+130:174 | 22 - Anticoncepcionais orais e injetáveis
+130:108 | 21 - Dispositivo Intrauterino (DIU)
+130:98 | 20 - Preservativo feminino
+130:89 | 19 - Metódos de barreira
+130:81 | 18 - Como são classificados os métodos contraceptivos? Todos eles são indicados para adolescentes?
+130:71 | 17 - Métodos contraceptivos
+130:61 | 16 - Sobre a fecundação... o que é a fecundação e como ela acontece?
+130:283 | 15 - E a menstruação... o que é e como acontece?
+130:255 | 14 - E a menstruação... o que é e como acontece?
+130:273 | 13 - E a menstruação... o que é e como acontece?
+130:264 | 12 - Que transformações ocorrem no corpo da meninA?
+130:317 | 11 - Que transformações ocorrem no corpo da meninA?
+130:245 | 10 - O que é ereção e ejaculação e quando acontece a primeira ejaculação?
+130:328 | 9 - O que é ereção e ejaculação e quando acontece a primeira ejaculação?
+130:234 | 8 - O que é ereção e ejaculação e quando acontece a primeira ejaculação?
+130:305 | 7 - Que transformações ocorrem no corpo do menino?
+130:293 | 6 - A adolescencia chegou ... e agora?
+130:44 | 5 - A adolescencia chegou ... e agora?
+130:26 | 4 - Apresentação
+130:7 | 3 - Sumário
+130:33 | 2 - Ficha catalografica
+130:39 | 1 - Contra-capa
+130:338 | 0 - Capa
