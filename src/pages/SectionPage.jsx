@@ -4,6 +4,7 @@ import { api } from '../lib/api.js';
 import { useSections } from '../context/SectionsContext.jsx';
 import { getLegacyPage } from '../legacyPagesMap.js';
 import SectionView from '../components/SectionView.jsx';
+import { SECTION_LAYOUTS } from '../components/sections/index.js';
 import SectionIndex from '../components/SectionIndex.jsx';
 import PrevNextNav from '../components/PrevNextNav.jsx';
 import ScaledCanvas from '../components/ScaledCanvas.jsx';
@@ -47,7 +48,8 @@ export default function SectionPage() {
     );
   }
 
-  const hasContent = section.blocks && section.blocks.length > 0;
+  const hasBespokeLayout = Boolean(SECTION_LAYOUTS[slug]);
+  const hasContent = hasBespokeLayout || (section.blocks && section.blocks.length > 0);
   const hasChildren = treeNode?.children?.length > 0;
   const LegacyComponent = hasContent || hasChildren ? null : getLegacyPage(section.page_label);
 
@@ -57,7 +59,7 @@ export default function SectionPage() {
         {hasContent ? (
           <div className="overflow-x-auto py-8 flex justify-center">
             <div className="w-full max-w-3xl bg-[#f5f5ef] shadow-xl rounded-2xl overflow-hidden">
-              <SectionView title={section.title} blocks={section.blocks} slug={slug} />
+              <SectionView title={section.title} blocks={section.blocks} slug={slug} pageLabel={section.page_label} />
             </div>
           </div>
         ) : hasChildren ? (

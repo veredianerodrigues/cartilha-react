@@ -2,13 +2,8 @@ import image1 from '../assets/page02/image1.png';
 
 export default function Page02() {
   return (
-    <div className="relative w-[595px] h-[842px] bg-[#f5f5ef] overflow-hidden">
-      <div className="absolute w-[168px] h-[106px] left-[214px] top-[706px]">
-        <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={image1} />
-      </div>
-
-      <div className="absolute border-2 border-black border-solid h-[294px] left-[92px] top-[57px] w-[411px]" />
-      <div className="absolute font-poppins text-[11px] text-black text-left leading-normal left-[105px] top-[65px] w-[391px] whitespace-pre-wrap">
+    <div className="relative w-[595px] min-h-[842px] bg-[#f5f5ef] overflow-hidden px-[92px] py-[57px]">
+      <div className="border-2 border-black border-solid p-[13px] font-poppins text-[11px] text-black text-left leading-normal whitespace-pre-wrap">
         <p className="mb-2">Gonzatto, Cariane Renata Saldanha Fant.</p>
         <p className="mb-2">{`     "Vamos conversar sobre gravidez na adolescência?" `}</p>
         <p className="mb-2">{`/ Cariane Renata Saldanha Fant Gonzatto e Solange de Fátima `}</p>
@@ -24,7 +19,7 @@ export default function Page02() {
         <p>{`     II. Título. `}</p>
       </div>
 
-      <div className="absolute font-poppins text-[12px] text-black text-left leading-normal left-[38px] top-[372px] w-[519px]">
+      <div className="mt-[54px] -mx-[54px] font-poppins text-[12px] text-black text-left leading-normal">
         <p className="mb-[14px]">Copyright: Dos autores. Todos os direitos reservados – 2026</p>
         <p className="mb-[14px]">Revisão: Prof.ª Dra. Solange de Fátima Reis Conterno</p>
         <p className="mb-[14px]">Produção gráfica: Verediane Rodrigues dos Santos Monteiro</p>
@@ -36,6 +31,10 @@ export default function Page02() {
           Paraná (Unioeste). Esta edição incorpora a revisão e a atualização do conteúdo científico e das informações
           apresentadas.
         </p>
+      </div>
+
+      <div className="w-[168px] h-[106px] mx-auto mt-[60px] mb-[57px]">
+        <img alt="Programa de Pós-Graduação em Biociências e Saúde" className="w-full h-full object-cover" src={image1} />
       </div>
     </div>
   );

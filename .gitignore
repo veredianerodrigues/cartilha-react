@@ -7,3 +7,4 @@ server/data/*.db-wal
 server/data/*.db-shm
 server/uploads/*
 !server/uploads/.gitkeep
+arquivos-dev

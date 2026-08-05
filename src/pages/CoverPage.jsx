@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useSections } from '../context/SectionsContext.jsx';
 import Page00 from './Page00.jsx';
 import ScaledCanvas from '../components/ScaledCanvas.jsx';
+import FrontMatterTrail from '../components/FrontMatterTrail.jsx';
 
 export default function CoverPage() {
   const { flatSections } = useSections();
@@ -20,6 +21,7 @@ export default function CoverPage() {
           Começar a leitura
         </Link>
       )}
+      <FrontMatterTrail current="/" />
     </div>
   );
 }

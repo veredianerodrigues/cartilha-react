@@ -11,16 +11,18 @@ export default function Page01() {
         <p>2026</p>
       </div>
 
-      <div
-        className="absolute left-[24.87%] right-[24.87%] flex flex-col justify-center text-center text-[#289dd2] tracking-[1.74px]"
-        style={{ top: '39%', fontFamily: '"Bebas Neue", sans-serif', fontSize: '58px', lineHeight: '0.5619' }}
-      >
-        <p className="mb-[34px]">GRAVIDEZ NA</p>
-        <p>ADOLESCÊNCIA?</p>
-      </div>
-
-      <div className="absolute left-[19.16%] right-[19.33%] flex flex-col justify-center font-poppins font-light text-[#349a95] text-[32px]" style={{ top: '30%' }}>
-        <p className="leading-[1.44]">VAMOS CONVERSAR SOBRE</p>
+      <div className="absolute left-[19.16%] right-[19.33%] top-[28%] flex flex-col items-center gap-[22px]">
+        <p className="font-poppins font-light text-[#349a95] text-[32px] leading-[1.44] text-center">
+          VAMOS CONVERSAR SOBRE
+        </p>
+        <p
+          className="text-center text-[#289dd2] tracking-[1.74px]"
+          style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '58px', lineHeight: '0.9' }}
+        >
+          GRAVIDEZ NA
+          <br />
+          ADOLESCÊNCIA?
+        </p>
       </div>
     </div>
   );

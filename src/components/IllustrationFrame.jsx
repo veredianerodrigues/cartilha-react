@@ -1,4 +1,4 @@
-export default function IllustrationFrame({ src, alt = '', side = 'left', className = '' }) {
+export default function IllustrationFrame({ src, alt = '', side = 'left', className = '', fit = 'cover' }) {
   const cornerClass =
     side === 'left'
       ? 'rounded-r-[24px] sm:rounded-r-[50px]'
@@ -14,9 +14,16 @@ export default function IllustrationFrame({ src, alt = '', side = 'left', classN
     );
   }
 
+  // fit="contain" mostra a imagem inteira, sem cortar (para infográficos/diagramas
+  // que precisam aparecer por completo) — "cover" (padrão) preenche o quadro cortando
+  // as bordas, para fotos soltas.
   return (
     <div className={`overflow-hidden ${cornerClass} shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)] ${className}`}>
-      <img src={src} alt={alt} className="w-full h-full object-cover" />
+      <img
+        src={src}
+        alt={alt}
+        className={fit === 'contain' ? 'w-full h-auto object-contain' : 'w-full h-full object-cover'}
+      />
     </div>
   );
 }
