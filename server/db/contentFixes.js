@@ -18,6 +18,17 @@ const assetsRoot = path.join(__dirname, '..', '..', 'src', 'assets');
  *      (placeholder "Imagem a cadastrar" no lugar da ilustração real).
  */
 
+// Arquivos que precisam existir em server/uploads independente do estado do
+// banco (o seed grava a URL, mas o arquivo físico precisa ser copiado do
+// código-fonte pra dentro do volume persistido — ver Dockerfile).
+const REQUIRED_FILES = [
+  { src: 'page16/diagram.png', dest: 'fecundacao-diagrama.png' },
+];
+
+function ensureRequiredFiles() {
+  for (const f of REQUIRED_FILES) copyIfMissing(f.src, f.dest);
+}
+
 function ensureCreditos() {
   const exists = db.prepare('SELECT id FROM sections WHERE slug = ?').get('creditos');
   if (exists) return;
@@ -171,6 +182,7 @@ function fixImages() {
 }
 
 export default function runContentFixes() {
+  ensureRequiredFiles();
   ensureCreditos();
   fixImages();
 }
