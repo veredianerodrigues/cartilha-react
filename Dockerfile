@@ -8,6 +8,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends python3 make g+
 
 COPY package.json package-lock.json ./
 RUN npm ci
+# Garante que o binário nativo seja compilado neste mesmo ambiente (glibc/Debian),
+# em vez de confiar num prebuild que pode ter sido linkado para outra libc.
+RUN npm rebuild better-sqlite3 --build-from-source
 
 COPY . .
 RUN npm run build
