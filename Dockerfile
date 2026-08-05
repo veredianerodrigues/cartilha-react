@@ -1,8 +1,10 @@
 # ---- Build stage: instala deps (com toolchain p/ compilar better-sqlite3) e gera o build do Vite ----
-FROM node:20-alpine AS builder
+# Debian (glibc), não Alpine: o binário nativo do better-sqlite3 dá segfault rodando sobre musl.
+FROM node:20-bookworm-slim AS builder
 WORKDIR /app
 
-RUN apk add --no-cache python3 make g++
+RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ \
+  && rm -rf /var/lib/apt/lists/*
 
 COPY package.json package-lock.json ./
 RUN npm ci
@@ -11,7 +13,7 @@ COPY . .
 RUN npm run build
 
 # ---- Runtime stage: só o necessário para rodar o servidor Express ----
-FROM node:20-alpine AS runtime
+FROM node:20-bookworm-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
 
