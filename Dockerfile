@@ -24,8 +24,14 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY package.json ./
 COPY server ./server
-# server/db/seed.js copia essa imagem para server/uploads ao popular o conteúdo-piloto.
+# server/db/seed.js e server/db/contentFixes.js copiam essas imagens para
+# server/uploads ao popular o conteúdo (seção-piloto e correções de conteúdo).
 COPY src/assets/page16/diagram.png ./src/assets/page16/diagram.png
+COPY src/assets/page10/image2.png ./src/assets/page10/image2.png
+COPY src/assets/page10/image3.png ./src/assets/page10/image3.png
+COPY src/assets/page12/image5.png ./src/assets/page12/image5.png
+COPY src/assets/page14/design-sem-nome3-2.png ./src/assets/page14/design-sem-nome3-2.png
+COPY src/assets/page19/preservativo-masculino.png ./src/assets/page19/preservativo-masculino.png
 
 # Diretórios persistidos via volume (banco SQLite e uploads de imagem).
 RUN mkdir -p server/data server/uploads

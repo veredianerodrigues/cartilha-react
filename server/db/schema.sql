@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS sections (
   order_index INTEGER NOT NULL,
   page_label TEXT,
   title TEXT NOT NULL,
+  is_front_matter INTEGER NOT NULL DEFAULT 0,
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 

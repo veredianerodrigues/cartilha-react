@@ -6,9 +6,19 @@ import authRoutes from './routes/auth.js';
 import sectionsRoutes from './routes/sections.js';
 import adminRoutes from './routes/admin.js';
 import uploadRoutes from './routes/upload.js';
+import runContentFixes from './db/contentFixes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
+
+// Migração idempotente de conteúdo (seção de créditos + imagens que
+// ficaram com legenda mas sem arquivo). Roda a cada boot; não faz nada se
+// já tiver rodado antes. Ver server/db/contentFixes.js.
+try {
+  runContentFixes();
+} catch (err) {
+  console.error('[migração] falhou (servidor segue normalmente):', err);
+}
 
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

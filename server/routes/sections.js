@@ -24,6 +24,7 @@ router.get('/', (req, res) => {
       `SELECT s.id, s.parent_id, s.slug, s.order_index, s.page_label, s.title, s.updated_at,
               EXISTS(SELECT 1 FROM blocks b WHERE b.section_id = s.id) AS hasContent
        FROM sections s
+       WHERE s.is_front_matter = 0
        ORDER BY s.parent_id IS NOT NULL, s.order_index`
     )
     .all()
