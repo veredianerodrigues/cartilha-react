@@ -20,9 +20,8 @@ COPY --from=builder /app/dist ./dist
 COPY package.json ./
 COPY server ./server
 
-# Arquivo/diretório persistidos via volume (banco SQLite e uploads de imagem).
-# O touch garante que o Docker monte o volume como arquivo, não diretório.
-RUN mkdir -p server/uploads && touch server/data.db
+# Diretórios persistidos via volume (banco SQLite e uploads de imagem).
+RUN mkdir -p server/data server/uploads
 
 EXPOSE 3001
 

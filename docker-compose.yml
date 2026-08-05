@@ -8,7 +8,7 @@ services:
     env_file:
       - .env
     volumes:
-      - cartilha_db:/app/server/data.db
+      - cartilha_db:/app/server/data
       - cartilha_uploads:/app/server/uploads
 
 volumes:

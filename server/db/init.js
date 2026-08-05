@@ -4,9 +4,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const dbPath = path.join(__dirname, '..', 'data.db');
+const dataDir = path.join(__dirname, '..', 'data');
+const dbPath = path.join(dataDir, 'data.db');
 const schemaPath = path.join(__dirname, 'schema.sql');
 
+fs.mkdirSync(dataDir, { recursive: true });
 const db = new Database(dbPath);
 db.pragma('journal_mode = WAL');
 db.pragma('foreign_keys = ON');
