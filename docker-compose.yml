@@ -3,13 +3,33 @@ services:
     image: ghcr.io/veredianerodrigues/cartilha-react:latest
     container_name: cartilha-react-app
     restart: unless-stopped
-    ports:
-      - "3001:3001"
-    env_file:
-      - .env
+
+    expose:
+      - "3001"
+
+    environment:
+      NODE_ENV: production
+      PORT: "3001"
+      HOST: "0.0.0.0"
+      JWT_SECRET: ${JWT_SECRET}
+
     volumes:
       - cartilha_db:/app/server/data
       - cartilha_uploads:/app/server/uploads
+
+    networks:
+      - traefik-public
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.cartilha-react.rule=Host(`gravidezadolescencia.com.br`)
+      - traefik.http.routers.cartilha-react.entrypoints=websecure
+      - traefik.http.routers.cartilha-react.tls.certresolver=letsencrypt
+      - traefik.http.services.cartilha-react.loadbalancer.server.port=3001
+
+networks:
+  traefik-public:
+    external: true
 
 volumes:
   cartilha_db:
