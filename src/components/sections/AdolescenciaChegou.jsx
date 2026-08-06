@@ -17,7 +17,7 @@ export default function AdolescenciaChegou({ images }) {
         imageAlt="Adolescente pensativa"
         imageCaption={girl?.caption}
         heading="O Que é Puberdade?"
-        body="A puberdade, início da adolescência, período de transformações físicas e biológicas, começa normalmente aos oito anos nas meninas e aos nove anos nos meninos e sua duração é de três a quatro anos em ambos os sexos."
+        body="A puberdade é uma fase natural do desenvolvimento em que o corpo passa por mudanças físicas e hormonais, tornando-se capaz de se reproduzir. Ela ocorre entre os 8 e 13 anos nas meninas, e entre os 9 e 14 anos nos meninos, durando cerca de 3 a 4 anos. É o momento em que o corpo começa a se preparar para a vida adulta."
         citation="(Castilho, Mattos; Pedrosa, 2024; Sartor; Fiorin; Sulbacher, 2025)."
       />
 

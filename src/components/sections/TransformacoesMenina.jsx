@@ -20,14 +20,6 @@ export default function TransformacoesMenina({ images }) {
         }
       />
 
-      <HighlightCard variant="cream">
-        <Paragraph>
-          A primeira manifestação de puberdade na menina é o surgimento do broto mamário que se inicia por volta dos
-          8 anos com término aos 15-16 anos, seguido pelo crescimento dos pelos pubianos, pelo estirão puberal e
-          ganho de peso.
-        </Paragraph>
-      </HighlightCard>
-
       <IllustrationFrame src={foto?.url} alt={foto?.caption || 'Adolescentes'} className="w-full h-[300px]" />
 
       <HighlightCard variant="cream">
@@ -49,12 +41,11 @@ export default function TransformacoesMenina({ images }) {
 
       <HighlightCard variant="cream">
         <Paragraph>
-          Também é utilizada a escala de Tanner para caracterização do desenvolvimento puberal no corpo feminino.
-          Nas meninas ela avalia o desenvolvimento das mamas (M) e, assim como nos meninos, os pelos púbicos (P).
-          Dessa maneira, as mamas são classificadas em (M1 a M5), sendo M1 para estágios de desenvolvimento
-          inicial (mama infantil) e M5 para mama adulta; quanto a pilosidade (P), o aparecimento de pelos é
-          classificado como (P1 a P5), sendo P1 fase pré-adolescente (não há pelos) e P5 pelos do tipo adulto{' '}
-          <span className="text-xs text-brand-darker">(Marshall; Tanner, 1970; Meneses; Ocampos, 2008).</span>
+          Nas meninas, são observados o crescimento das mamas (M) e dos pelos pubianos (P), classificados em cinco
+          estágios, de 1 a 5. Assim como no caso dos meninos, o estágio 1 corresponde ao período antes do início da
+          puberdade, enquanto o estágio 5 indica que o desenvolvimento físico foi concluído. Os estágios
+          intermediários representam as diferentes mudanças que acontecem durante a puberdade.{' '}
+          <span className="text-xs text-brand-darker">(Marshall; Tanner, 1970; Krishna; Witchel, 2024).</span>
         </Paragraph>
         {mamas?.caption && <p className="text-xs text-brand-darker mt-3">{mamas.caption}</p>}
       </HighlightCard>
