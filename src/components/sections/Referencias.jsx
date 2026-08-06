@@ -1,4 +1,4 @@
-import deco from '../../assets/page32/deco.svg';
+import PageHero from '../PageHero.jsx';
 
 const REFS = [
   'ALVES, T. V.; BEZERRA, M. M. M. Principais alterações fisiológicas e psicológicas durante o período gestacional. Rev. Mult. Psic., Jaboatão dos Guararapes, v. 14, n. 49, p. 114-126, fev. 2020. Disponível em: https://idonline.emnuvens.com.br/id/article/view/2324/3608#. Acesso em: 06 jun. 2026.',
@@ -27,9 +27,7 @@ const REFS = [
 export default function Referencias() {
   return (
     <div className="relative">
-      <img alt="" className="absolute pointer-events-none -top-[4%] -right-[6%] w-[45%] max-w-[300px] -z-10" src={deco} />
-
-      <h1 className="font-poppins font-semibold text-brand-dark text-2xl sm:text-3xl mb-6">Referências</h1>
+      <PageHero pageLabel="27" weight="semibold" title="Referências" />
 
       <ul className="space-y-4">
         {REFS.map((text, i) => (
@@ -38,6 +36,7 @@ export default function Referencias() {
           </li>
         ))}
       </ul>
+
     </div>
   );
 }

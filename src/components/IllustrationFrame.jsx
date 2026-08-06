@@ -1,8 +1,10 @@
-export default function IllustrationFrame({ src, alt = '', side = 'left', className = '', fit = 'cover' }) {
-  const cornerClass =
-    side === 'left'
+export default function IllustrationFrame({ src, alt = '', side = 'left', className = '', fit = 'cover', rounded = true, shadow = false }) {
+  const cornerClass = !rounded
+    ? ''
+    : side === 'left'
       ? 'rounded-r-[24px] sm:rounded-r-[50px]'
       : 'rounded-l-[24px] sm:rounded-l-[50px]';
+  const shadowClass = shadow ? 'shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)]' : '';
 
   if (!src) {
     return (
@@ -18,10 +20,12 @@ export default function IllustrationFrame({ src, alt = '', side = 'left', classN
   // que precisam aparecer por completo) — "cover" (padrão) preenche o quadro cortando
   // as bordas, para fotos soltas.
   return (
-    <div className={`overflow-hidden ${cornerClass} shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)] ${className}`}>
+    <div className={`overflow-hidden ${cornerClass} ${shadowClass} ${className}`}>
       <img
         src={src}
         alt={alt}
+        loading="lazy"
+        decoding="async"
         className={fit === 'contain' ? 'w-full h-auto object-contain' : 'w-full h-full object-cover'}
       />
     </div>

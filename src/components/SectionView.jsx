@@ -31,14 +31,18 @@ function PageNumber({ pageLabel }) {
   );
 }
 
-export default function SectionView({ title, blocks, slug, pageLabel }) {
+export default function SectionView({ title, blocks, slug, pageLabel, page = 1 }) {
   const Layout = SECTION_LAYOUTS[slug];
 
   if (Layout) {
+    // Todas as seções com layout bespoke já trazem seu próprio PageHero (blob
+    // colorido por paridade + número embutido) — não duplicar com o PageNumber
+    // genérico, que só serve pro fallback abaixo (seção criada no admin sem
+    // design próprio ainda). `page` seleciona qual página física mostrar nas
+    // seções com mais de uma (ver pageCounts.js).
     return (
-      <article className="relative w-full max-w-3xl mx-auto px-4 sm:px-8 py-8 sm:py-12 overflow-hidden">
-        <PageNumber pageLabel={pageLabel} />
-        <Layout images={extractImages(blocks)} />
+      <article className="relative flex-1 w-full max-w-3xl mx-auto px-4 sm:px-8 pt-8 sm:pt-12 pb-20 sm:pb-24 overflow-hidden">
+        <Layout images={extractImages(blocks)} page={page} />
       </article>
     );
   }
@@ -46,7 +50,7 @@ export default function SectionView({ title, blocks, slug, pageLabel }) {
   // Seção sem layout fiel dedicado ainda (ex.: criada pelo admin sem design próprio) —
   // cai no renderizador genérico de blocos.
   return (
-    <article className="relative w-full max-w-3xl mx-auto px-4 sm:px-8 py-8 sm:py-12 overflow-hidden">
+    <article className="relative flex-1 w-full max-w-3xl mx-auto px-4 sm:px-8 pt-8 sm:pt-12 pb-20 sm:pb-24 overflow-hidden">
       <PageDecoration />
       <PageNumber pageLabel={pageLabel} />
       <h1 className="relative font-poppins font-light text-brand-dark text-2xl sm:text-3xl md:text-[32px] leading-[1.44] mb-6">

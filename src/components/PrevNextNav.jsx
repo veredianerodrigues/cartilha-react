@@ -10,12 +10,19 @@ function HomeIcon() {
   );
 }
 
+// Aceita tanto seções (`{ slug, page }`, monta /secao/...) quanto páginas de
+// abertura (`{ to }`, link direto — ex.: /ficha-catalografica, /sumario).
+function targetPath(target) {
+  if (target.to) return target.to;
+  return `/secao/${target.slug}${target.page > 1 ? `/${target.page}` : ''}`;
+}
+
 export default function PrevNextNav({ prev, next }) {
   return (
-    <div className="flex items-center justify-between gap-4 max-w-3xl mx-auto w-full px-4 py-6 border-t border-slate-200 mt-4">
+    <div className="sticky bottom-0 z-30 flex items-center justify-center gap-4 w-full h-[6rem] sm:h-[10rem] px-4 border-t border-slate-200 bg-[#f5f5ef]/95 backdrop-blur-sm">
       {prev ? (
         <Link
-          to={`/secao/${prev.slug}`}
+          to={targetPath(prev)}
           className="max-w-[35%] truncate px-4 py-2 rounded-full bg-brand-dark text-white font-poppins text-sm hover:bg-brand-darker transition"
         >
           ← {prev.title}
@@ -34,7 +41,7 @@ export default function PrevNextNav({ prev, next }) {
 
       {next ? (
         <Link
-          to={`/secao/${next.slug}`}
+          to={targetPath(next)}
           className="max-w-[35%] truncate px-4 py-2 rounded-full bg-brand-dark text-white font-poppins text-sm hover:bg-brand-darker transition text-right"
         >
           {next.title} →

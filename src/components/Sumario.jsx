@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSections } from '../context/SectionsContext.jsx';
 
@@ -43,7 +43,23 @@ export default function Sumario() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [desktopOpen, setDesktopOpen] = useState(false);
+  const desktopNavRef = useRef(null);
   const activeSlug = location.pathname.startsWith('/secao/') ? location.pathname.replace('/secao/', '') : null;
+
+  // Fecha o sumário desktop ao clicar fora dele (o botão que reabre fica de
+  // fora da <nav>, então precisa ser ignorado aqui pra não fechar e reabrir).
+  useEffect(() => {
+    if (!desktopOpen) return;
+
+    function handlePointerDown(event) {
+      if (desktopNavRef.current && !desktopNavRef.current.contains(event.target)) {
+        setDesktopOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handlePointerDown);
+    return () => document.removeEventListener('mousedown', handlePointerDown);
+  }, [desktopOpen]);
 
   const content = loading ? (
     <p className="text-sm text-slate-500 px-3">Carregando sumário...</p>
@@ -53,13 +69,13 @@ export default function Sumario() {
 
   return (
     <>
-      <div className="md:hidden flex items-center justify-between bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-30">
-        <Link to="/" className="font-poppins font-semibold text-brand-dark text-sm">
+      <div className="md:hidden flex items-center justify-between gap-2 bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-30">
+        <Link to="/" className="min-w-0 flex-1 truncate font-poppins font-semibold text-brand-dark text-sm">
           Vamos conversar sobre gravidez na adolescência?
         </Link>
         <button
           onClick={() => setOpen(true)}
-          className="p-2 rounded-lg border border-slate-300 text-brand-dark leading-none"
+          className="shrink-0 p-2 rounded-lg border border-slate-300 text-brand-dark leading-none"
           aria-label="Abrir sumário"
         >
           ☰
@@ -93,6 +109,7 @@ export default function Sumario() {
       )}
 
       <nav
+        ref={desktopNavRef}
         className={`hidden md:block min-w-0 shrink-0 h-screen sticky top-0 overflow-y-auto overflow-x-hidden border-r border-slate-200 bg-white transition-[width] duration-200 ${
           desktopOpen ? 'w-72 p-4' : 'w-0 p-0 border-r-0'
         }`}

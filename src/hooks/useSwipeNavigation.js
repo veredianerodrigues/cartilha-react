@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 const SWIPE_THRESHOLD = 60;
 
-// Navega para a seção anterior/próxima ao arrastar o dedo na tela (mobile).
+// Navega para a página anterior/próxima ao arrastar o dedo na tela (mobile).
 // Ignora o gesto se o toque começou dentro de um elemento com scroll horizontal
 // próprio (páginas legado em canvas fixo), para não conflitar com o pan do usuário.
-export default function useSwipeNavigation(prevSlug, nextSlug) {
+export default function useSwipeNavigation(prevPath, nextPath) {
   const navigate = useNavigate();
   const start = useRef(null);
 
@@ -40,8 +40,8 @@ export default function useSwipeNavigation(prevSlug, nextSlug) {
 
     if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaX) < Math.abs(deltaY)) return;
 
-    if (deltaX < 0 && nextSlug) navigate(`/secao/${nextSlug}`);
-    else if (deltaX > 0 && prevSlug) navigate(`/secao/${prevSlug}`);
+    if (deltaX < 0 && nextPath) navigate(nextPath);
+    else if (deltaX > 0 && prevPath) navigate(prevPath);
   }
 
   return { onTouchStart, onTouchEnd };

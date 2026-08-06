@@ -7,6 +7,7 @@ export default {
         'brand-dark': '#1D4355',
         'brand-darker': '#163341',
         'brand-blue': '#289DD2',
+        'brand-teal': '#41C1BA',
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],

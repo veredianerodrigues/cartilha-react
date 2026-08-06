@@ -5,13 +5,14 @@ import { useSections } from '../context/SectionsContext.jsx';
 import { getLegacyPage } from '../legacyPagesMap.js';
 import SectionView from '../components/SectionView.jsx';
 import { SECTION_LAYOUTS } from '../components/sections/index.js';
+import { getPageCount } from '../components/sections/pageCounts.js';
 import SectionIndex from '../components/SectionIndex.jsx';
 import PrevNextNav from '../components/PrevNextNav.jsx';
 import ScaledCanvas from '../components/ScaledCanvas.jsx';
 import useSwipeNavigation from '../hooks/useSwipeNavigation.js';
 
 export default function SectionPage() {
-  const { slug } = useParams();
+  const { slug, page } = useParams();
   const { flatSections } = useSections();
   const [section, setSection] = useState(null);
   const [status, setStatus] = useState('loading');
@@ -27,11 +28,37 @@ export default function SectionPage() {
       .catch(() => setStatus('not-found'));
   }, [slug]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [slug, page]);
+
   const index = flatSections.findIndex((s) => s.slug === slug);
-  const prev = index > 0 ? flatSections[index - 1] : null;
-  const next = index >= 0 && index < flatSections.length - 1 ? flatSections[index + 1] : null;
+  const prevSection = index > 0 ? flatSections[index - 1] : null;
+  const nextSection = index >= 0 && index < flatSections.length - 1 ? flatSections[index + 1] : null;
   const treeNode = index >= 0 ? flatSections[index] : null;
-  const swipeHandlers = useSwipeNavigation(prev?.slug, next?.slug);
+
+  // Seções com mais de uma página física (ex.: menstruação = 13-15) viram uma
+  // tela por página — o próximo/anterior anda dentro da seção até acabar as
+  // páginas, só então passa pra seção vizinha.
+  const pageCount = getPageCount(slug);
+  const pageIndex = Math.min(Math.max(parseInt(page, 10) || 1, 1), pageCount);
+
+  const prev =
+    pageIndex > 1
+      ? { slug, title: treeNode?.title, page: pageIndex - 1 }
+      : prevSection
+        ? { slug: prevSection.slug, title: prevSection.title, page: getPageCount(prevSection.slug) }
+        : null;
+
+  const next =
+    pageIndex < pageCount
+      ? { slug, title: treeNode?.title, page: pageIndex + 1 }
+      : nextSection
+        ? { slug: nextSection.slug, title: nextSection.title, page: 1 }
+        : null;
+
+  const sectionPath = (target) => (target ? `/secao/${target.slug}${target.page > 1 ? `/${target.page}` : ''}` : null);
+  const swipeHandlers = useSwipeNavigation(sectionPath(prev), sectionPath(next));
 
   if (status === 'loading') {
     return <div className="max-w-3xl mx-auto px-4 py-16 text-center text-brand-dark">Carregando...</div>;
@@ -58,13 +85,19 @@ export default function SectionPage() {
       <div className="flex-1">
         {hasContent ? (
           <div className="overflow-x-auto py-8 flex justify-center">
-            <div className="w-full max-w-3xl bg-[#f5f5ef] shadow-xl rounded-2xl overflow-hidden">
-              <SectionView title={section.title} blocks={section.blocks} slug={slug} pageLabel={section.page_label} />
+            <div className="flex flex-col w-full max-w-3xl min-h-[750px] sm:min-h-[950px] bg-[#f5f5ef] shadow-xl rounded-2xl overflow-hidden">
+              <SectionView
+                title={section.title}
+                blocks={section.blocks}
+                slug={slug}
+                pageLabel={section.page_label}
+                page={pageIndex}
+              />
             </div>
           </div>
         ) : hasChildren ? (
           <div className="overflow-x-auto py-8 flex justify-center">
-            <div className="w-full max-w-3xl bg-[#f5f5ef] shadow-xl rounded-2xl overflow-hidden">
+            <div className="flex flex-col w-full max-w-3xl min-h-[750px] sm:min-h-[950px] bg-[#f5f5ef] shadow-xl rounded-2xl overflow-hidden">
               <SectionIndex title={section.title} children={treeNode.children} />
             </div>
           </div>

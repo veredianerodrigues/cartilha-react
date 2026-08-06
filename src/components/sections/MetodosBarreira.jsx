@@ -1,5 +1,7 @@
 import IllustrationFrame from '../IllustrationFrame.jsx';
-import deco from '../../assets/page19/deco.svg';
+import PageHero from '../PageHero.jsx';
+import HighlightCard from './shared/HighlightCard.jsx';
+import Paragraph from './shared/Paragraph.jsx';
 
 const MASCULINA_STEPS = [
   'A camisinha deverá ser colocada assim que o pênis estiver ereto, antes de qualquer contato genital ou penetração.',
@@ -19,45 +21,45 @@ export default function MetodosBarreira({ images }) {
 
   return (
     <div className="relative">
-      <img alt="" className="absolute pointer-events-none -top-[4%] -right-[6%] w-[45%] max-w-[300px] -z-10" src={deco} />
+      <PageHero
+        pageLabel="14"
+        title={
+          <>
+            Métodos de <span className="font-semibold uppercase">barreira</span>
+          </>
+        }
+      />
 
-      <h1 className="font-poppins font-light text-brand-dark text-2xl sm:text-3xl leading-[1.4] mb-6">
-        Métodos de <span className="font-semibold uppercase">barreira</span>
-      </h1>
-
-      <div className="rounded-[24px] sm:rounded-[40px] bg-[#f5f5ef] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)] p-6 sm:p-8 space-y-6">
-        <p className="font-worksans text-black text-sm leading-[22px] tracking-[0.14px] text-justify">
+      <HighlightCard variant="cream" className="space-y-6">
+        <Paragraph>
           Eles recebem esse nome porque criam uma barreira física que impede o espermatozoide de entrar no útero.
           Esse grupo inclui o diafragma, o capuz cervical, a esponja contraceptiva e os preservativos (camisinha)
           masculina e feminina.
-        </p>
+        </Paragraph>
 
         <div>
           <p className="font-poppins font-bold text-brand-blue text-base mb-2">Fique ligado!!</p>
-          <p className="font-worksans text-black text-sm leading-[22px] tracking-[0.14px] text-justify">
+          <Paragraph>
             Os mais utilizados são os preservativos ou camisinha masculina e feminina, e são os únicos métodos que,
             além de evitar a gravidez, protegem contra as Infecções Sexualmente Transmissíveis (ISTs). Ambas são
             distribuídas gratuitamente em qualquer unidade de saúde do SUS, sem necessidade de receita médica.
-          </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-4 items-center">
-          <h2 className="font-poppins flex-1">
-            <span className="block text-xl sm:text-2xl text-brand-dark">Preservativo</span>
-            <span className="block text-xl sm:text-2xl font-semibold text-brand-dark">masculino</span>
-          </h2>
-          <div className="w-full sm:w-[220px] shrink-0">
-            <IllustrationFrame src={masculina?.url} alt={masculina?.caption || 'Preservativo masculino'} className="w-full h-[150px]" />
-            {masculina?.caption && <p className="text-xs text-brand-darker mt-1">{masculina.caption}</p>}
-          </div>
+          </Paragraph>
         </div>
 
         <div>
-          <p className="font-worksans text-black text-sm leading-[22px] tracking-[0.14px] text-justify mb-4">
+          <h2 className="font-poppins text-xl sm:text-2xl text-brand-dark mb-4">
+            Preservativo <span className="font-semibold">masculino</span>
+          </h2>
+          <IllustrationFrame src={masculina?.url} alt={masculina?.caption || 'Preservativo masculino'} fit="contain" className="w-full" />
+          {masculina?.caption && <p className="text-xs text-brand-darker mt-1">{masculina.caption}</p>}
+        </div>
+
+        <div>
+          <Paragraph className="mb-4">
             A camisinha masculina é um método contraceptivo de barreira, feito de látex ou outros materiais, que é
             colocado sobre o pênis ereto para evitar a gravidez e ajudar a prevenir as infecções sexualmente
             transmissíveis (ISTs).
-          </p>
+          </Paragraph>
           <p className="font-poppins font-bold text-brand-blue text-base mb-2">Como usar</p>
           <ul className="list-disc pl-5 space-y-2">
             {MASCULINA_STEPS.map((text, i) => (
@@ -69,23 +71,20 @@ export default function MetodosBarreira({ images }) {
           <p className="text-xs text-brand-darker mt-3">BRASIL (2022); WHO (2022).</p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 items-center pt-4 border-t border-slate-200">
-          <h2 className="font-poppins flex-1">
-            <span className="block text-xl sm:text-2xl text-brand-dark">Preservativo</span>
-            <span className="block text-xl sm:text-2xl font-semibold text-brand-dark">feminino</span>
+        <div className="pt-4 border-t border-slate-200">
+          <h2 className="font-poppins text-xl sm:text-2xl text-brand-dark mb-4">
+            Preservativo <span className="font-semibold">feminino</span>
           </h2>
-          <div className="w-full sm:w-[220px] shrink-0">
-            <IllustrationFrame src={feminina?.url} alt={feminina?.caption || 'Preservativo feminino'} className="w-full h-[150px]" />
-            {feminina?.caption && <p className="text-xs text-brand-darker mt-1">{feminina.caption}</p>}
-          </div>
+          <IllustrationFrame src={feminina?.url} alt={feminina?.caption || 'Preservativo feminino'} fit="contain" className="w-full" />
+          {feminina?.caption && <p className="text-xs text-brand-darker mt-1">{feminina.caption}</p>}
         </div>
 
         <div>
-          <p className="font-worksans text-black text-sm leading-[22px] tracking-[0.14px] text-justify mb-4">
+          <Paragraph className="mb-4">
             A camisinha feminina também é um método contraceptivo de barreira, distribuído gratuitamente nas
             Unidades Básicas de Saúde e que não necessita de prescrição médica. É constituída por uma bolsa fina,
             flexível e resistente, com um anel em cada extremidade.
-          </p>
+          </Paragraph>
           <p className="font-poppins font-bold text-brand-blue text-base mb-2">Como usar</p>
           <ul className="list-disc pl-5 space-y-2">
             {FEMININA_STEPS.map((text, i) => (
@@ -96,7 +95,8 @@ export default function MetodosBarreira({ images }) {
           </ul>
           <p className="text-xs text-brand-darker mt-3">BRASIL (2022); WHO (2022).</p>
         </div>
-      </div>
+      </HighlightCard>
+
     </div>
   );
 }

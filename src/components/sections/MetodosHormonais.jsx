@@ -1,5 +1,6 @@
 import IllustrationFrame from '../IllustrationFrame.jsx';
-import deco from '../../assets/page22/deco.svg';
+import PageHero from '../PageHero.jsx';
+import TextCard from './shared/TextCard.jsx';
 
 const CONTENT = [
   { type: 'p', text: 'Os anticoncepcionais trouxeram liberdade para as mulheres, porque permitem que elas planejem com segurança se e quando querem engravidar.' },
@@ -64,22 +65,25 @@ export default function MetodosHormonais({ images }) {
 
   return (
     <div className="relative">
-      <img alt="" className="absolute pointer-events-none -top-[4%] -right-[6%] w-[45%] max-w-[300px] -z-10" src={deco} />
+      <PageHero pageLabel="17" weight="semibold" title="Anticoncepcionais hormonais" />
 
-      <h1 className="font-poppins font-semibold text-brand-dark text-2xl sm:text-3xl mb-6">Anticoncepcionais hormonais</h1>
-
-      <div className="mb-6">
+      <div className="mb-6 w-full sm:w-[70%]">
         <IllustrationFrame src={overview?.url} alt={overview?.caption || 'Métodos hormonais'} className="w-full h-[220px]" />
         {overview?.caption && <p className="text-xs text-brand-darker mt-1">{overview.caption}</p>}
       </div>
 
-      <div className="rounded-[24px] sm:rounded-[40px] bg-[rgba(29,67,85,0.05)] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)] p-6 sm:p-8 space-y-4">
+      <TextCard className="space-y-4">
         {CONTENT.map((item, i) => {
           if (item.type === 'img') {
             const img = images[item.idx];
+            const widthClass = item.idx === 1 ? 'w-full' : 'w-full sm:w-[70%]';
             return (
-              <div key={i}>
-                <IllustrationFrame src={img?.url} alt={img?.caption || item.alt} className="w-full h-[200px]" />
+              <div key={i} className={widthClass}>
+                <IllustrationFrame
+                  src={img?.url}
+                  alt={img?.caption || item.alt}
+                  className="w-full h-[200px]"
+                />
                 {img?.caption && <p className="text-xs text-brand-darker mt-1">{img.caption}</p>}
               </div>
             );
@@ -123,7 +127,8 @@ export default function MetodosHormonais({ images }) {
             </p>
           );
         })}
-      </div>
+      </TextCard>
+
     </div>
   );
 }

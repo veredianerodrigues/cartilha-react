@@ -1,6 +1,6 @@
 import Page02 from './Page02.jsx';
 import ScaledCanvas from '../components/ScaledCanvas.jsx';
-import FrontMatterTrail from '../components/FrontMatterTrail.jsx';
+import PrevNextNav from '../components/PrevNextNav.jsx';
 
 export default function FichaCatalografica() {
   return (
@@ -8,7 +8,10 @@ export default function FichaCatalografica() {
       <ScaledCanvas className="shadow-2xl">
         <Page02 />
       </ScaledCanvas>
-      <FrontMatterTrail current="/ficha-catalografica" />
+      <PrevNextNav
+        prev={{ to: '/contracapa', title: 'Contracapa' }}
+        next={{ to: '/sumario', title: 'Sumário' }}
+      />
     </div>
   );
 }

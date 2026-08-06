@@ -2,7 +2,7 @@ export default function PubertyIntroRow({ image, imageAlt, imageCaption, heading
   const imageEl = (
     <div>
       <div className="bg-[#f3e4de] rounded-[40px] overflow-hidden min-h-[200px]">
-        <img src={image} alt={imageAlt} className="w-full h-full object-cover" />
+        <img src={image} alt={imageAlt} loading="lazy" decoding="async" className="w-full h-full object-cover" />
       </div>
       {imageCaption && <p className="font-worksans text-xs text-brand-darker mt-2">{imageCaption}</p>}
     </div>

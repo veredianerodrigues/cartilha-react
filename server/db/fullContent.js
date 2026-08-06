@@ -18,91 +18,91 @@ export const TREE = [
       {
         slug: "transformacoes-menino",
         title: "Que transformações ocorrem no corpo do menino?",
-        pageLabel: "07",
+        pageLabel: "06",
       },
       {
         slug: "erecao-ejaculacao",
         title: "O que é ereção e ejaculação e quando acontece a primeira ejaculação?",
-        pageLabel: "08",
+        pageLabel: "07",
       },
       {
         slug: "tanner-menino",
         title: "Estágios de Tanner (menino)",
-        pageLabel: "09-10",
+        pageLabel: "08",
       },
       {
         slug: "transformacoes-menina",
         title: "Que transformações ocorrem no corpo da menina?",
-        pageLabel: "11",
+        pageLabel: "09",
       },
     ],
   },
   {
     slug: "menstruacao",
     title: "E a menstruação... o que é e como acontece?",
-    pageLabel: "13",
+    pageLabel: "10",
   },
   {
     slug: "fecundacao",
     title: "Sobre a fecundação... o que é fecundação e como acontece?",
-    pageLabel: "16",
+    pageLabel: "11",
   },
   {
     slug: "metodos-contraceptivos",
     title: "Métodos Contraceptivos",
-    pageLabel: "17",
+    pageLabel: "12",
     children: [
       {
         slug: "classificacao-metodos",
         title: "Como são classificados os métodos contraceptivos? Todos eles são indicados para adolescentes?",
-        pageLabel: "18",
+        pageLabel: "13",
       },
       {
         slug: "metodos-comportamentais",
         title: "Métodos comportamentais",
-        pageLabel: "18",
+        pageLabel: "13",
       },
       {
         slug: "metodos-barreira",
         title: "Métodos de Barreira",
-        pageLabel: "19",
+        pageLabel: "14",
       },
       {
         slug: "diu",
         title: "Dispositivo Intrauterino (DIU)",
-        pageLabel: "21",
+        pageLabel: "16",
       },
       {
         slug: "metodos-hormonais",
         title: "Métodos hormonais",
-        pageLabel: "22",
+        pageLabel: "17",
       },
       {
         slug: "mitos-anticoncepcional",
         title: "Mitos relacionados ao anticoncepcional hormonal",
-        pageLabel: "27",
+        pageLabel: "22",
       },
     ],
   },
   {
     slug: "direitos-sexuais-reprodutivos",
     title: "Vamos falar sobre direitos sexuais e reprodutivos?",
-    pageLabel: "28",
+    pageLabel: "23",
   },
   {
     slug: "gravidez-adolescencia-mudancas",
     title: "Gravidez na adolescência e mudanças",
-    pageLabel: "29",
+    pageLabel: "24",
   },
   {
     slug: "orientacao-quem-pode-ajudar",
     title: "Se eu precisar de orientação, quem poderá me ajudar?",
-    pageLabel: "31",
+    pageLabel: "26",
   },
   {
     slug: "referencias",
     title: "Referências",
-    pageLabel: "32",
+    pageLabel: "27",
   },
 ];
 
