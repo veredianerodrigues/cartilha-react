@@ -97,15 +97,18 @@ export default function Menstruacao({ images }) {
         <div>
           <p className="font-poppins font-bold text-brand-blue text-base mb-2">Portanto recomenda-se...</p>
           <p className="font-worksans text-brand-darker text-sm leading-[22px] tracking-[0.14px] text-justify">
-            que a adolescente registre em um calendário as datas dos ciclos, ou seja: "[...] a cada mês, o dia que
-            inicia e o dia que termina o sangramento. Por exemplo: começou no dia 13 de janeiro e terminou no dia
-            17 [...]" <span className="text-xs">(Brasil, 2012b, p. 36).</span>
+            Portanto, recomenda-se que a adolescente acompanhe seu ciclo menstrual registrando, 
+            a cada mês, o dia de início e o dia de término da menstruação. Esse registro pode ser realizado em um calendário impresso, 
+            agenda ou outro meio de sua preferência, anotando, por exemplo, a data em que o sangramento começou e a data em que terminou 
+            (BRASIL, 2012b). Como alternativa, existem aplicativos gratuitos que auxiliam nesse acompanhamento, 
+            como o Clue e o Calendário Menstrual Meu Ciclo. Esses aplicativos permitem registrar as datas da menstruação, 
+            prever o próximo ciclo, identificar o período fértil e a ovulação, além de acompanhar sintomas relacionados ao ciclo menstrual, 
+            contribuindo para o autoconhecimento e o monitoramento da saúde menstrual. Ressalta-se, entretanto, 
+            que esses aplicativos têm como finalidade o acompanhamento do ciclo menstrual e não substituem a orientação dos profissionais de saúde nem constituem métodos de prevenção da gravidez. 
+            <span className="text-xs">(BIOWINK GmbH, 2026; SIMPLEINNOVATION LLC, 2026).</span>
           </p>
         </div>
-        <p className="font-worksans text-brand-darker text-sm leading-[22px] tracking-[0.14px] text-justify">
-          E ainda... existem aplicativos gratuitos que auxiliam no registro da menstruação, previsão da próxima
-          menstruação, período fértil e sintomas relacionados ao ciclo.
-        </p>
+        
       </div>
 
     </div>
