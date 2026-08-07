@@ -3,13 +3,20 @@ import { useSections } from '../context/SectionsContext.jsx';
 import Page00 from './Page00.jsx';
 import ScaledCanvas from '../components/ScaledCanvas.jsx';
 import FrontMatterTrail from '../components/FrontMatterTrail.jsx';
+import useSwipeNavigation from '../hooks/useSwipeNavigation.js';
 
 export default function CoverPage() {
   const { flatSections } = useSections();
   const first = flatSections[0];
+  const swipeHandlers = useSwipeNavigation(null, first ? `/secao/${first.slug}` : null);
 
   return (
-    <div className="flex flex-col items-center gap-6 py-8 px-4">
+    <div
+      className="flex flex-col items-center gap-6 py-8 px-4"
+      onPointerDown={swipeHandlers.onPointerDown}
+      onPointerUp={swipeHandlers.onPointerUp}
+      onPointerCancel={swipeHandlers.onPointerCancel}
+    >
       <ScaledCanvas className="shadow-2xl">
         <Page00 />
       </ScaledCanvas>

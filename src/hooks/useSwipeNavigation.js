@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 const SWIPE_THRESHOLD = 60;
 
-// Navega para a página anterior/próxima ao arrastar o dedo na tela (mobile).
-// Ignora o gesto se o toque começou dentro de um elemento com scroll horizontal
+// Navega para a página anterior/próxima ao arrastar na tela (mobile via toque,
+// desktop via mouse) usando Pointer Events — cobre touch, mouse e pen num só
+// listener, o que também funciona ao testar arrastando com o mouse no navegador.
+// Ignora o gesto se o arrasto começou dentro de um elemento com scroll horizontal
 // próprio (páginas legado em canvas fixo), para não conflitar com o pan do usuário.
 export default function useSwipeNavigation(prevPath, nextPath) {
   const navigate = useNavigate();
@@ -19,23 +21,22 @@ export default function useSwipeNavigation(prevPath, nextPath) {
     return false;
   }
 
-  function onTouchStart(e) {
-    const touch = e.touches[0];
+  function onPointerDown(e) {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
     start.current = {
-      x: touch.clientX,
-      y: touch.clientY,
+      x: e.clientX,
+      y: e.clientY,
       blocked: isInsideHorizontalScroller(e.target),
     };
   }
 
-  function onTouchEnd(e) {
+  function onPointerUp(e) {
     if (!start.current || start.current.blocked) {
       start.current = null;
       return;
     }
-    const touch = e.changedTouches[0];
-    const deltaX = touch.clientX - start.current.x;
-    const deltaY = touch.clientY - start.current.y;
+    const deltaX = e.clientX - start.current.x;
+    const deltaY = e.clientY - start.current.y;
     start.current = null;
 
     if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaX) < Math.abs(deltaY)) return;
@@ -44,5 +45,9 @@ export default function useSwipeNavigation(prevPath, nextPath) {
     else if (deltaX > 0 && prevPath) navigate(prevPath);
   }
 
-  return { onTouchStart, onTouchEnd };
+  function onPointerCancel() {
+    start.current = null;
+  }
+
+  return { onPointerDown, onPointerUp, onPointerCancel };
 }

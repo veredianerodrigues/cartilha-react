@@ -81,7 +81,12 @@ export default function SectionPage() {
   const LegacyComponent = hasContent || hasChildren ? null : getLegacyPage(section.page_label);
 
   return (
-    <div className="flex flex-col min-h-full" onTouchStart={swipeHandlers.onTouchStart} onTouchEnd={swipeHandlers.onTouchEnd}>
+    <div
+      className="flex flex-col min-h-full"
+      onPointerDown={swipeHandlers.onPointerDown}
+      onPointerUp={swipeHandlers.onPointerUp}
+      onPointerCancel={swipeHandlers.onPointerCancel}
+    >
       <div className="flex-1">
         {hasContent ? (
           <div className="overflow-x-auto py-8 flex justify-center">

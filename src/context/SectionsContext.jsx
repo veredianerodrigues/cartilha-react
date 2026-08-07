@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { api } from '../lib/api.js';
+import { precacheWholeCartilha } from '../lib/offlineSync.js';
 
 const SectionsContext = createContext(null);
 
@@ -23,6 +24,8 @@ export function SectionsProvider({ children }) {
       .then((data) => {
         setTree(data);
         setError(null);
+        // Não bloqueia a navegação — roda depois que a árvore já renderizou.
+        setTimeout(() => precacheWholeCartilha(data), 0);
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));

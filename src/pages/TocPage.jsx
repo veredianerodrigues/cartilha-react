@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useSections } from '../context/SectionsContext.jsx';
 import PrevNextNav from '../components/PrevNextNav.jsx';
+import useSwipeNavigation from '../hooks/useSwipeNavigation.js';
 import deco2 from '../assets/page03/deco2.svg';
 
 function Row({ to, label, page, bold }) {
@@ -23,9 +24,18 @@ function Row({ to, label, page, bold }) {
 export default function TocPage() {
   const { tree, loading } = useSections();
   const firstChapter = tree[0];
+  const swipeHandlers = useSwipeNavigation(
+    '/ficha-catalografica',
+    firstChapter ? `/secao/${firstChapter.slug}` : null,
+  );
 
   return (
-    <div className="flex flex-col items-center gap-6 py-8 px-4">
+    <div
+      className="flex flex-col items-center gap-6 py-8 px-4"
+      onPointerDown={swipeHandlers.onPointerDown}
+      onPointerUp={swipeHandlers.onPointerUp}
+      onPointerCancel={swipeHandlers.onPointerCancel}
+    >
       <article className="relative w-full max-w-3xl bg-white shadow-2xl px-4 sm:px-8 py-8 sm:py-12 overflow-hidden">
         <img alt="" className="absolute pointer-events-none -top-[4%] -right-[6%] w-[55%] max-w-[360px]" src={deco2} />
 
