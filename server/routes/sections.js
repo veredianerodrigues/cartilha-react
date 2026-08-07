@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import db from '../db/init.js';
+import pool from '../db/pool.js';
 
 const router = Router();
 
@@ -18,31 +18,29 @@ function buildTree(rows) {
   return roots;
 }
 
-router.get('/', (req, res) => {
-  const rows = db
-    .prepare(
-      `SELECT s.id, s.parent_id, s.slug, s.order_index, s.page_label, s.title, s.updated_at,
-              EXISTS(SELECT 1 FROM blocks b WHERE b.section_id = s.id) AS hasContent
-       FROM sections s
-       WHERE s.is_front_matter = 0
-       ORDER BY s.parent_id IS NOT NULL, s.order_index`
-    )
-    .all()
-    .map((r) => ({ ...r, hasContent: Boolean(r.hasContent) }));
+router.get('/', async (req, res) => {
+  const { rows } = await pool.query(
+    `SELECT s.id, s.parent_id, s.slug, s.order_index, s.page_label, s.title, s.updated_at,
+            EXISTS(SELECT 1 FROM blocks b WHERE b.section_id = s.id) AS "hasContent"
+     FROM sections s
+     WHERE s.is_front_matter = false
+     ORDER BY s.parent_id IS NOT NULL, s.order_index`
+  );
 
   res.json(buildTree(rows));
 });
 
-router.get('/:slug', (req, res) => {
-  const section = db.prepare('SELECT * FROM sections WHERE slug = ?').get(req.params.slug);
+router.get('/:slug', async (req, res) => {
+  const { rows: sectionRows } = await pool.query('SELECT * FROM sections WHERE slug = $1', [req.params.slug]);
+  const section = sectionRows[0];
   if (!section) {
     return res.status(404).json({ error: 'Seção não encontrada.' });
   }
 
-  const blocks = db
-    .prepare('SELECT * FROM blocks WHERE section_id = ? ORDER BY order_index')
-    .all(section.id)
-    .map((b) => ({ ...b, items: b.items_json ? JSON.parse(b.items_json) : null }));
+  const { rows: blockRows } = await pool.query('SELECT * FROM blocks WHERE section_id = $1 ORDER BY order_index', [
+    section.id,
+  ]);
+  const blocks = blockRows.map((b) => ({ ...b, items: b.items_json ? JSON.parse(b.items_json) : null }));
 
   res.json({ ...section, blocks });
 });

@@ -1,17 +1,18 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import db from '../db/init.js';
+import pool from '../db/pool.js';
 
 const router = Router();
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body || {};
   if (!email || !password) {
     return res.status(400).json({ error: 'Informe e-mail e senha.' });
   }
 
-  const admin = db.prepare('SELECT * FROM admin_users WHERE email = ?').get(email);
+  const { rows } = await pool.query('SELECT * FROM admin_users WHERE email = $1', [email]);
+  const admin = rows[0];
   if (!admin || !bcrypt.compareSync(password, admin.password_hash)) {
     return res.status(401).json({ error: 'E-mail ou senha inválidos.' });
   }

@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import db from './init.js';
+import pool from './pool.js';
+import { uploadToStorage } from '../lib/supabaseStorage.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const uploadsDir = path.join(__dirname, '..', 'uploads');
 const assetsRoot = path.join(__dirname, '..', '..', 'src', 'assets');
 
 /**
@@ -18,26 +18,16 @@ const assetsRoot = path.join(__dirname, '..', '..', 'src', 'assets');
  *      (placeholder "Imagem a cadastrar" no lugar da ilustração real).
  */
 
-// Arquivos que precisam existir em server/uploads independente do estado do
-// banco (o seed grava a URL, mas o arquivo físico precisa ser copiado do
-// código-fonte pra dentro do volume persistido — ver Dockerfile).
-const REQUIRED_FILES = [];
+async function ensureCreditos() {
+  const { rows } = await pool.query('SELECT id FROM sections WHERE slug = $1', ['creditos']);
+  if (rows[0]) return;
 
-function ensureRequiredFiles() {
-  for (const f of REQUIRED_FILES) copyIfMissing(f.src, f.dest);
-}
-
-function ensureCreditos() {
-  const exists = db.prepare('SELECT id FROM sections WHERE slug = ?').get('creditos');
-  if (exists) return;
-
-  const info = db
-    .prepare(
-      `INSERT INTO sections (parent_id, slug, order_index, page_label, title, is_front_matter)
-       VALUES (NULL, 'creditos', 9999, NULL, 'Créditos e ficha catalográfica', 1)`
-    )
-    .run();
-  const sectionId = info.lastInsertRowid;
+  const inserted = await pool.query(
+    `INSERT INTO sections (parent_id, slug, order_index, page_label, title, is_front_matter)
+     VALUES (NULL, 'creditos', 9999, NULL, 'Créditos e ficha catalográfica', true)
+     RETURNING id`
+  );
+  const sectionId = inserted.rows[0].id;
 
   const blocks = [
     { type: 'heading', heading: 'Autoria' },
@@ -71,28 +61,31 @@ function ensureCreditos() {
     },
   ];
 
-  const insert = db.prepare(
-    `INSERT INTO blocks (section_id, order_index, type, heading, body, items_json, image_url, image_caption)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-  );
-  blocks.forEach((b, i) =>
-    insert.run(sectionId, i, b.type, b.heading ?? null, b.body ?? null, null, null, null)
-  );
+  for (const [i, b] of blocks.entries()) {
+    await pool.query(
+      `INSERT INTO blocks (section_id, order_index, type, heading, body, items_json, image_url, image_caption)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [sectionId, i, b.type, b.heading ?? null, b.body ?? null, null, null, null]
+    );
+  }
 
   console.log('[migração] seção "creditos" criada.');
 }
 
-function copyIfMissing(srcRelPath, destFileName) {
-  const dest = path.join(uploadsDir, destFileName);
-  if (fs.existsSync(dest)) return `/uploads/${destFileName}`;
+const MIME_BY_EXT = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp' };
+
+// Sobe pro Supabase Storage a partir de uma imagem-fonte versionada em
+// src/assets — só é chamada quando o bloco ainda não tem image_url (ver
+// fixImages), então não bate na rede de novo a cada boot depois da 1ª vez.
+async function copyIfMissing(srcRelPath, destFileName) {
   const src = path.join(assetsRoot, srcRelPath);
   if (!fs.existsSync(src)) {
     console.warn(`[migração] imagem-fonte não encontrada: ${src}`);
     return null;
   }
-  fs.mkdirSync(uploadsDir, { recursive: true });
-  fs.copyFileSync(src, dest);
-  return `/uploads/${destFileName}`;
+  const buffer = fs.readFileSync(src);
+  const contentType = MIME_BY_EXT[path.extname(destFileName).toLowerCase()] || 'application/octet-stream';
+  return uploadToStorage(destFileName, buffer, contentType);
 }
 
 // Fotos genéricas (banco de imagens) sem citação acadêmica no documento-fonte —
@@ -210,49 +203,53 @@ const IMAGE_FIXES = {
   ],
 };
 
-function fixImages() {
+async function fixImages() {
   for (const [slug, fixes] of Object.entries(IMAGE_FIXES)) {
-    const section = db.prepare('SELECT id FROM sections WHERE slug = ?').get(slug);
+    const { rows: sectionRows } = await pool.query('SELECT id FROM sections WHERE slug = $1', [slug]);
+    const section = sectionRows[0];
     if (!section) continue;
 
-    const imageBlocks = db
-      .prepare("SELECT * FROM blocks WHERE section_id = ? AND type = 'image' ORDER BY order_index")
-      .all(section.id);
+    const { rows: imageBlocks } = await pool.query(
+      "SELECT * FROM blocks WHERE section_id = $1 AND type = 'image' ORDER BY order_index",
+      [section.id]
+    );
 
-    fixes.forEach((fix, i) => {
-      const url = copyIfMissing(fix.src, fix.dest);
-      if (!url) return;
-
+    for (const [i, fix] of fixes.entries()) {
       const target = imageBlocks[i];
+
+      // Só faz upload se ainda estiver nulo — nunca sobrescreve edição manual,
+      // e evita subir de novo pro Storage a cada boot depois da 1ª vez.
+      if (target && target.image_url) continue;
+
+      const url = await copyIfMissing(fix.src, fix.dest);
+      if (!url) continue;
+
       if (target) {
-        // Só preenche se ainda estiver nulo — nunca sobrescreve edição manual.
-        if (!target.image_url) {
-          db.prepare('UPDATE blocks SET image_url = ?, image_caption = COALESCE(image_caption, ?) WHERE id = ?').run(
-            url,
-            fix.caption ?? null,
-            target.id
-          );
-          console.log(`[migração] imagem preenchida: ${slug} (bloco ${target.id}) -> ${url}`);
-        }
+        await pool.query(
+          'UPDATE blocks SET image_url = $1, image_caption = COALESCE(image_caption, $2) WHERE id = $3',
+          [url, fix.caption ?? null, target.id]
+        );
+        console.log(`[migração] imagem preenchida: ${slug} (bloco ${target.id}) -> ${url}`);
       } else {
         // Seção tem menos blocos de imagem do que o conteúdo original
         // (ex.: página 10 tinha 2 diagramas — genitália e pelos pubianos —
         // mas só 1 bloco de imagem foi migrado). Adiciona o que falta no fim.
-        const nextOrder = db
-          .prepare('SELECT COALESCE(MAX(order_index), -1) + 1 AS next FROM blocks WHERE section_id = ?')
-          .get(section.id).next;
-        db.prepare(
+        const { rows } = await pool.query(
+          'SELECT COALESCE(MAX(order_index), -1) + 1 AS next FROM blocks WHERE section_id = $1',
+          [section.id]
+        );
+        await pool.query(
           `INSERT INTO blocks (section_id, order_index, type, image_url, image_caption)
-           VALUES (?, ?, 'image', ?, ?)`
-        ).run(section.id, nextOrder, url, fix.caption);
+           VALUES ($1, $2, 'image', $3, $4)`,
+          [section.id, rows[0].next, url, fix.caption]
+        );
         console.log(`[migração] bloco de imagem novo criado: ${slug} -> ${url}`);
       }
-    });
+    }
   }
 }
 
-export default function runContentFixes() {
-  ensureRequiredFiles();
-  ensureCreditos();
-  fixImages();
+export default async function runContentFixes() {
+  await ensureCreditos();
+  await fixImages();
 }

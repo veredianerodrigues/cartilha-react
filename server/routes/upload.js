@@ -1,21 +1,19 @@
 import { Router } from 'express';
 import multer from 'multer';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import fs from 'node:fs/promises';
 import sharp from 'sharp';
 import requireAuth from '../middleware/requireAuth.js';
+import { uploadToStorage } from '../lib/supabaseStorage.js';
 
 const MAX_WIDTH = 1000;
 
-// Reamostra/comprime a imagem recém-enviada no lugar — evita repetir o problema
-// de fotos de celular/banco de imagens chegando com vários MB e deixando a
-// navegação lenta no site (decodificação de imagem é trabalho de CPU no
-// aparelho do visitante, não depende da conexão dele).
-async function optimizeUpload(filePath, mimetype) {
-  const image = sharp(filePath);
-  const meta = await image.metadata();
-  let pipeline = sharp(filePath);
+// Reamostra/comprime a imagem recém-enviada em memória — evita repetir o
+// problema de fotos de celular/banco de imagens chegando com vários MB e
+// deixando a navegação lenta no site (decodificação de imagem é trabalho de
+// CPU no aparelho do visitante, não depende da conexão dele).
+async function optimizeUpload(buffer, mimetype) {
+  const meta = await sharp(buffer).metadata();
+  let pipeline = sharp(buffer);
   if (meta.width > MAX_WIDTH) {
     pipeline = pipeline.resize({ width: MAX_WIDTH });
   }
@@ -26,23 +24,11 @@ async function optimizeUpload(filePath, mimetype) {
   } else if (mimetype === 'image/webp') {
     pipeline = pipeline.webp({ quality: 80 });
   }
-  const buffer = await pipeline.toBuffer();
-  await fs.writeFile(filePath, buffer);
+  return pipeline.toBuffer();
 }
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const uploadsDir = path.join(__dirname, '..', 'uploads');
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadsDir),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    cb(null, `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`);
-  },
-});
-
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (!file.mimetype.startsWith('image/')) {
@@ -58,13 +44,20 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'Nenhuma imagem enviada.' });
   }
+
+  const ext = path.extname(req.file.originalname).toLowerCase();
+  const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
+
+  let buffer = req.file.buffer;
   try {
-    await optimizeUpload(req.file.path, req.file.mimetype);
+    buffer = await optimizeUpload(req.file.buffer, req.file.mimetype);
   } catch {
-    // Se a otimização falhar (ex.: formato exótico), mantém o arquivo original
-    // já salvo pelo multer em vez de derrubar o upload.
+    // Se a otimização falhar (ex.: formato exótico), sobe o arquivo original
+    // em vez de derrubar o upload.
   }
-  res.status(201).json({ url: `/uploads/${req.file.filename}` });
+
+  const url = await uploadToStorage(filename, buffer, req.file.mimetype);
+  res.status(201).json({ url });
 });
 
 export default router;
