@@ -23,9 +23,9 @@ export default function PrevNextNav({ prev, next }) {
       {prev ? (
         <Link
           to={targetPath(prev)}
-          className="max-w-[35%] truncate px-4 py-2 rounded-full bg-brand-dark text-white font-poppins text-sm hover:bg-brand-darker transition"
+          className="px-5 py-2 rounded-full bg-brand-dark text-white font-poppins text-sm hover:bg-brand-darker transition"
         >
-          ← {prev.title}
+          ← Anterior
         </Link>
       ) : (
         <span />
@@ -42,9 +42,9 @@ export default function PrevNextNav({ prev, next }) {
       {next ? (
         <Link
           to={targetPath(next)}
-          className="max-w-[35%] truncate px-4 py-2 rounded-full bg-brand-dark text-white font-poppins text-sm hover:bg-brand-darker transition text-right"
+          className="px-5 py-2 rounded-full bg-brand-dark text-white font-poppins text-sm hover:bg-brand-darker transition"
         >
-          {next.title} →
+          Próximo →
         </Link>
       ) : (
         <span />
