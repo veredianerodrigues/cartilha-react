@@ -8,7 +8,6 @@ import Menstruacao from './Menstruacao.jsx';
 import Fecundacao from './Fecundacao.jsx';
 import MetodosContraceptivos from './MetodosContraceptivos.jsx';
 import ClassificacaoMetodos from './ClassificacaoMetodos.jsx';
-import MetodosComportamentais from './MetodosComportamentais.jsx';
 import MetodosBarreira from './MetodosBarreira.jsx';
 import Diu from './Diu.jsx';
 import MetodosHormonais from './MetodosHormonais.jsx';
@@ -29,7 +28,6 @@ export const SECTION_LAYOUTS = {
   fecundacao: Fecundacao,
   'metodos-contraceptivos': MetodosContraceptivos,
   'classificacao-metodos': ClassificacaoMetodos,
-  'metodos-comportamentais': MetodosComportamentais,
   'metodos-barreira': MetodosBarreira,
   diu: Diu,
   'metodos-hormonais': MetodosHormonais,

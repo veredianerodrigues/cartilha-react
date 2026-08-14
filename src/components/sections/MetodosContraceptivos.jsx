@@ -3,6 +3,7 @@ import { PageHeroBlob } from '../PageHero.jsx';
 import TextCard from './shared/TextCard.jsx';
 import SectionTitle from './shared/SectionTitle.jsx';
 import Paragraph from './shared/Paragraph.jsx';
+import Cite from './shared/Cite.jsx';
 
 export default function MetodosContraceptivos({ images }) {
   const [foto] = images;
@@ -17,8 +18,7 @@ export default function MetodosContraceptivos({ images }) {
           Essa queda dos hormônios faz com que o endométrio (camada interna do útero), que havia se preparado para
           receber uma possível gravidez, se desprenda e seja eliminado através do sangramento menstrual. Assim que a
           menstruação termina, o corpo recomeça um novo ciclo. Contudo, se a gravidez acontecer, o ciclo menstrual
-          não se completa e segue o desenvolvimento da gestação{' '}
-          <span className="text-xs text-brand-darker">(Montenegro; Rezende Filho, 2022).</span>
+          não se completa e segue o desenvolvimento da gestação.<Cite n={20} />
         </Paragraph>
       </TextCard>
 
@@ -32,8 +32,8 @@ export default function MetodosContraceptivos({ images }) {
             (ou anticoncepcionais), porém não existe um único método que sirva para todo mundo. Cada organismo é
             diferente, e alguns métodos podem ter contraindicações dependendo de cada pessoa. Por isso, o
             recomendado é escolher o que melhor se adapte às necessidades e à rotina de cada um. Além disso,
-            independentemente do método, o que garante a menor chance de falha é o seu uso correto e consistente{' '}
-            <span className="text-xs text-brand-darker">(WHO, 2022).</span>
+            independentemente do método, o que garante a menor chance de falha é o seu uso correto e consistente.
+            <Cite n={19} />
           </Paragraph>
         </div>
         <div className="w-full sm:w-[300px] shrink-0">

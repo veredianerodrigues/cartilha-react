@@ -1,5 +1,6 @@
 import PageHero from '../PageHero.jsx';
 import Paragraph from './shared/Paragraph.jsx';
+import Cite from './shared/Cite.jsx';
 
 export default function Apresentacao() {
   return (
@@ -17,9 +18,12 @@ export default function Apresentacao() {
           que já passou?
         </Paragraph>
         <Paragraph>
-          Para o Ministério da Saúde adolescência vai dos 10 aos 19 anos e de acordo o Estatuto da Criança e do
-          Adolescente (ECA), a adolescência ocorre entre 12 e 18 anos de idade (Brasil, 2017), além da idade, os
-          aspectos sociais e psicológicos tem influência sobre esse momento, pois cada pessoa apresenta mudanças
+          A Organização Mundial da Saúde (OMS) define a adolescência como o período compreendido entre 10 e 19 anos
+          de idade, classificação adotada também pelo Ministério da Saúde brasileiro nas políticas e ações voltadas
+          à saúde do adolescente.<Cite n={[8, 24]} /> Entretanto, o Estatuto da Criança e do Adolescente (ECA)
+          considera adolescente a pessoa com idade entre 12 e 18 anos incompletos, podendo, excepcionalmente,
+          aplicar-se às pessoas entre 18 e 21 anos nos casos expressamente previstos em lei,<Cite n={7} /> além da
+          idade, os aspectos sociais e psicológicos tem influência sobre esse momento, pois cada pessoa apresenta mudanças
           corporais, afetivas e de desenvolvimento de acordo com sua história particular, ou seja, cada um no seu
           tempo, poderá passar por algumas transformações.
         </Paragraph>

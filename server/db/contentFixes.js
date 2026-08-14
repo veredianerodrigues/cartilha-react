@@ -160,9 +160,6 @@ const IMAGE_FIXES = {
   'metodos-contraceptivos': [
     { src: 'page17/foto.png', dest: 'metodos-contraceptivos-foto.png', caption: BANCO_IMAGENS },
   ],
-  'metodos-comportamentais': [
-    { src: 'page18/foto.png', dest: 'metodos-comportamentais-foto.png', caption: BANCO_IMAGENS },
-  ],
   'metodos-barreira': [
     {
       // 1º bloco de imagem da seção = camisinha masculina. O 2º (camisinha

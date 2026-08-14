@@ -10,8 +10,12 @@ export default function PubertyIntroRow({ image, imageAlt, imageCaption, heading
   const textEl = (
     <div className="bg-[rgba(29,67,85,0.05)] rounded-[40px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)] p-6 flex flex-col justify-center">
       {heading && <p className="font-poppins font-semibold text-black text-lg mb-2">{heading}</p>}
-      <p className="font-worksans text-sm text-black leading-[22px] tracking-[0.14px] text-justify">{body}</p>
-      {citation && <p className="font-worksans text-xs uppercase tracking-wide text-brand-darker mt-2">{citation}</p>}
+      {/* A citação numérica fecha o próprio parágrafo, colada no ponto final —
+          não vai mais numa linha separada como no padrão autor-data. */}
+      <p className="font-worksans text-sm text-black leading-[22px] tracking-[0.14px] text-justify">
+        {body}
+        {citation}
+      </p>
     </div>
   );
 

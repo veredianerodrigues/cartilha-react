@@ -7,7 +7,7 @@ export default function Page02() {
         <p className="mb-2">Gonzatto, Cariane Renata Saldanha Fant.</p>
         <p className="mb-2">{`     "Vamos conversar sobre gravidez na adolescência?" `}</p>
         <p className="mb-2">{`/ Cariane Renata Saldanha Fant Gonzatto e Solange de Fátima `}</p>
-        <p className="mb-2">{`Reis Conterno Cascavel/ Paraná, 2026. 36 p. `}</p>
+        <p className="mb-2">{`Reis Conterno Cascavel/ Paraná, 2026. 32 p.`}</p>
         <p className="mb-2">2. ed. Revisada e atualizada</p>
         <p className="mb-2">{`     Dissertação (Mestrado Acadêmico) - Universidade Estadual `}</p>
         <p className="mb-2">{`do Oeste do Paraná. Programa de Pós-graduação em Biociências `}</p>

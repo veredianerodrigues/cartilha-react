@@ -4,6 +4,7 @@ import TextCard from './shared/TextCard.jsx';
 import HighlightCard from './shared/HighlightCard.jsx';
 import SectionSubtitle from './shared/SectionSubtitle.jsx';
 import Paragraph from './shared/Paragraph.jsx';
+import Cite from './shared/Cite.jsx';
 
 export default function Menstruacao({ images }) {
   const [ciclo, foto] = images;
@@ -34,8 +35,8 @@ export default function Menstruacao({ images }) {
           O amadurecimento dos órgãos reprodutores leva ao início da menstruação, chamada menarca. A menarca
           representa uma importante etapa do desenvolvimento reprodutivo feminino e ocorre, em média, por volta dos
           12 anos, podendo acontecer normalmente entre os 9 e os 15 anos. Ela indica que o organismo está
-          adquirindo capacidade reprodutiva.{' '}
-          <span className="text-xs font-normal">Montenegro; Rezende Filho, 2022; FEBRASGO, 2017.</span>
+          adquirindo capacidade reprodutiva.
+          <Cite n={[11, 20]} />
         </p>
       </HighlightCard>
 
@@ -51,8 +52,8 @@ export default function Menstruacao({ images }) {
           ovário (ovulação). Após a ovulação, a progesterona prepara o útero para uma possível gravidez.
         </Paragraph>
         <Paragraph>
-          Caso a fecundação não ocorra — seja por não ter praticado relação sexual ou por ter usado um método
-          contraceptivo, como a camisinha —, os níveis desses hormônios baixam, provocando a descamação do
+          Caso a fecundação não ocorra, seja por não ter praticado relação sexual ou por ter usado um método
+          contraceptivo, como a camisinha, os níveis desses hormônios baixam, provocando a descamação do
           endométrio (camada interna do útero), que é eliminada pela vagina na forma de sangue, caracterizando a
           menstruação.
         </Paragraph>
@@ -60,6 +61,7 @@ export default function Menstruacao({ images }) {
           O fluxo menstrual costuma durar de 3 a 7 dias. Nos primeiros anos após a menarca, é comum que o ciclo
           menstrual varie entre 21 e 45 dias. Com o amadurecimento do organismo, tende a se tornar mais regular,
           variando geralmente entre 21 e 35 dias.
+          <Cite n={[20, 22]} />
         </Paragraph>
         <div>
           <p className="font-poppins font-bold text-brand-blue text-base mb-1">Fique atenta...</p>
@@ -68,7 +70,6 @@ export default function Menstruacao({ images }) {
             ainda está amadurecendo.
           </Paragraph>
         </div>
-        <p className="text-xs text-brand-darker">Montenegro; Rezende Filho (2022); SBP (2023a).</p>
       </TextCard>
 
       <TextCard className="mb-6">
@@ -78,7 +79,7 @@ export default function Menstruacao({ images }) {
         <p className="font-worksans text-brand-darker text-sm leading-[22px] tracking-[0.14px] text-justify">
           A precocidade ou atraso na ocorrência da menarca são influenciados por diversos fatores como a
           hereditariedade, fatores nutricionais, físicos, emocionais, exercício, gordura corporal e contexto
-          social <span className="text-xs">(Gemelli; Farias; Spitzer, 2020).</span>
+          social.<Cite n={14} />
         </p>
       </TextCard>
 
@@ -91,21 +92,16 @@ export default function Menstruacao({ images }) {
             Isso acontece porque o corpo ainda está passando por um amadurecimento hormonal e pode não produzir os
             picos de hormônios necessários para a ovulação. Por conta dessa imaturidade fisiológica natural da
             idade, a jovem pode apresentar ciclos irregulares e sangramentos inesperados, situações que fazem
-            parte do ajuste normal do organismo nessa fase <span className="text-xs">(SBP, 2023a).</span>
+            parte do ajuste normal do organismo nessa fase.<Cite n={22} />
           </p>
         </div>
         <div>
           <p className="font-poppins font-bold text-brand-blue text-base mb-2">Portanto recomenda-se...</p>
           <p className="font-worksans text-brand-darker text-sm leading-[22px] tracking-[0.14px] text-justify">
-            Portanto, recomenda-se que a adolescente acompanhe seu ciclo menstrual registrando, 
-            a cada mês, o dia de início e o dia de término da menstruação. Esse registro pode ser realizado em um calendário impresso, 
-            agenda ou outro meio de sua preferência, anotando, por exemplo, a data em que o sangramento começou e a data em que terminou 
-            (BRASIL, 2012b). Como alternativa, existem aplicativos gratuitos que auxiliam nesse acompanhamento, 
-            como o Clue e o Calendário Menstrual Meu Ciclo. Esses aplicativos permitem registrar as datas da menstruação, 
-            prever o próximo ciclo, identificar o período fértil e a ovulação, além de acompanhar sintomas relacionados ao ciclo menstrual, 
-            contribuindo para o autoconhecimento e o monitoramento da saúde menstrual. Ressalta-se, entretanto, 
-            que esses aplicativos têm como finalidade o acompanhamento do ciclo menstrual e não substituem a orientação dos profissionais de saúde nem constituem métodos de prevenção da gravidez. 
-            <span className="text-xs">(BIOWINK GmbH, 2026; SIMPLEINNOVATION LLC, 2026).</span>
+            que a adolescente acompanhe seu ciclo menstrual registrando,
+            a cada mês, o dia de início e o dia de término da menstruação. Esse registro pode ser realizado em um calendário impresso,
+            agenda ou outro meio de sua preferência, anotando, por exemplo, a data em que o sangramento começou e a
+            data em que terminou.<Cite n={5} />
           </p>
         </div>
         

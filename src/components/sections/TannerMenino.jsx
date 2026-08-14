@@ -3,6 +3,7 @@ import { PageHeroBlob } from '../PageHero.jsx';
 import HighlightCard from './shared/HighlightCard.jsx';
 import SectionTitle from './shared/SectionTitle.jsx';
 import Paragraph from './shared/Paragraph.jsx';
+import Cite from './shared/Cite.jsx';
 
 export default function TannerMenino({ images }) {
   const [genitalia, pelos, grupo] = images;
@@ -18,8 +19,8 @@ export default function TannerMenino({ images }) {
           avaliar esse desenvolvimento os médicos britânicos Marshall e Tanner desenvolveram uma classificação
           conhecida como estágios de Tanner, utilizada até os dias atuais pelos profissionais da saúde. Essa
           classificação permite acompanhar o desenvolvimento físico durante a puberdade, pois adolescentes da mesma
-          idade podem apresentar diferentes graus de maturação sexual{' '}
-          <span className="text-xs text-brand-darker">(Marshall; Tanner, 1970).</span>
+          idade podem apresentar diferentes graus de maturação sexual.
+          <Cite n={18} />
         </Paragraph>
       </HighlightCard>
 
@@ -30,8 +31,8 @@ export default function TannerMenino({ images }) {
           Nos meninos, são avaliados o crescimento da genitália (G) e dos pelos pubianos (P). Cada um deles é
           dividido em cinco estágios, de 1 a 5. O estágio 1 indica que a puberdade ainda não começou, enquanto o
           estágio 5 representa o desenvolvimento físico completo. Os estágios 2, 3 e 4 mostram as mudanças que
-          acontecem ao longo da puberdade{' '}
-          <span className="text-xs text-brand-darker">(Marshall; Tanner, 1970).</span>
+          acontecem ao longo da puberdade.
+          <Cite n={18} />
         </Paragraph>
       </HighlightCard>
 

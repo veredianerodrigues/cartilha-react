@@ -1,6 +1,7 @@
 import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import HighlightCard from './shared/HighlightCard.jsx';
+import Cite from './shared/Cite.jsx';
 
 const MYTHS = [
   'É verdade que o anticoncepcional engorda? Não exatamente. Estudos científicos mostram que as pílulas anticoncepcionais não causam ganho de gordura. A única exceção importante é a injeção anticoncepcional de três meses, que por ser uma dose mais concentrada, pode causar ganho de peso real (geralmente entre 2 kg e 3 kg).',
@@ -49,7 +50,9 @@ export default function MitosAnticoncepcional({ images }) {
             </li>
           ))}
         </ul>
-        <p className="text-xs text-brand-darker">FEBRASGO (2025); WHO (2022).</p>
+        <p className="text-sm text-brand-darker">
+          <Cite n={[12, 19]} />
+        </p>
       </HighlightCard>
 
     </div>

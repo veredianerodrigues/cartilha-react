@@ -2,12 +2,14 @@ import PageHero from '../PageHero.jsx';
 
 const REFS = [
   'ALVES, T. V.; BEZERRA, M. M. M. Principais alterações fisiológicas e psicológicas durante o período gestacional. Rev. Mult. Psic., Jaboatão dos Guararapes, v. 14, n. 49, p. 114-126, fev. 2020. Disponível em: https://idonline.emnuvens.com.br/id/article/view/2324/3608#. Acesso em: 06 jun. 2026.',
+  'BACIL, E. D. A.; SILVA, M. P.; MAZZARDO, O. Crescimento e desenvolvimento motor [livro eletrônico]. 1. ed. Curitiba: Intersaberes, 2020.',
   'BRASIL. Ministério da Saúde. Secretaria de Atenção à Saúde. Departamento de Ações Programáticas Estratégicas. Diretrizes nacionais para a atenção integral à saúde de adolescentes e jovens na promoção, proteção e recuperação da saúde. Brasília: Ministério da Saúde, 2010. Disponível em: http://bvsms.saude.gov.br/bvs/publicacoes/diretrizes_nacionais_atencao_saude_adolescentes_jovens_promocao_saude.pdf. Acesso em: 9 jul. 2026.',
   'BRASIL. Ministério da Saúde. Secretaria de Atenção à Saúde. Departamento de Ações Programáticas Estratégicas. Caderneta de saúde do adolescente: menino. Brasília: Ministério da Saúde, 2012a. Disponível em: https://saude.rs.gov.br/upload/arquivos/carga20190754/10135428-caderneta-saude-adolescente-menino.pdf. Acesso em: 1 jul. 2026.',
   'BRASIL. Ministério da Saúde. Secretaria de Atenção à Saúde. Departamento de Ações Programáticas Estratégicas. Caderneta de saúde do adolescente: menina. Brasília: Ministério da Saúde, 2012b. Disponível em: https://saude.rs.gov.br/upload/arquivos/carga20190755/10135513-caderneta-saude-adolescente-menina.pdf. Acesso em: 1 jul. 2026.',
-  'BRASIL. Ministério da Saúde. Protocolo clínico e diretrizes terapêuticas para atenção integral às pessoas com infecções sexualmente transmissíveis (IST). Brasília: Ministério da Saúde, 2022. Disponível em: https://www.gov.br/aids/pt-br/central-de-conteudo/pcdts/2022/ist/pcdt-ist-2022_isbn-1.pdf/@@display-file/file. Acesso em: 7 jul. 2026.',
+  'BRASIL. Ministério da Saúde. Protocolo clínico e diretrizes terapêuticas para atenção integral às pessoas com infecções sexualmente transmissíveis (IST). Brasília: Ministério da Saúde, 2022a. Disponível em: https://www.gov.br/aids/pt-br/central-de-conteudo/pcdts/2022/ist/pcdt-ist-2022_isbn-1.pdf/@@display-file/file. Acesso em: 7 jul. 2026.',
   'BRASIL. Lei nº 8.069, de 13 de julho de 1990. Dispõe sobre o Estatuto da Criança e do Adolescente e dá outras providências. 13. ed. Brasília: Senado Federal, 2017. Disponível em: https://www2.senado.leg.br/bdsf/bitstream/handle/id/534718/eca_1ed.pdf. Acesso em: 9 jul. 2026.',
-  'BRASIL. Ministério da Saúde. Secretaria de Atenção Primária à Saúde. Manual técnico de anticoncepção. Brasília: Ministério da Saúde, 2022. Disponível em: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-da-mulher/saude-sexual-e-reprodutiva/contracepcao. Acesso em: 12 jul. 2026.',
+  'BRASIL. Ministério da Saúde. Proteger e cuidar da saúde de adolescentes na atenção básica. 2. ed. Brasília, DF: Ministério da Saúde, 2018. Disponível em: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-do-adolescente/saude-sexual-e-reprodutiva/ferramentas/saude_adolecentes.pdf/view. Acesso em: 8 jul. 2026.',
+  'BRASIL. Ministério da Saúde. Secretaria de Atenção Primária à Saúde. Manual técnico de anticoncepção. Brasília: Ministério da Saúde, 2022b. Disponível em: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-da-mulher/saude-sexual-e-reprodutiva/contracepcao. Acesso em: 12 jul. 2026.',
   'CASTILHO, S. B.; MATTOS, V. G. da S.; PEDROSA, L. G. B. Impactos físicos e emocionais da gestação na adolescência: uma revisão de literatura. Revista Foco, [S. l.], v. 17, n. 5, p. e4934, 2024. Disponível em: https://ojs.focopublicacoes.com.br/foco/article/view/4934. Acesso em: 22 jun. 2026.',
   'FEDERAÇÃO BRASILEIRA DAS ASSOCIAÇÕES DE GINECOLOGIA E OBSTETRÍCIA (FEBRASGO). Anticoncepção para adolescentes. São Paulo: Connexomm, 2017. (Série Orientações e Recomendações FEBRASGO, n. 9). Disponível em: https://www.febrasgo.org.br/media/k2/attachments/15-ANTICONCEPCAO_PARA_ADOLESCENTES.pdf. Acesso em: 11 jul. 2026.',
   'FEDERAÇÃO BRASILEIRA DAS ASSOCIAÇÕES DE GINECOLOGIA E OBSTETRÍCIA (FEBRASGO). Anticoncepção hormonal combinada. Femina, [S. l.], v. 53, n. 12, p. 1382-1389, 2025. Disponível em: https://femina.org.br/wp-content/uploads/sites/12/articles_xml/0100-7254-femina-53-12-1382/0100-7254-femina-53-12-1382.pdf. Acesso em: 12 jul. 2026.',
@@ -22,6 +24,7 @@ const REFS = [
   'SARTOR, B. C.; FIORIN, P. B. G.; SULZBACHER, M. M. Infância acelerada: a complexidade da puberdade precoce e a importância do acompanhamento clínico. Revista DELOS, Curitiba, v. 18, n. 74, p. 1-22, 2025. DOI: https://doi.org/10.55905/rdelosv18.n74-044. Disponível em: https://ojs.revistadelos.com/delos/article/view/2347. Acesso em: 20 jun. 2026.',
   'SOCIEDADE BRASILEIRA DE PEDIATRIA. Departamento Científico de Medicina do Adolescente (gestão 2022-2024). Como reconhecer um ciclo menstrual normal em adolescentes? Rio de Janeiro: Sociedade Brasileira de Pediatria, 2023a. (Guia Prático de Atualização). Disponível em: https://www.sbp.com.br/fileadmin/user_upload/24065c-GPA_-_ComoReconhecer_CicloMenstrual_Nl_em_Adl.pdf. Acesso em: 7 jul. 2026.',
   'SOCIEDADE BRASILEIRA DE PEDIATRIA. Departamento Científico de Adolescência. Contracepção na adolescência: o que há de novo? Rio de Janeiro: Sociedade Brasileira de Pediatria, 2023b. (Guia Prático de Atualização). Disponível em: https://www.sbp.com.br/fileadmin/user_upload/24200f-GPA_ISBN-_Atualiza_MetodosEfetivos_Contracepcao_Adl.pdf. Acesso em: 1 jul. 2026.',
+  'WORLD HEALTH ORGANIZATION (WHO). Adolescent health. Geneva: WHO, 2024. Disponível em: https://www.who.int/health-topics/adolescent-health. Acesso em: 10 ago. 2026.',
 ];
 
 export default function Referencias() {
@@ -29,13 +32,16 @@ export default function Referencias() {
     <div className="relative">
       <PageHero pageLabel="27" weight="semibold" title="Referências" />
 
-      <ul className="space-y-4">
+      {/* Lista numerada: o número de cada entrada é o que as seções citam em
+          sobrescrito (ver shared/Cite.jsx). Ordem alfabética, como no Word. */}
+      <ol className="space-y-4">
         {REFS.map((text, i) => (
-          <li key={i} className="font-worksans text-black text-xs leading-[20px] tracking-[0.12px] text-justify break-words pl-4 -indent-4">
-            {text}
+          <li key={i} className="grid grid-cols-[1.75rem_1fr] gap-1 font-worksans text-black text-xs leading-[20px] tracking-[0.12px]">
+            <span className="font-semibold tabular-nums">{i + 1}.</span>
+            <span className="text-justify break-words">{text}</span>
           </li>
         ))}
-      </ul>
+      </ol>
 
     </div>
   );

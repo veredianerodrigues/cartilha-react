@@ -2,6 +2,7 @@ import IllustrationFrame from '../IllustrationFrame.jsx';
 import { PageHeroBlob } from '../PageHero.jsx';
 import HighlightCard from './shared/HighlightCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
+import Cite from './shared/Cite.jsx';
 
 export default function TransformacoesMenino({ images }) {
   const [menino] = images;
@@ -38,8 +39,8 @@ export default function TransformacoesMenino({ images }) {
           também aumenta a atividade das glândulas sudoríparas, o que favorece o suor e o odor corporal
           característicos da adolescência. É ainda durante esse período que as ereções espontâneas se tornam mais
           frequentes e ocorre a espermarca (primeira ejaculação).
+          <Cite n={[2, 15, 17]} />
         </Paragraph>
-        <p className="text-xs text-brand-darker">Bacil et al., 2020; Krishna; Witchel, 2024; Graber, 2025.</p>
       </HighlightCard>
 
     </div>

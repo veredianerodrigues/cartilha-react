@@ -2,6 +2,7 @@ import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import TextCard from './shared/TextCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
+import Cite from './shared/Cite.jsx';
 
 export default function Diu({ images }) {
   const [diuImg, implanonImg] = images;
@@ -53,8 +54,8 @@ export default function Diu({ images }) {
         <div>
           <p className="font-poppins font-bold text-brand-blue text-base mb-1">Importante!</p>
           <Paragraph>
-            Nenhum tipo de DIU protege contra Infecções Sexualmente Transmissíveis (ISTs). Por isso, o uso da
-            camisinha continua sendo obrigatório em todas as relações.
+            Nenhum tipo de DIU protege contra Infecções Sexualmente Transmissíveis (ISTs). Por isso, a camisinha
+            continua sendo recomendada em todas as relações.
           </Paragraph>
         </div>
 
@@ -93,11 +94,12 @@ export default function Diu({ images }) {
           <Paragraph>
             Assim como o DIU, ele fica dentro do corpo, não tem como você esquecer de usar. Por isso, a chance de
             falha é quase zero.
+            <Cite n={[19, 23]} />
           </Paragraph>
         </div>
 
         <p className="text-xs text-brand-darker">
-          SBP, 2023b; WHO, 2022. Fonte: Elaborado pela autora com auxílio do ChatGPT (OpenAI), 2026.
+          Fonte: Elaborado pela autora com auxílio do ChatGPT (OpenAI), 2026.
         </p>
       </TextCard>
 

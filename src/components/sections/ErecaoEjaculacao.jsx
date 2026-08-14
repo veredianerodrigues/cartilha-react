@@ -2,6 +2,7 @@ import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import TextCard from './shared/TextCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
+import Cite from './shared/Cite.jsx';
 
 export default function ErecaoEjaculacao({ images }) {
   const [imagem] = images;
@@ -42,8 +43,8 @@ export default function ErecaoEjaculacao({ images }) {
             fenômeno normal conhecido como polução noturna, ou em outras situações. A espermarca representa um
             importante marco da puberdade e indica que o sistema reprodutor masculino está amadurecendo e
             adquirindo capacidade reprodutiva.
+            <Cite n={[15, 17, 19]} />
           </Paragraph>
-          <p className="text-xs text-brand-darker">Krishna; Witchel, 2024; Graber, 2025, WHO, 2022.</p>
         </TextCard>
       </div>
 

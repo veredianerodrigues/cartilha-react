@@ -1,6 +1,7 @@
 import PageHero from '../PageHero.jsx';
 import TextCard from './shared/TextCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
+import Cite from './shared/Cite.jsx';
 
 const ITEMS = [
   { label: 'De barreira:', text: ' como as camisinhas masculina e feminina.' },
@@ -8,7 +9,7 @@ const ITEMS = [
     label: 'Métodos de contracepção reversíveis de longa duração (LARC):',
     text: ' Dispositivo intrauterino (DIU); Implante subdérmico de etonorgestrel (ISE).',
   },
-  { label: 'Hormonais:', text: ' pílulas, injeções e adesivos.' },
+  { label: 'Hormonais:', text: ' pílulas, injeções, anel vaginal e adesivos.' },
   { label: 'Definitivos:', text: ' laqueadura e vasectomia (cirurgias).' },
   {
     label: 'Comportamentais:',
@@ -51,8 +52,8 @@ export default function ClassificacaoMetodos() {
           <Paragraph>
             os métodos comportamentais são pouco eficazes durante a adolescência, considerando que nessa fase de
             desenvolvimento muitas vezes não há regularidade no ciclo menstrual devido a mudanças hormonais, e os
-            definitivos não são indicados para adolescentes — por isso, discutiremos sobre os demais.{' '}
-            <span className="text-xs text-brand-darker">SBP (2023b); Brasil (2022).</span>
+            definitivos não são indicados para adolescentes — por isso, discutiremos sobre os demais.
+            <Cite n={[9, 23]} />
           </Paragraph>
         </div>
       </TextCard>

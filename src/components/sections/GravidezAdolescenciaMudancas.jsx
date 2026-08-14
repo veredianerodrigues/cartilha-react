@@ -2,6 +2,7 @@ import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import TextCard from './shared/TextCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
+import Cite from './shared/Cite.jsx';
 
 const TRIMESTRES = [
   {
@@ -38,7 +39,7 @@ export default function GravidezAdolescenciaMudancas({ images }) {
         <Paragraph>
           Após a fecundação, o corpo feminino passa por uma série de transformações fisiológicas. Cada mulher
           percebe essas mudanças de maneira única, o que pode gerar sentimentos de vulnerabilidade física e
-          emocional durante a gestação (Alves; Bezerra, 2020).
+          emocional durante a gestação.<Cite n={1} />
         </Paragraph>
         <p className="font-worksans text-black text-sm leading-[22px] tracking-[0.14px]">
           Essas fases são divididas em períodos marcantes:
@@ -60,7 +61,9 @@ export default function GravidezAdolescenciaMudancas({ images }) {
         </div>
       </div>
 
-      <p className="text-xs text-brand-darker">Castilho; Mattos; Pedrosa (2024).</p>
+      <p className="text-sm text-brand-darker">
+        <Cite n={10} />
+      </p>
 
     </div>
   );

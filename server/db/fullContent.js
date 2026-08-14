@@ -58,11 +58,6 @@ export const TREE = [
         pageLabel: "13",
       },
       {
-        slug: "metodos-comportamentais",
-        title: "Métodos comportamentais",
-        pageLabel: "13",
-      },
-      {
         slug: "metodos-barreira",
         title: "Métodos de Barreira",
         pageLabel: "14",
@@ -173,12 +168,6 @@ export const SECTION_BLOCKS = {
     { type: "paragraph", body: "Quanto à classificação, os métodos anticoncepcionais dividem-se em cinco grupos:" },
     { type: "list", items: ["De barreira: como as camisinhas masculina e feminina.", "Métodos de contracepção reversíveis de longa duração (LARC): Dispositivo intrauterino (DIU); Implante subdérmico de etonorgestrel (ISE).", "Hormonais: pílulas, injeções e adesivos.", "Definitivos: laqueadura e vasectomia (cirurgias).", "Comportamentais: incluem a tabelinha (Ogino-Knaus), o controle da temperatura basal, o exame do muco cervical (Billings), o método sintotérmico e o coito interrompido."] },
     { type: "callout", heading: "Olha só...", body: "os métodos comportamentais são pouco eficazes durante a adolescência, considerando que nessa fase de desenvolvimento muitas vezes não há regularidade no ciclo menstrual devido a mudanças hormonais, e os definitivos não são indicados para adolescentes — por isso, discutiremos sobre os demais." },
-    { type: "paragraph", body: "SBP (2023b); Brasil (2022)." },
-  ],
-  "metodos-comportamentais": [
-    { type: "paragraph", body: "Os métodos comportamentais dependem da observação do próprio ciclo para identificar os dias férteis, sem uso de medicamentos ou dispositivos. Incluem a tabelinha (Ogino-Knaus), o controle da temperatura basal, o exame do muco cervical (Billings), o método sintotérmico e o coito interrompido." },
-    { type: "image" },
-    { type: "callout", heading: "Olha só...", body: "esses métodos são pouco eficazes durante a adolescência, considerando que nessa fase de desenvolvimento muitas vezes não há regularidade no ciclo menstrual devido a mudanças hormonais." },
     { type: "paragraph", body: "SBP (2023b); Brasil (2022)." },
   ],
   "metodos-barreira": [
