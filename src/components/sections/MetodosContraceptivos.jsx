@@ -28,10 +28,11 @@ export default function MetodosContraceptivos({ images }) {
         <div className="flex-1 space-y-2">
           <p className="font-poppins font-bold text-brand-blue text-base">Atenção...</p>
           <Paragraph>
-            Para quem deseja ter relações sexuais, mas não quer engravidar, existem diversos métodos contraceptivos
-            (ou anticoncepcionais), porém não existe um único método que sirva para todo mundo. Cada organismo é
-            diferente, e alguns métodos podem ter contraindicações dependendo de cada pessoa. Por isso, o
-            recomendado é escolher o que melhor se adapte às necessidades e à rotina de cada um. Além disso,
+            Para quem deseja ter relações sexuais, mas não quer engravidar existem diversos métodos{' '}
+            <span className="font-semibold">contraceptivos</span> (ou anticoncepcionais), porém não existe um único
+            método que sirva para todo mundo. Cada organismo é diferente, e alguns métodos podem ter
+            contraindicações dependendo de cada pessoa. Por isso, o recomendado é escolher o que melhor se adapte{' '}
+            <span className="font-semibold">às</span> necessidades e à rotina de cada um. Além disso,
             independentemente do método, o que garante a menor chance de falha é o seu uso correto e consistente.
             <Cite n={19} />
           </Paragraph>

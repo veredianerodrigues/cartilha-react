@@ -16,15 +16,16 @@ export default function Diu({ images }) {
       />
 
       <TextCard className="space-y-5">
-        <Paragraph>
+        <Paragraph className="font-semibold">
           Os métodos contraceptivos de longa duração oferecem proteção eficaz contra a gravidez por vários anos, sem
           a necessidade de uso diário. São opções práticas, seguras e reversíveis, ou seja, a fertilidade pode
           retornar após sua retirada.
         </Paragraph>
+        <Paragraph className="font-semibold">Dentre eles estão o Dispositivo Intrauterino (DIU) e o Implante subdérmico.</Paragraph>
         <Paragraph>
-          Dentre eles estão o Dispositivo Intrauterino (DIU) e o Implante subdérmico. O DIU é um pequeno objeto em
-          formato de "T" colocado dentro do útero por um médico ou enfermeiro treinado. É um método de longa
-          duração, extremamente seguro e muito recomendado para adolescentes por ser prático e não depender de
+          O DIU é um pequeno objeto em formato de "T" colocado dentro do útero por um{' '}
+          <span className="font-semibold">médico ou enfermeiro treinado</span>. É um método de longa duração,
+          extremamente seguro e muito recomendado para adolescentes por ser prático e não depender de
           esquecimentos. Existem dois tipos principais:
         </Paragraph>
 
@@ -45,8 +46,8 @@ export default function Diu({ images }) {
             <p className="font-worksans text-sm text-black leading-[22px]">
               <span className="font-semibold">DIU Hormonal:</span> Libera uma quantidade baixa de hormônio
               diretamente no útero, afinando a parede interna (endométrio) e engrossando o muco do colo do útero
-              para impedir a entrada dos espermatozoides. Tem validade de 5 anos e está disponível no SUS apenas
-              para casos médicos específicos.
+              para impedir a entrada dos espermatozoides. Tem validade de <span className="font-semibold">5 anos</span> e
+              está disponível no SUS apenas para casos médicos específicos.
             </p>
           </div>
         </div>
@@ -81,20 +82,26 @@ export default function Diu({ images }) {
           {implanonImg?.caption && <p className="text-xs text-brand-darker text-center mt-1 mb-4">{implanonImg.caption}</p>}
           <Paragraph>
             Ele é um bastão bem pequeno e flexível implantado por profissional treinado debaixo da pele do braço. O
-            procedimento é muito rápido e usa anestesia local. Ele impede que o corpo libere o óvulo, deixa o muco
-            do útero grosso (o que bloqueia a entrada dos espermatozoides) e afina a parede interna do útero para
-            evitar a gravidez. Este implante protege o corpo por até 3 anos seguidos. Se você quiser retirar antes
-            desse tempo para engravidar ou mudar de método, pode pedir para tirar a qualquer momento. Para retirar,
-            o profissional faz um corte minúsculo na pele, também com anestesia.
+            procedimento é muito rápido e usa anestesia local.
+          </Paragraph>
+          <Paragraph>
+            Ele impede que o corpo libere o óvulo, deixa o muco do útero grosso (o que bloqueia a entrada dos
+            espermatozoides) e afina a parede interna do útero para evitar a gravidez.
+          </Paragraph>
+          <Paragraph>
+            <span className="font-semibold">Este implante</span> protege o corpo por{' '}
+            <span className="font-semibold">até 3 anos seguidos</span>. Se você quiser retirar antes desse tempo
+            para engravidar ou mudar de método, pode pedir para tirar a qualquer momento. Para retirar, o
+            profissional faz um corte minúsculo na pele, também com anestesia.
+            <Cite n={[19, 23]} />
           </Paragraph>
         </div>
 
         <div>
           <p className="font-poppins font-bold text-brand-blue text-base mb-1">Importante:</p>
           <Paragraph>
-            Assim como o DIU, ele fica dentro do corpo, não tem como você esquecer de usar. Por isso, a chance de
-            falha é quase zero.
-            <Cite n={[19, 23]} />
+            Assim como o DIU, ele fica dentro do corpo <span className="font-semibold">não tem como você esquecer
+            de usar</span>. Por isso, a chance de falha é quase zero.
           </Paragraph>
         </div>
 

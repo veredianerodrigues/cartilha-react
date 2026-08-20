@@ -34,8 +34,9 @@ export default function TransformacoesMenino({ images }) {
         </Paragraph>
         <Paragraph>
           O primeiro sinal da puberdade masculina é o aumento do volume dos testículos, que geralmente ocorre entre
-          os 10 e 11 anos. Em seguida, acontece o crescimento do pênis e o surgimento dos pelos pubianos. Entre os 12
-          e 14 anos, começam a aparecer os pelos nas axilas, no rosto e em outras regiões do corpo. Nessa fase,
+          10 e 11 anos. Em seguida, acontece o crescimento do pênis e o surgimento dos pelos pubianos.
+          Correspondente ao período de 12 e 14 anos, começam a aparecer os pelos nas axilas, no rosto e em outras
+          regiões do corpo. Nessa fase,
           também aumenta a atividade das glândulas sudoríparas, o que favorece o suor e o odor corporal
           característicos da adolescência. É ainda durante esse período que as ereções espontâneas se tornam mais
           frequentes e ocorre a espermarca (primeira ejaculação).

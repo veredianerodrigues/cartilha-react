@@ -20,6 +20,7 @@ const TRIMESTRES = [
   {
     label: 'Puerpério (Pós-parto)',
     text: 'Após o nascimento do bebê, o corpo entra em um período de recuperação física profunda, marcado pelo início de novas experiências desafiadoras e afetuosas, como a amamentação.',
+    cite: 10,
   },
 ];
 
@@ -28,7 +29,7 @@ export default function GravidezAdolescenciaMudancas({ images }) {
 
   return (
     <div className="relative">
-      <PageHero pageLabel="24" weight="semibold" title="Gravidez na adolescência e mudanças" />
+      <PageHero pageLabel="24" weight="semibold" title="E se a gravidez acontecer..." />
 
       <div className="mb-6">
         <IllustrationFrame src={teste?.url} alt={teste?.caption || 'Teste de gravidez'} className="w-full h-[220px]" />
@@ -51,7 +52,10 @@ export default function GravidezAdolescenciaMudancas({ images }) {
           {TRIMESTRES.map((t) => (
             <div key={t.label} className="rounded-[20px] bg-[rgba(40,157,210,0.19)] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)] p-4">
               <p className="font-poppins font-semibold text-brand-dark text-sm mb-2">{t.label}</p>
-              <p className="font-worksans text-sm text-black leading-[22px]">{t.text}</p>
+              <p className="font-worksans text-sm text-black leading-[22px]">
+                {t.text}
+                {t.cite && <Cite n={t.cite} />}
+              </p>
             </div>
           ))}
         </div>
@@ -60,10 +64,6 @@ export default function GravidezAdolescenciaMudancas({ images }) {
           {barriga?.caption && <p className="text-xs text-brand-darker mt-1">{barriga.caption}</p>}
         </div>
       </div>
-
-      <p className="text-sm text-brand-darker">
-        <Cite n={10} />
-      </p>
 
     </div>
   );

@@ -18,14 +18,20 @@ export default function Apresentacao() {
           que já passou?
         </Paragraph>
         <Paragraph>
-          A Organização Mundial da Saúde (OMS) define a adolescência como o período compreendido entre 10 e 19 anos
-          de idade, classificação adotada também pelo Ministério da Saúde brasileiro nas políticas e ações voltadas
-          à saúde do adolescente.<Cite n={[8, 24]} /> Entretanto, o Estatuto da Criança e do Adolescente (ECA)
-          considera adolescente a pessoa com idade entre 12 e 18 anos incompletos, podendo, excepcionalmente,
-          aplicar-se às pessoas entre 18 e 21 anos nos casos expressamente previstos em lei,<Cite n={7} /> além da
-          idade, os aspectos sociais e psicológicos tem influência sobre esse momento, pois cada pessoa apresenta mudanças
-          corporais, afetivas e de desenvolvimento de acordo com sua história particular, ou seja, cada um no seu
-          tempo, poderá passar por algumas transformações.
+          {/* Negritos e ordem da citação (24 = WHO 2024 antes de 8 = Brasil 2018)
+              seguem o Word 10-08 — é a única citação da cartilha fora da ordem
+              crescente, de propósito. */}
+          <span className="font-semibold">A Organização Mundial da Saúde (OMS)</span> define a adolescência como o
+          período compreendido <span className="font-semibold">entre 10 e 19 anos de idade</span>, classificação
+          adotada também pelo <span className="font-semibold">Ministério da Saúde</span> brasileiro nas políticas e
+          ações voltadas à saúde do adolescente.<Cite n={[24, 8]} /> Entretanto, o{' '}
+          <span className="font-semibold">Estatuto da Criança e do Adolescente (ECA)</span> considera adolescente a
+          pessoa com idade entre <span className="font-semibold">12 e 18 anos incompletos</span>, podendo,
+          excepcionalmente, aplicar-se às pessoas entre <span className="font-semibold">18 e 21 anos</span> nos casos
+          expressamente previstos em lei,<Cite n={7} /> além da idade, os aspectos sociais e psicológicos tem
+          influência sobre esse momento, pois cada pessoa apresenta mudanças corporais, afetivas e de
+          desenvolvimento de acordo com sua história particular, ou seja, cada um no seu tempo, poderá passar por
+          algumas transformações.
         </Paragraph>
         <Paragraph>
           Na adolescência, juntamente com as várias transformações surge o despertar da sexualidade, que faz parte

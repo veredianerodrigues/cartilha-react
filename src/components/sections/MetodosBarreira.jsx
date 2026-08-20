@@ -4,12 +4,23 @@ import HighlightCard from './shared/HighlightCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
 import Cite from './shared/Cite.jsx';
 
+// TODO: o Word 10-08 traz uma imagem nova para "Como usar a camisinha
+// masculina" com os 4 passos e um rodapé "IMPORTANTE" já desenhados na
+// própria arte (comentário cF23: "a escrita abaixo é a mesma da ilustração,
+// não precisa colocar na cartilha"). A imagem local ainda é a foto-estoque
+// antiga sem os passos — quando a Cariane cadastrar a nova pelo /admin,
+// remover MASCULINA_STEPS e o <ul> que a renderiza, para não duplicar texto.
 const MASCULINA_STEPS = [
   'A camisinha deverá ser colocada assim que o pênis estiver ereto, antes de qualquer contato genital ou penetração.',
   'A ponta do preservativo (o reservatório) deverá ser apertada com os dedos para tirar o ar. Se o ar ficar ali dentro, o preservativo pode estourar durante a relação.',
   'Mantendo a ponta apertada, a camisinha deverá ser desenrolada da cabeça do pênis (glande) até a base.',
 ];
 
+// TODO: mesma situação da masculina (ver comentário acima) — o Word 10-08 traz
+// uma imagem nova "Como usar a camisinha feminina" com 5 passos + rodapé
+// "IMPORTANTE" na própria arte (comentário cF30: "Não precisa colocar na
+// cartilha já esta na imagem"). Hoje nem existe imagem local para a feminina
+// (mostra placeholder) — remover FEMININA_STEPS quando a nova imagem entrar.
 const FEMININA_STEPS = [
   'O anel interno é introduzido na vagina para manter o preservativo posicionado, enquanto o anel externo permanece fora da vagina, cobrindo parcialmente a vulva.',
   'Durante a relação sexual, o preservativo impede o contato do pênis e do esperma com a mucosa vaginal, reduzindo o risco de gravidez e contribuindo para a prevenção das infecções sexualmente transmissíveis (ISTs).',
@@ -41,7 +52,8 @@ export default function MetodosBarreira({ images }) {
           <p className="font-poppins font-bold text-brand-blue text-base mb-2">Fique ligado!!</p>
           <Paragraph>
             Os mais utilizados são os preservativos ou camisinha masculina e feminina, e são os únicos métodos que,
-            além de evitar a gravidez, protegem contra as Infecções Sexualmente Transmissíveis (ISTs). Ambas são
+            além de evitar a gravidez, protegem contra as Infecções Sexualmente Transmissíveis{' '}
+            <span className="font-semibold">(ISTs)</span>. Ambas são
             distribuídas gratuitamente em qualquer unidade de saúde do SUS, sem necessidade de receita médica.
           </Paragraph>
         </div>
@@ -79,8 +91,10 @@ export default function MetodosBarreira({ images }) {
           </h2>
           <Paragraph className="mb-4">
             A camisinha feminina também é um método contraceptivo de barreira, distribuído gratuitamente nas
-            Unidades Básicas de Saúde e que não necessita de prescrição médica. É constituída por uma bolsa fina,
-            flexível e resistente, com um anel em cada extremidade.
+            Unidades Básicas de Saúde e que não necessita de prescrição médica.
+          </Paragraph>
+          <Paragraph className="mb-4">
+            É constituído por uma bolsa fina, flexível e resistente, com um anel em cada extremidade.
           </Paragraph>
           <p className="font-poppins font-bold text-brand-blue text-base mb-2">Como usar</p>
           <IllustrationFrame src={feminina?.url} alt={feminina?.caption || 'Preservativo feminino'} fit="contain" className="w-full" />

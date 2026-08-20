@@ -87,9 +87,10 @@ export default function Menstruacao({ images }) {
         <div>
           <p className="font-poppins font-bold text-brand-blue text-base mb-2">E tem mais:</p>
           <p className="font-worksans text-brand-darker text-sm leading-[22px] tracking-[0.14px] text-justify">
-            na adolescência, é possível engravidar antes mesmo da primeira menstruação. Por outro lado, também é
-            comum que os primeiros ciclos menstruais sejam anovulatórios (ou seja, sem a liberação de um óvulo).
-            Isso acontece porque o corpo ainda está passando por um amadurecimento hormonal e pode não produzir os
+            na adolescência, <span className="font-semibold">é possível engravidar antes mesmo da primeira
+            menstruação</span>. Por outro lado, também é comum que os primeiros ciclos menstruais sejam{' '}
+            <span className="font-semibold">anovulatórios</span> (ou seja, sem a liberação de um óvulo). Isso
+            acontece porque o corpo ainda está passando por um amadurecimento hormonal e pode não produzir os
             picos de hormônios necessários para a ovulação. Por conta dessa imaturidade fisiológica natural da
             idade, a jovem pode apresentar ciclos irregulares e sangramentos inesperados, situações que fazem
             parte do ajuste normal do organismo nessa fase.<Cite n={22} />
@@ -98,10 +99,9 @@ export default function Menstruacao({ images }) {
         <div>
           <p className="font-poppins font-bold text-brand-blue text-base mb-2">Portanto recomenda-se...</p>
           <p className="font-worksans text-brand-darker text-sm leading-[22px] tracking-[0.14px] text-justify">
-            que a adolescente acompanhe seu ciclo menstrual registrando,
-            a cada mês, o dia de início e o dia de término da menstruação. Esse registro pode ser realizado em um calendário impresso,
-            agenda ou outro meio de sua preferência, anotando, por exemplo, a data em que o sangramento começou e a
-            data em que terminou.<Cite n={5} />
+            que a adolescente registre em um calendário as datas dos ciclos, ou seja: “[...] a cada mês, o dia que
+            inicia e o dia que termina o sangramento. Por exemplo: começou no dia 13 de janeiro e terminou no dia
+            17 [...]”.<Cite n={5} />
           </p>
         </div>
         

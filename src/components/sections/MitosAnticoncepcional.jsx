@@ -35,7 +35,10 @@ export default function MitosAnticoncepcional({ images }) {
         <div className="flex-1 grid grid-cols-1 gap-3">
           {MYTHS.map((text, i) => (
             <div key={i} className="rounded-[20px] bg-[rgba(29,67,85,0.05)] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)] p-4">
-              <p className="font-worksans text-sm text-black leading-[22px]">{text}</p>
+              <p className="font-worksans text-sm text-black leading-[22px]">
+                {text}
+                {i === MYTHS.length - 1 && <Cite n={[12, 19]} />}
+              </p>
             </div>
           ))}
         </div>
@@ -50,9 +53,6 @@ export default function MitosAnticoncepcional({ images }) {
             </li>
           ))}
         </ul>
-        <p className="text-sm text-brand-darker">
-          <Cite n={[12, 19]} />
-        </p>
       </HighlightCard>
 
     </div>

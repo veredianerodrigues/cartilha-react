@@ -9,7 +9,14 @@ const CONTENT = [
   { type: 'p', text: 'Os anticoncepcionais trouxeram liberdade para as mulheres, porque permitem que elas planejem com segurança se e quando querem engravidar.' },
   { type: 'p', text: 'A maioria desses métodos são chamados de Anticoncepcionais Hormonais Combinados (AHC) porque juntam dois hormônios: o estrogênio e a progesterona.' },
   { type: 'h', text: 'Como eles funcionam?' },
-  { type: 'p', text: 'A progesterona age fazendo com que o corpo não libere nenhum óvulo (um processo chamado de anovulação). Sem um óvulo disponível, o espermatozoide não tem quem fecundar e a gravidez simplesmente não acontece. Esses hormônios podem ser colocados no corpo de várias formas (como adesivos na pele, comprimidos ou injeções), mas o formato mais conhecido e utilizado no Brasil e no mundo é a chamada pílula anticoncepcional. Ela é um método reversível: isso significa que, se a mulher parar de tomar, o corpo volta a ovular normalmente e ela pode engravidar.' },
+  { type: 'p', text: 'A progesterona age fazendo com que o corpo não libere nenhum óvulo (um processo chamado de anovulação). Sem um óvulo disponível, o espermatozoide não tem quem fecundar e a gravidez simplesmente não acontece.' },
+  { type: 'p', text: 'Esses hormônios podem ser colocados no corpo de várias formas (como adesivos na pele, comprimidos ou injeções), mas o formato mais conhecido e utilizado no Brasil e no mundo é a chamada pílula anticoncepcional.' },
+  {
+    type: 'ul',
+    items: [
+      'Ela é um método reversível: isso significa que, se a mulher parar de tomar, o corpo volta a ovular normalmente e ela pode engravidar.',
+    ],
+  },
   { type: 'c', heading: 'Como você sabe...', text: 'A pílula não protege contra Infecções Sexualmente Transmissíveis (ISTs). Para se proteger delas, o único método indicado é o uso da camisinha (masculina ou feminina) em todas as relações.' },
   { type: 'p', text: 'Para o sucesso da pílula, duas regras são fundamentais:' },
   {
@@ -37,6 +44,16 @@ const CONTENT = [
   { type: 'img', idx: 2, alt: 'Planejamento e uso regular do anticoncepcional' },
   { type: 'h', text: 'Anticoncepcional Injetável (Injeção)' },
   { type: 'p', text: 'O anticoncepcional injetável é um método contraceptivo prático e eficaz para quem prefere não precisar tomar um comprimido todos os dias. Existem dois tipos: o mensal e o trimestral. A aplicação é feita por um profissional de saúde, geralmente no músculo do braço ou do glúteo, e ambas são fornecidas pelo SUS.' },
+  {
+    type: 'p',
+    text: (
+      <>
+        Primeira aplicação: a injeção anticoncepcional pode ser iniciada nos primeiros 7 dias da menstruação, com
+        proteção imediata contra a gravidez. Também pode ser iniciada em outros momentos, desde que haja certeza
+        de que não existe gravidez.<Cite n={23} />
+      </>
+    ),
+  },
   { type: 'h', text: 'Como usar?' },
   {
     type: 'ul',
@@ -46,10 +63,20 @@ const CONTENT = [
     ],
   },
   { type: 'cite', n: [19, 23] },
-  { type: 'c', heading: 'Atenção', text: 'Quando as mulheres utilizam anticoncepcionais injetáveis trimestrais, implante hormonal ou DIU hormonal e desejam fazer a troca por pílulas anticoncepcionais, devem iniciar a cartela imediatamente após o término da validade do método usado anteriormente. Com relação ao intervalo entre as cartelas, alguns contraceptivos preveem pausas de quatro a sete dias e algumas formulações não preveem pausas.' },
+  {
+    type: 'c',
+    heading: 'Atenção',
+    texts: [
+      'Quando as mulheres utilizam anticoncepcionais injetáveis trimestrais, implante hormonal ou DIU hormonal e desejam fazer a troca por pílulas anticoncepcionais, devem iniciar a cartela imediatamente após o término da validade do método usado anteriormente.',
+      <>
+        Com relação ao intervalo entre as cartelas, alguns contraceptivos preveem pausas de quatro a sete dias e
+        algumas formulações não preveem pausas.<Cite n={[12, 23]} />
+      </>,
+    ],
+  },
   { type: 'c', heading: 'Importante lembrar!', text: 'Os comprimidos devem ser ingeridos diariamente e preferencialmente no mesmo horário. O esquecimento do uso implica em falha contraceptiva; nesse caso, recomenda-se o uso de método contraceptivo adicional, como preservativos.' },
   { type: 'cite', n: [12, 23] },
-  { type: 'p', text: 'Também existem outros dispositivos hormonais, são eles:' },
+  { type: 'p', text: 'Também... Existem outros dispositivos hormonais, são eles:' },
   { type: 'h', text: 'Anel Vaginal' },
   { type: 'img', idx: 3, alt: 'Anel vaginal anticoncepcional' },
   { type: 'p', text: 'É um anel de plástico bem flexível e macio que libera hormônios no corpo, impedindo a ovulação.' },
@@ -67,12 +94,16 @@ const CONTENT = [
     type: 'c',
     heading: 'Atenção',
     texts: [
-      'O prazo da bula (até 3 dias): a bula do medicamento garante o funcionamento seguro se tomado em até 72 horas (3 dias) após a relação. O limite máximo (até 5 dias): a Organização Mundial da Saúde (OMS) afirma que a pílula ainda pode funcionar se tomada em até 120 horas (5 dias). Ainda assim, o ideal é tomar a pílula o mais rápido possível: se você tomar nas primeiras 12 a 24 horas após a relação desprotegida, a eficácia dela é máxima.',
+      <>
+        A bula do medicamento garante o funcionamento seguro se tomado em até 72 horas (3 dias) após a relação. O
+        limite máximo é até 5 dias. A Organização Mundial da Saúde (OMS) afirma que a pílula ainda pode funcionar
+        se tomada em até 120 horas (5 dias). Porém o ideal é tomar a pílula o mais rápido possível. Se você tomar
+        nas primeiras 12 a 24 horas após a relação desprotegida, a eficácia dela é máxima.<Cite n={23} />
+      </>,
       'Mas atenção: a chance de o remédio falhar aumenta drasticamente a cada dia que passa. Se você deixar para tomar depois do terceiro dia, o risco de engravidar é bem maior.',
-      'Lembre-se: ela se chama pílula "do dia seguinte" — quanto mais você demorar para tomar, menor será o efeito dela no organismo!',
+      'Lembre-se: Ela se chama pílula "do dia seguinte": quanto mais você demorar para tomar, menor será o efeito dela no organismo!',
     ],
   },
-  { type: 'cite', n: [23] },
   {
     type: 'c',
     heading: 'Olha só...',
@@ -80,11 +111,10 @@ const CONTENT = [
       <>
         O adolescente tem direito à educação sexual, ao acesso à informação sobre contracepção, à
         confidencialidade, ao sigilo sobre sua atividade sexual e à prescrição de métodos anticoncepcionais.
-        <Cite n={11} /> (p. 13) Nenhum método contraceptivo (com exceção dos métodos definitivos) deve ser
-        contraindicado tendo como única base a idade. Por outro lado, a falta de conhecimento, aconselhamento
-        inadequado, mitos e moralidade em relação à sexualidade são comuns e interferem na escolha e no uso do
-        método.
-        <Cite n={11} /> (p. 15)
+        Nenhum método contraceptivo (com exceção dos métodos definitivos) deve ser contraindicado tendo como
+        única base a idade. Por outro lado, a falta de conhecimento, aconselhamento inadequado, mitos e
+        moralidade em relação à sexualidade são comuns e interferem na escolha e no uso do método.
+        <Cite n={11} />
       </>
     ),
   },

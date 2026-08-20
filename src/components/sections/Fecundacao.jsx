@@ -17,9 +17,12 @@ export default function Fecundacao({ images }) {
         }
       />
 
+      <Paragraph className="mb-4">
+        A <span className="font-semibold">fecundação</span> é o encontro do espermatozoide e do óvulo. Esse momento
+        único marca o início da gestação e de um novo ser.
+      </Paragraph>
       <Paragraph className="mb-6">
-        A fecundação é o encontro do espermatozoide e do óvulo. Esse momento único marca o início da gestação e de
-        um novo ser. Para que a fecundação aconteça, o corpo passa por uma sequência precisa de eventos:
+        Para que a fecundação aconteça, o corpo passa por uma sequência precisa de eventos:
       </Paragraph>
 
       <IllustrationFrame

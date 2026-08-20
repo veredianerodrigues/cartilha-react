@@ -39,7 +39,7 @@ async function ensureCreditos() {
     {
       type: 'paragraph',
       body:
-        'Gonzatto, Cariane Renata Saldanha Fant. "Vamos conversar sobre gravidez na adolescência?" / Cariane Renata Saldanha Fant Gonzatto e Solange de Fátima Reis Conterno. Cascavel/ Paraná, 2026. 36 p.',
+        'Gonzatto, Cariane Renata Saldanha Fant. "Vamos conversar sobre gravidez na adolescência?" / Cariane Renata Saldanha Fant Gonzatto e Solange de Fátima Reis Conterno. Cascavel/ Paraná, 2026. 32 p.',
     },
     { type: 'paragraph', body: '2. ed. Revisada e atualizada.' },
     {
@@ -70,6 +70,26 @@ async function ensureCreditos() {
   }
 
   console.log('[migração] seção "creditos" criada.');
+}
+
+// Seção excluída na revisão 10-08 da Cariane (conteúdo absorvido pelo callout
+// "Olha só..." de classificacao-metodos) — já removida de SECTION_LAYOUTS e
+// da TREE de seed, mas o banco existente não é reseedado, só recebe upserts.
+// blocks tem ON DELETE CASCADE, então os blocos da seção caem junto.
+async function dropMetodosComportamentais() {
+  const { rowCount } = await pool.query("DELETE FROM sections WHERE slug = 'metodos-comportamentais'");
+  if (rowCount > 0) console.log('[migração] seção "metodos-comportamentais" removida.');
+}
+
+// Título trocado na revisão 10-08 (comentário da Cariane: "achei meio
+// desconexo aquele"). Só troca se ainda estiver com o título antigo, pra não
+// sobrescrever uma edição manual feita depois pelo /admin.
+async function renameGravidezSection() {
+  const { rowCount } = await pool.query(
+    `UPDATE sections SET title = $1 WHERE slug = 'gravidez-adolescencia-mudancas' AND title = $2`,
+    ['E se a gravidez acontecer...', 'Gravidez na adolescência e mudanças']
+  );
+  if (rowCount > 0) console.log('[migração] título de "gravidez-adolescencia-mudancas" atualizado.');
 }
 
 const MIME_BY_EXT = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp' };
@@ -248,5 +268,7 @@ async function fixImages() {
 
 export default async function runContentFixes() {
   await ensureCreditos();
+  await dropMetodosComportamentais();
+  await renameGravidezSection();
   await fixImages();
 }

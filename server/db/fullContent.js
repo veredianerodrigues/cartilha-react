@@ -86,7 +86,7 @@ export const TREE = [
   },
   {
     slug: "gravidez-adolescencia-mudancas",
-    title: "Gravidez na adolescência e mudanças",
+    title: "E se a gravidez acontecer...",
     pageLabel: "24",
   },
   {
