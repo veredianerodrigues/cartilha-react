@@ -1,4 +1,4 @@
-export default function PubertyIntroRow({ image, imageAlt, imageCaption, heading, headingAbove, body, citation, reverse = false }) {
+export default function PubertyIntroRow({ image, imageAlt, imageCaption, heading, headingAbove, bodyHtml, reverse = false }) {
   const imageEl = (
     <div>
       <div className="bg-[#f3e4de] rounded-[40px] overflow-hidden min-h-[200px]">
@@ -10,12 +10,14 @@ export default function PubertyIntroRow({ image, imageAlt, imageCaption, heading
   const textEl = (
     <div className="bg-[rgba(29,67,85,0.05)] rounded-[40px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)] p-6 flex flex-col justify-center">
       {heading && <p className="font-poppins font-semibold text-black text-lg mb-2">{heading}</p>}
-      {/* A citação numérica fecha o próprio parágrafo, colada no ponto final —
-          não vai mais numa linha separada como no padrão autor-data. */}
-      <p className="font-worksans text-sm text-black leading-[22px] tracking-[0.14px] text-justify">
-        {body}
-        {citation}
-      </p>
+      {/* bodyHtml vem do banco já com a citação numérica embutida no fim do
+          parágrafo (sup inline), igual ao padrão do Diu.jsx — não há mais
+          children/citation separados. Usa <div> (não <p>) porque o
+          RichTextEditor serializa dentro de <p>...</p>. */}
+      <div
+        className="font-worksans text-sm text-black leading-[22px] tracking-[0.14px] text-justify [&_p]:m-0"
+        dangerouslySetInnerHTML={{ __html: bodyHtml || '' }}
+      />
     </div>
   );
 

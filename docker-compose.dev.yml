@@ -1,0 +1,19 @@
+# Postgres local pra desenvolvimento — isolado do banco de produção usado no
+# docker-compose.yml (que é gerenciado externamente, fora deste compose).
+# Uso: docker compose -f docker-compose.dev.yml up -d
+# Depois, no .env local: DATABASE_URL=postgresql://postgres:dev@localhost:5432/cartilha
+services:
+  db:
+    image: postgres:16
+    container_name: cartilha-db-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: cartilha
+    ports:
+      - "5432:5432"
+    volumes:
+      - cartilha_db_dev:/var/lib/postgresql/data
+
+volumes:
+  cartilha_db_dev:

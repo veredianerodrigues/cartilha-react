@@ -4,7 +4,7 @@ import TextCard from './shared/TextCard.jsx';
 import HighlightCard from './shared/HighlightCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
 
-export default function OrientacaoQuemPodeAjudar({ images }) {
+export default function OrientacaoQuemPodeAjudar({ images, fields = {} }) {
   const [foto] = images;
 
   return (
@@ -25,20 +25,11 @@ export default function OrientacaoQuemPodeAjudar({ images }) {
 
       <HighlightCard variant="blue" className="mb-6">
         <p className="font-poppins font-bold text-brand-blue text-base mb-2">É fundamental…</p>
-        <Paragraph>
-          Você não precisa passar por isso sozinho, conversar em casa sobre as transformações do corpo, os
-          sentimentos, os medos e as inseguranças é fundamental para atravessar essa fase com mais leveza e
-          segurança.
-        </Paragraph>
+        <Paragraph html={fields.fundamental_conversar} />
       </HighlightCard>
 
       <TextCard>
-        <Paragraph>
-          Procure o posto de saúde, as unidades de saúde (os postos de saúde) são o principal ponto de apoio para
-          esse momento. O enfermeiro e a equipe de saúde estão ali para acolher você. Eles oferecem consultas,
-          distribuem e orientam sobre métodos contraceptivos e conversam abertamente sobre direitos sexuais e
-          reprodutivos, garantindo que você tome decisões informadas e seguras sobre o seu futuro.
-        </Paragraph>
+        <Paragraph html={fields.procure_posto_saude} />
       </TextCard>
 
     </div>
