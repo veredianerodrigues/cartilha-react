@@ -1,3 +1,5 @@
+import RichHtml from './sections/shared/RichHtml.jsx';
+
 export default function PubertyIntroRow({ image, imageAlt, imageCaption, heading, headingAbove, bodyHtml, reverse = false }) {
   const imageEl = (
     <div>
@@ -12,11 +14,12 @@ export default function PubertyIntroRow({ image, imageAlt, imageCaption, heading
       {heading && <p className="font-poppins font-semibold text-black text-lg mb-2">{heading}</p>}
       {/* bodyHtml vem do banco já com a citação numérica embutida no fim do
           parágrafo (sup inline), igual ao padrão do Diu.jsx — não há mais
-          children/citation separados. Usa <div> (não <p>) porque o
-          RichTextEditor serializa dentro de <p>...</p>. */}
-      <div
+          children/citation separados. RichHtml usa <div> (não <p>, porque o
+          RichTextEditor serializa dentro de <p>...</p>) e deixa a citação
+          clicável, levando pra Referências. */}
+      <RichHtml
         className="font-worksans text-sm text-black leading-[22px] tracking-[0.14px] text-justify [&_p]:m-0"
-        dangerouslySetInnerHTML={{ __html: bodyHtml || '' }}
+        html={bodyHtml}
       />
     </div>
   );
