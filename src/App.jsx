@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider, RequireAuth } from './context/AuthContext.jsx';
 import { SectionsProvider } from './context/SectionsContext.jsx';
@@ -7,9 +8,12 @@ import ContraCapa from './pages/ContraCapa.jsx';
 import FichaCatalografica from './pages/FichaCatalografica.jsx';
 import TocPage from './pages/TocPage.jsx';
 import SectionPage from './pages/SectionPage.jsx';
-import AdminLogin from './pages/admin/AdminLogin.jsx';
-import AdminSectionsList from './pages/admin/AdminSectionsList.jsx';
-import AdminSectionEditor from './pages/admin/AdminSectionEditor.jsx';
+
+// Import dinâmico: o /admin carrega o editor rich text (TipTap), que é pesado
+// e não deve engordar o bundle que todo visitante público da cartilha baixa.
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin.jsx'));
+const AdminSectionsList = lazy(() => import('./pages/admin/AdminSectionsList.jsx'));
+const AdminSectionEditor = lazy(() => import('./pages/admin/AdminSectionEditor.jsx'));
 
 export default function App() {
   return (
@@ -25,12 +29,21 @@ export default function App() {
             <Route path="/secao/:slug/:page" element={<SectionPage />} />
           </Route>
 
-          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin/login"
+            element={
+              <Suspense fallback={null}>
+                <AdminLogin />
+              </Suspense>
+            }
+          />
           <Route
             path="/admin"
             element={
               <RequireAuth>
-                <AdminSectionsList />
+                <Suspense fallback={null}>
+                  <AdminSectionsList />
+                </Suspense>
               </RequireAuth>
             }
           />
@@ -38,7 +51,9 @@ export default function App() {
             path="/admin/secoes/:id"
             element={
               <RequireAuth>
-                <AdminSectionEditor />
+                <Suspense fallback={null}>
+                  <AdminSectionEditor />
+                </Suspense>
               </RequireAuth>
             }
           />

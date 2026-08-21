@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useSections } from '../../context/SectionsContext.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { api } from '../../lib/api.js';
+import RichTextEditor from '../../components/admin/RichTextEditor.jsx';
 
 const BLOCK_TYPE_LABELS = {
   heading: 'Subtítulo',
@@ -104,13 +105,7 @@ function BlockEditor({ block, sectionId, token, onSaved, onDeleted, onMove, isFi
       )}
 
       {(block.type === 'paragraph' || block.type === 'callout') && (
-        <textarea
-          value={form.body}
-          onChange={(e) => set('body', e.target.value)}
-          rows={4}
-          placeholder="Texto"
-          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-        />
+        <RichTextEditor value={form.body} onChange={(html) => set('body', html)} />
       )}
 
       {(block.type === 'quote_grid' || block.type === 'list') && (

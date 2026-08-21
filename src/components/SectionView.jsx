@@ -22,6 +22,14 @@ function extractImages(blocks) {
     .map((b) => ({ url: b.image_url, caption: b.image_caption }));
 }
 
+// Parágrafos editáveis pelo /admin (rich text) para as seções bespoke que já
+// migraram o texto pro banco — na ordem em que aparecem na página (order_index).
+// Seções que ainda não migraram simplesmente recebem um array vazio e continuam
+// com o texto hardcoded no próprio componente.
+function extractParagraphs(blocks) {
+  return (blocks || []).filter((b) => b.type === 'paragraph').map((b) => b.body || '');
+}
+
 function PageNumber({ pageLabel }) {
   if (!pageLabel) return null;
   return (
@@ -42,7 +50,7 @@ export default function SectionView({ title, blocks, slug, pageLabel, page = 1 }
     // seções com mais de uma (ver pageCounts.js).
     return (
       <article className="relative flex-1 w-full max-w-3xl mx-auto px-4 sm:px-8 pt-8 sm:pt-12 pb-20 sm:pb-24 overflow-hidden">
-        <Layout images={extractImages(blocks)} page={page} />
+        <Layout images={extractImages(blocks)} texts={extractParagraphs(blocks)} page={page} />
       </article>
     );
   }
