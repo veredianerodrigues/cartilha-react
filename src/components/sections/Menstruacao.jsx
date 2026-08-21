@@ -4,6 +4,7 @@ import TextCard from './shared/TextCard.jsx';
 import HighlightCard from './shared/HighlightCard.jsx';
 import SectionSubtitle from './shared/SectionSubtitle.jsx';
 import Paragraph from './shared/Paragraph.jsx';
+import RichHtml from './shared/RichHtml.jsx';
 
 export default function Menstruacao({ images, fields = {} }) {
   const [ciclo, foto] = images;
@@ -30,9 +31,9 @@ export default function Menstruacao({ images, fields = {} }) {
       </TextCard>
 
       <HighlightCard variant="solid">
-        <div
+        <RichHtml
           className="font-worksans font-medium text-white text-sm leading-[24px] tracking-[0.14px] text-justify [&_p]:m-0"
-          dangerouslySetInnerHTML={{ __html: fields.menarca_definicao || '' }}
+          html={fields.menarca_definicao}
         />
       </HighlightCard>
 
@@ -55,25 +56,25 @@ export default function Menstruacao({ images, fields = {} }) {
         <SectionSubtitle>
           <span className="font-semibold">Você sabia</span>...
         </SectionSubtitle>
-        <div
+        <RichHtml
           className="font-worksans text-brand-darker text-sm leading-[22px] tracking-[0.14px] text-justify [&_p]:m-0"
-          dangerouslySetInnerHTML={{ __html: fields.voce_sabia_texto || '' }}
+          html={fields.voce_sabia_texto}
         />
       </TextCard>
 
       <div className="space-y-5">
         <div>
           <p className="font-poppins font-bold text-brand-blue text-base mb-2">E tem mais:</p>
-          <div
+          <RichHtml
             className="font-worksans text-brand-darker text-sm leading-[22px] tracking-[0.14px] text-justify [&_p]:m-0"
-            dangerouslySetInnerHTML={{ __html: fields.engravidar_antes_menarca || '' }}
+            html={fields.engravidar_antes_menarca}
           />
         </div>
         <div>
           <p className="font-poppins font-bold text-brand-blue text-base mb-2">Portanto recomenda-se...</p>
-          <div
+          <RichHtml
             className="font-worksans text-brand-darker text-sm leading-[22px] tracking-[0.14px] text-justify [&_p]:m-0"
-            dangerouslySetInnerHTML={{ __html: fields.registro_calendario || '' }}
+            html={fields.registro_calendario}
           />
         </div>
       </div>

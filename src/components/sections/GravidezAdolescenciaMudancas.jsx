@@ -2,6 +2,7 @@ import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import TextCard from './shared/TextCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
+import RichHtml from './shared/RichHtml.jsx';
 
 // Rótulos dos 4 cards de trimestre continuam fixos no JSX; só o texto de cada
 // card vem do banco (fields[key]). A citação do card "Puerpério" já vem
@@ -35,10 +36,7 @@ export default function GravidezAdolescenciaMudancas({ images, fields = {} }) {
           {TRIMESTRES.map((t) => (
             <div key={t.key} className="rounded-[20px] bg-[rgba(40,157,210,0.19)] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)] p-4">
               <p className="font-poppins font-semibold text-brand-dark text-sm mb-2">{t.label}</p>
-              <div
-                className="font-worksans text-sm text-black leading-[22px] [&_p]:m-0"
-                dangerouslySetInnerHTML={{ __html: fields[t.key] || '' }}
-              />
+              <RichHtml className="font-worksans text-sm text-black leading-[22px] [&_p]:m-0" html={fields[t.key]} />
             </div>
           ))}
         </div>

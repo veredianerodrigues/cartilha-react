@@ -2,6 +2,7 @@ import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import TextCard from './shared/TextCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
+import RichHtml from './shared/RichHtml.jsx';
 
 export default function Diu({ images, fields = {} }) {
   const [diuImg, implanonImg] = images;
@@ -26,16 +27,10 @@ export default function Diu({ images, fields = {} }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="rounded-[20px] bg-white shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)] p-4">
-            <div
-              className="font-worksans text-sm text-black leading-[22px] [&_p]:m-0"
-              dangerouslySetInnerHTML={{ __html: fields.diu_cobre || '' }}
-            />
+            <RichHtml className="font-worksans text-sm text-black leading-[22px] [&_p]:m-0" html={fields.diu_cobre} />
           </div>
           <div className="rounded-[20px] bg-white shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)] p-4">
-            <div
-              className="font-worksans text-sm text-black leading-[22px] [&_p]:m-0"
-              dangerouslySetInnerHTML={{ __html: fields.diu_hormonal || '' }}
-            />
+            <RichHtml className="font-worksans text-sm text-black leading-[22px] [&_p]:m-0" html={fields.diu_hormonal} />
           </div>
         </div>
 

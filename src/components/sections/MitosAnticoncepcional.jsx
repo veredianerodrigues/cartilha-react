@@ -1,6 +1,7 @@
 import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import HighlightCard from './shared/HighlightCard.jsx';
+import RichHtml from './shared/RichHtml.jsx';
 
 // Chaves dos 3 cards de mito/verdade — a redação vem do banco (fields), mas a
 // quantidade/posição dos cards continua fixa no JSX. A citação do último card
@@ -23,10 +24,7 @@ export default function MitosAnticoncepcional({ images, fields = {} }) {
         <div className="flex-1 grid grid-cols-1 gap-3">
           {MYTH_KEYS.map((key) => (
             <div key={key} className="rounded-[20px] bg-[rgba(29,67,85,0.05)] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)] p-4">
-              <div
-                className="font-worksans text-sm text-black leading-[22px] [&_p]:m-0"
-                dangerouslySetInnerHTML={{ __html: fields[key] || '' }}
-              />
+              <RichHtml className="font-worksans text-sm text-black leading-[22px] [&_p]:m-0" html={fields[key]} />
             </div>
           ))}
         </div>
@@ -34,9 +32,9 @@ export default function MitosAnticoncepcional({ images, fields = {} }) {
 
       <HighlightCard variant="blue">
         <p className="font-poppins font-bold text-brand-blue text-base mb-3">Fique por dentro!</p>
-        <div
+        <RichHtml
           className="font-worksans text-black text-sm leading-[22px] tracking-[0.14px] mb-4 [&_ul]:mb-0"
-          dangerouslySetInnerHTML={{ __html: fields.fique_por_dentro_lista || '' }}
+          html={fields.fique_por_dentro_lista}
         />
       </HighlightCard>
 

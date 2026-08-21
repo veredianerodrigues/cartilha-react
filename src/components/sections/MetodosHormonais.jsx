@@ -2,6 +2,7 @@ import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import TextCard from './shared/TextCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
+import RichHtml from './shared/RichHtml.jsx';
 
 // Itens 'p' e 'c' tiveram o texto migrado pro banco (fields.<chave>) — ver
 // server/db/migrateMetodosHormonaisText.js. Itens 'ul' também vieram pro
@@ -108,7 +109,7 @@ export default function MetodosHormonais({ images, fields = {} }) {
             );
           }
           if (item.type === 'ul') {
-            return <div key={i} dangerouslySetInnerHTML={{ __html: fields[item.field] || '' }} />;
+            return <RichHtml key={i} html={fields[item.field]} />;
           }
           return <Paragraph key={i} html={fields[item.field]} />;
         })}

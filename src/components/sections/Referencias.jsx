@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import PageHero from '../PageHero.jsx';
 
 const REFS = [
@@ -28,19 +29,47 @@ const REFS = [
 ];
 
 export default function Referencias() {
+  // Quando chega via link de citação (ver RichHtml.jsx, que aponta pra
+  // /secao/referencias#ref-N), rola até a entrada certa e destaca ela por
+  // alguns segundos — o link é um <a href> puro dentro de HTML salvo, então
+  // sempre é navegação de página inteira, nunca troca de rota só no cliente;
+  // esse efeito roda de novo a cada carregamento.
+  const [highlighted, setHighlighted] = useState(null);
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const el = document.querySelector(hash);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setHighlighted(hash.slice(1));
+    const timer = setTimeout(() => setHighlighted(null), 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="relative">
       <PageHero pageLabel="21" weight="semibold" title="Referências" />
 
       {/* Lista numerada: o número de cada entrada é o que as seções citam em
-          sobrescrito (ver shared/Cite.jsx). Ordem alfabética, como no Word. */}
+          sobrescrito (ver shared/Cite.jsx e RichHtml.jsx). Ordem alfabética,
+          como no Word. Cada <li> tem id="ref-N" pra ser alvo do link. */}
       <ol className="space-y-4">
-        {REFS.map((text, i) => (
-          <li key={i} className="grid grid-cols-[1.75rem_1fr] gap-1 font-worksans text-black text-xs leading-[20px] tracking-[0.12px]">
-            <span className="font-semibold tabular-nums">{i + 1}.</span>
-            <span className="text-justify break-words">{text}</span>
-          </li>
-        ))}
+        {REFS.map((text, i) => {
+          const id = `ref-${i + 1}`;
+          return (
+            <li
+              key={i}
+              id={id}
+              className={`grid grid-cols-[1.75rem_1fr] gap-1 font-worksans text-black text-xs leading-[20px] tracking-[0.12px] rounded-md transition-colors duration-500 ${
+                highlighted === id ? 'bg-yellow-100' : ''
+              }`}
+            >
+              <span className="font-semibold tabular-nums">{i + 1}.</span>
+              <span className="text-justify break-words">{text}</span>
+            </li>
+          );
+        })}
       </ol>
 
     </div>

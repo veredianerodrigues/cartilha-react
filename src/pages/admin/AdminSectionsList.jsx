@@ -43,9 +43,19 @@ function Row({ node, indent }) {
   );
 }
 
+// "referencias" ainda não foi migrada pro editor (o número de cada
+// referência é citado por posição em todas as outras páginas — reordenar
+// pelo admin quebraria as citações do site inteiro em silêncio, ver decisão
+// registrada na conversa). Ela ainda tem um block "list" sobrando do seed
+// antigo, então apareceria como "Editável" mesmo sem o Referencias.jsx ler
+// nada do banco — edição lá não teria efeito nenhum na página pública.
+// Escondida da listagem do admin até isso ser resolvido, pra não confundir.
+const HIDDEN_SLUGS = ['referencias'];
+
 export default function AdminSectionsList() {
   const { tree, loading } = useSections();
   const { session, logout } = useAuth();
+  const visibleTree = tree.filter((chapter) => !HIDDEN_SLUGS.includes(chapter.slug));
 
   return (
     <div className="min-h-screen bg-[#f5f5ef] px-4 py-8 font-worksans">
@@ -64,7 +74,7 @@ export default function AdminSectionsList() {
           <p className="text-sm text-slate-500">Carregando...</p>
         ) : (
           <div className="bg-white rounded-2xl shadow p-4 sm:p-6">
-            {tree.map((chapter) => (
+            {visibleTree.map((chapter) => (
               <div key={chapter.slug}>
                 <Row node={chapter} />
                 {chapter.children?.map((child) => (
