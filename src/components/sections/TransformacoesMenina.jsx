@@ -38,6 +38,7 @@ export default function TransformacoesMenina({ images }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
         <IllustrationFrame src={mamas?.url} alt={mamas?.caption || 'Estágios de Tanner - mamas'} fit="contain" className="w-full" rounded={false} />
         <IllustrationFrame src={pelos?.url} alt={pelos?.caption || 'Estágios de Tanner - pelos pubianos'} fit="contain" className="w-full" rounded={false} />
+{mamas?.caption && <p className="text-xs text-brand-darker mt-3">{mamas.caption}</p>}
       </div>
 
       <HighlightCard variant="cream">
@@ -48,7 +49,7 @@ export default function TransformacoesMenina({ images }) {
           intermediários representam as diferentes mudanças que acontecem durante a puberdade.
           <Cite n={[17, 18]} />
         </Paragraph>
-        {mamas?.caption && <p className="text-xs text-brand-darker mt-3">{mamas.caption}</p>}
+        
       </HighlightCard>
 
     </div>
