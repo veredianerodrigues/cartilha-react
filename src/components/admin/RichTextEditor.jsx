@@ -140,9 +140,16 @@ export default function RichTextEditor({ value, onChange }) {
     extensions: [
       StarterKit.configure({
         heading: false,
-        bulletList: false,
+        // Classes coladas direto no HTML que o editor gera — assim a lista já
+        // sai com o visual padrão da cartilha (marcador, recuo, tipografia)
+        // não importa onde a página bespoke jogue esse HTML na tela.
+        bulletList: { HTMLAttributes: { class: 'list-disc pl-5 space-y-2' } },
+        listItem: {
+          HTMLAttributes: {
+            class: 'font-worksans text-black text-sm leading-[22px] tracking-[0.14px] text-justify',
+          },
+        },
         orderedList: false,
-        listItem: false,
         blockquote: false,
         codeBlock: false,
         horizontalRule: false,
@@ -179,6 +186,13 @@ export default function RichTextEditor({ value, onChange }) {
         </ToolbarButton>
         <ToolbarButton onClick={() => setCitationModalOpen(true)} title="Inserir citação">
           [n]
+        </ToolbarButton>
+        <ToolbarButton
+          active={editor.isActive('bulletList')}
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          title="Lista com marcadores"
+        >
+          •
         </ToolbarButton>
 
         <span className="w-px h-4 bg-slate-300 mx-0.5" />

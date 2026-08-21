@@ -7,17 +7,6 @@ import HighlightCard from './shared/HighlightCard.jsx';
 // já vem embutida no HTML salvo (sup inline), igual ao padrão do Diu.jsx.
 const MYTH_KEYS = ['mito_1', 'mito_2', 'mito_3'];
 
-// Lista com marcadores — 100% hardcoded, não migra (regra do time).
-const FACTS = [
-  'A pílula anticoncepcional não se acumula no organismo.',
-  'A pílula deve ser tomada diariamente.',
-  'O uso da pílula não causa infertilidade.',
-  'A pílula não causa malformações no bebê.',
-  'A pílula não aumenta a chance de gravidez gemelar (gêmeos).',
-  'A pílula não altera, por si só, o desejo sexual.',
-  'A pílula não interrompe uma gravidez já existente.',
-];
-
 export default function MitosAnticoncepcional({ images, fields = {} }) {
   const [foto] = images;
 
@@ -45,13 +34,10 @@ export default function MitosAnticoncepcional({ images, fields = {} }) {
 
       <HighlightCard variant="blue">
         <p className="font-poppins font-bold text-brand-blue text-base mb-3">Fique por dentro!</p>
-        <ul className="list-disc pl-5 space-y-2 mb-4">
-          {FACTS.map((text, i) => (
-            <li key={i} className="font-worksans text-black text-sm leading-[22px] tracking-[0.14px]">
-              {text}
-            </li>
-          ))}
-        </ul>
+        <div
+          className="font-worksans text-black text-sm leading-[22px] tracking-[0.14px] mb-4 [&_ul]:mb-0"
+          dangerouslySetInnerHTML={{ __html: fields.fique_por_dentro_lista || '' }}
+        />
       </HighlightCard>
 
     </div>

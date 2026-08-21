@@ -1,74 +1,32 @@
 import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import TextCard from './shared/TextCard.jsx';
-import Cite from './shared/Cite.jsx';
 import Paragraph from './shared/Paragraph.jsx';
 
-// Citações no padrão numérico: sempre coladas ao fim do trecho a que pertencem
-// (texto vira JSX terminando em <Cite n={...} />), nunca como item à parte —
-// um item de citação separado herdaria o space-y do TextCard e flutuaria solto,
-// em vez de grudar visualmente na frase que ele credita.
-//
 // Itens 'p' e 'c' tiveram o texto migrado pro banco (fields.<chave>) — ver
-// server/db/migrateMetodosHormonaisText.js. Itens 'h', 'ul' e 'img' continuam
-// 100% hardcoded, sem alteração de conteúdo ou estrutura.
+// server/db/migrateMetodosHormonaisText.js. Itens 'ul' também vieram pro
+// banco, mas como HTML de <ul> inteiro num campo tipo "paragraph" (não
+// "list"), pra dar pra editar com os mesmos botões de Negrito/Citação/Lista
+// do editor rico — ver RichTextEditor.jsx. Itens 'h' e 'img' continuam 100%
+// hardcoded, sem alteração de conteúdo ou estrutura.
 const CONTENT = [
   { type: 'p', field: 'intro_liberdade' },
   { type: 'p', field: 'intro_ahc_combinados' },
   { type: 'h', text: 'Como eles funcionam?' },
   { type: 'p', field: 'pilula_como_funciona' },
   { type: 'p', field: 'pilula_formas_administracao' },
-  {
-    type: 'ul',
-    items: [
-      'Ela é um método reversível: isso significa que, se a mulher parar de tomar, o corpo volta a ovular normalmente e ela pode engravidar.',
-    ],
-  },
+  { type: 'ul', field: 'pilula_reversivel_lista' },
   { type: 'c', heading: 'Como você sabe...', field: 'pilula_nao_protege_ist' },
   { type: 'p', field: 'pilula_duas_regras_intro' },
-  {
-    type: 'ul',
-    items: [
-      'Zero esquecimentos: ela precisa ser tomada todos os dias, de preferência rigorosamente no mesmo horário.',
-      <>
-        Cuidado com outros remédios: alguns medicamentos podem cortar ou diminuir o efeito da pílula no organismo.
-        Por isso, sempre avise ao médico ou dentista que você toma pílula antes de começar qualquer tratamento.
-        <Cite n={[12, 23]} />
-      </>,
-    ],
-  },
+  { type: 'ul', field: 'pilula_regras_lista' },
   { type: 'h', text: 'Como usar?' },
-  {
-    type: 'ul',
-    items: [
-      'Primeira vez de uso: se a pílula for iniciada até o 5º dia da menstruação, a proteção contra a gravidez é imediata. Se for iniciada após esse período, ela também pode ser usada, desde que não haja gravidez, mas será necessário utilizar camisinha ou evitar relações sexuais durante os primeiros 7 dias.',
-      'Troca de outro método hormonal: Se você já usava outro anticoncepcional hormonal (como injeção, adesivo, anel ou outra pílula) corretamente e não há risco de gravidez, a nova pílula pode ser iniciada imediatamente, sem precisar esperar a próxima menstruação e sem necessidade de usar preservativo como proteção.',
-      'Troca do anticoncepcional injetável: a pílula pode ser iniciada na data em que seria aplicada a próxima injeção, sem necessidade de utilizar um método de apoio.',
-      <>
-        Após usar a pílula do dia seguinte: a pílula anticoncepcional pode ser iniciada imediatamente, sem esperar
-        a próxima menstruação. Quem já utilizava a pílula deve continuar a cartela normalmente. É necessário usar
-        camisinha ou evitar relações sexuais durante os primeiros 7 dias.
-        <Cite n={19} />
-      </>,
-    ],
-  },
+  { type: 'ul', field: 'pilula_como_usar_lista' },
   { type: 'img', idx: 2, alt: 'Planejamento e uso regular do anticoncepcional' },
   { type: 'h', text: 'Anticoncepcional Injetável (Injeção)' },
   { type: 'p', field: 'injetavel_intro' },
   { type: 'p', field: 'injetavel_primeira_aplicacao' },
   { type: 'h', text: 'Como usar?' },
-  {
-    type: 'ul',
-    items: [
-      'Primeira dose: recomenda-se que seja aplicada nos primeiros sete dias da menstruação. Nessa situação, a proteção contra a gravidez é imediata.',
-      <>
-        Se a aplicação ocorrer após esse período: a injeção pode ser iniciada desde que haja certeza de que não
-        existe gravidez. Nesse caso, recomenda-se utilizar preservativo ou evitar relações sexuais durante os
-        primeiros sete dias, até que o método atinja sua eficácia contraceptiva.
-        <Cite n={[19, 23]} />
-      </>,
-    ],
-  },
+  { type: 'ul', field: 'injetavel_como_usar_lista' },
   {
     type: 'c',
     heading: 'Atenção',
@@ -150,15 +108,7 @@ export default function MetodosHormonais({ images, fields = {} }) {
             );
           }
           if (item.type === 'ul') {
-            return (
-              <ul key={i} className="list-disc pl-5 space-y-2">
-                {item.items.map((li, j) => (
-                  <li key={j} className="font-worksans text-black text-sm leading-[22px] tracking-[0.14px] text-justify">
-                    {li}
-                  </li>
-                ))}
-              </ul>
-            );
+            return <div key={i} dangerouslySetInnerHTML={{ __html: fields[item.field] || '' }} />;
           }
           return <Paragraph key={i} html={fields[item.field]} />;
         })}

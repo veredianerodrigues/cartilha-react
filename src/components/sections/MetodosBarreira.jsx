@@ -2,7 +2,6 @@ import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import HighlightCard from './shared/HighlightCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
-import Cite from './shared/Cite.jsx';
 
 export default function MetodosBarreira({ images, fields = {} }) {
   const [masculina, feminina] = images;
@@ -34,12 +33,10 @@ export default function MetodosBarreira({ images, fields = {} }) {
           <p className="font-poppins font-bold text-brand-blue text-base mb-2">Como usar</p>
           <IllustrationFrame src={masculina?.url} alt={masculina?.caption || 'Preservativo masculino'} fit="contain" className="w-full" />
           {masculina?.caption && <p className="text-xs text-brand-darker mt-1">{masculina.caption}</p>}
-          {/* O Word 10-08 cita "BRASIL (2022)" sem a letra aqui; adotei a 9
-              (Manual técnico de anticoncepção) — confirmar com a Cariane se não
-              é a 6 (Protocolo clínico IST). */}
-          <p className="text-sm text-brand-darker mt-3">
-            <Cite n={[9, 19]} />
-          </p>
+          <div
+            className="text-sm text-brand-darker mt-3 [&_p]:m-0"
+            dangerouslySetInnerHTML={{ __html: fields.masculino_citacao || '' }}
+          />
         </div>
 
         <div className="pt-4 border-t border-slate-200">
@@ -51,12 +48,10 @@ export default function MetodosBarreira({ images, fields = {} }) {
           <p className="font-poppins font-bold text-brand-blue text-base mb-2">Como usar</p>
           <IllustrationFrame src={feminina?.url} alt={feminina?.caption || 'Preservativo feminino'} fit="contain" className="w-full" />
           {feminina?.caption && <p className="text-xs text-brand-darker mt-1">{feminina.caption}</p>}
-          {/* O Word 10-08 cita "BRASIL (2022)" sem a letra aqui; adotei a 9
-              (Manual técnico de anticoncepção) — confirmar com a Cariane se não
-              é a 6 (Protocolo clínico IST). */}
-          <p className="text-sm text-brand-darker mt-3">
-            <Cite n={[9, 19]} />
-          </p>
+          <div
+            className="text-sm text-brand-darker mt-3 [&_p]:m-0"
+            dangerouslySetInnerHTML={{ __html: fields.feminino_citacao || '' }}
+          />
         </div>
       </HighlightCard>
 
