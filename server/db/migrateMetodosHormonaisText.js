@@ -6,9 +6,14 @@ import pool from './pool.js';
 // campo abaixo tem uma chave de slot (igual a fieldSchemas.js no frontend)
 // salva na coluna "heading" do block; MetodosHormonais.jsx lê pelo nome do
 // campo (fields.pilula_como_funciona etc.), não pela ordem. Os subtítulos
-// ('h'), listas com marcadores ('ul') e imagens ('img') continuam 100%
-// hardcoded no JSX — só os parágrafos ('p') e caixas de destaque ('c') viraram
-// campos de banco.
+// ('h') e imagens ('img') continuam 100% hardcoded no JSX. Os parágrafos
+// ('p'), caixas de destaque ('c') e listas ('ul') viraram campos de banco —
+// as listas como <ul> inteiro num campo tipo "paragraph" (não "list"), pra
+// dar pra editar com os botões de rich text (ver RichTextEditor.jsx).
+const LIST_ITEM_CLASS = 'font-worksans text-black text-sm leading-[22px] tracking-[0.14px] text-justify';
+const listHtml = (items) =>
+  `<ul class="list-disc pl-5 space-y-2">${items.map((text) => `<li class="${LIST_ITEM_CLASS}">${text}</li>`).join('')}</ul>`;
+
 const FIELDS = {
   intro_liberdade:
     'Os anticoncepcionais trouxeram liberdade para as mulheres, porque permitem que elas planejem com segurança se e quando querem engravidar.',
@@ -21,10 +26,27 @@ const FIELDS = {
   pilula_nao_protege_ist:
     'A pílula não protege contra Infecções Sexualmente Transmissíveis (ISTs). Para se proteger delas, o único método indicado é o uso da camisinha (masculina ou feminina) em todas as relações.',
   pilula_duas_regras_intro: 'Para o sucesso da pílula, duas regras são fundamentais:',
+  pilula_reversivel_lista: listHtml([
+    'Ela é um método reversível: isso significa que, se a mulher parar de tomar, o corpo volta a ovular normalmente e ela pode engravidar.',
+  ]),
+  pilula_regras_lista: listHtml([
+    'Zero esquecimentos: ela precisa ser tomada todos os dias, de preferência rigorosamente no mesmo horário.',
+    'Cuidado com outros remédios: alguns medicamentos podem cortar ou diminuir o efeito da pílula no organismo. Por isso, sempre avise ao médico ou dentista que você toma pílula antes de começar qualquer tratamento.<sup data-citation="" data-n="12,23" class="text-[0.7em] leading-none align-super">12,23</sup>',
+  ]),
+  pilula_como_usar_lista: listHtml([
+    'Primeira vez de uso: se a pílula for iniciada até o 5º dia da menstruação, a proteção contra a gravidez é imediata. Se for iniciada após esse período, ela também pode ser usada, desde que não haja gravidez, mas será necessário utilizar camisinha ou evitar relações sexuais durante os primeiros 7 dias.',
+    'Troca de outro método hormonal: Se você já usava outro anticoncepcional hormonal (como injeção, adesivo, anel ou outra pílula) corretamente e não há risco de gravidez, a nova pílula pode ser iniciada imediatamente, sem precisar esperar a próxima menstruação e sem necessidade de usar preservativo como proteção.',
+    'Troca do anticoncepcional injetável: a pílula pode ser iniciada na data em que seria aplicada a próxima injeção, sem necessidade de utilizar um método de apoio.',
+    'Após usar a pílula do dia seguinte: a pílula anticoncepcional pode ser iniciada imediatamente, sem esperar a próxima menstruação. Quem já utilizava a pílula deve continuar a cartela normalmente. É necessário usar camisinha ou evitar relações sexuais durante os primeiros 7 dias.<sup data-citation="" data-n="19" class="text-[0.7em] leading-none align-super">19</sup>',
+  ]),
   injetavel_intro:
     'O anticoncepcional injetável é um método contraceptivo prático e eficaz para quem prefere não precisar tomar um comprimido todos os dias. Existem dois tipos: o mensal e o trimestral. A aplicação é feita por um profissional de saúde, geralmente no músculo do braço ou do glúteo, e ambas são fornecidas pelo SUS.',
   injetavel_primeira_aplicacao:
     'Primeira aplicação: a injeção anticoncepcional pode ser iniciada nos primeiros 7 dias da menstruação, com proteção imediata contra a gravidez. Também pode ser iniciada em outros momentos, desde que haja certeza de que não existe gravidez.<sup data-citation="" data-n="23" class="text-[0.7em] leading-none align-super">23</sup>',
+  injetavel_como_usar_lista: listHtml([
+    'Primeira dose: recomenda-se que seja aplicada nos primeiros sete dias da menstruação. Nessa situação, a proteção contra a gravidez é imediata.',
+    'Se a aplicação ocorrer após esse período: a injeção pode ser iniciada desde que haja certeza de que não existe gravidez. Nesse caso, recomenda-se utilizar preservativo ou evitar relações sexuais durante os primeiros sete dias, até que o método atinja sua eficácia contraceptiva.<sup data-citation="" data-n="19,23" class="text-[0.7em] leading-none align-super">19,23</sup>',
+  ]),
   injetavel_atencao_troca:
     'Quando as mulheres utilizam anticoncepcionais injetáveis trimestrais, implante hormonal ou DIU hormonal e desejam fazer a troca por pílulas anticoncepcionais, devem iniciar a cartela imediatamente após o término da validade do método usado anteriormente.',
   injetavel_atencao_intervalo:

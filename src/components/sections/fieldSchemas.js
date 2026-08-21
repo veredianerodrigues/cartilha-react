@@ -48,6 +48,7 @@ export const SECTION_FIELD_SLOTS = {
   'classificacao-metodos': [
     { key: 'intro', label: 'Parágrafo introdutório' },
     { key: 'cinco_grupos_intro', label: 'Frase "Quanto à classificação..." (introduz os 5 grupos)' },
+    { key: 'cinco_grupos_lista', label: 'Lista dos cinco grupos de métodos' },
     { key: 'olha_so', label: 'Caixa "Olha só..."' },
   ],
   'metodos-barreira': [
@@ -77,8 +78,12 @@ export const SECTION_FIELD_SLOTS = {
     { key: 'pilula_formas_administracao', label: 'Pílula — formas de administração dos hormônios' },
     { key: 'pilula_nao_protege_ist', label: 'Caixa "Como você sabe..." (pílula não protege de IST)' },
     { key: 'pilula_duas_regras_intro', label: 'Pílula — introdução às duas regras fundamentais' },
+    { key: 'pilula_reversivel_lista', label: 'Lista — pílula é reversível' },
+    { key: 'pilula_regras_lista', label: 'Lista — as duas regras fundamentais' },
+    { key: 'pilula_como_usar_lista', label: 'Lista — como usar a pílula' },
     { key: 'injetavel_intro', label: 'Injetável — introdução (mensal/trimestral)' },
     { key: 'injetavel_primeira_aplicacao', label: 'Injetável — primeira aplicação' },
+    { key: 'injetavel_como_usar_lista', label: 'Lista — como usar o injetável' },
     { key: 'injetavel_atencao_troca', label: 'Caixa "Atenção" (injetável) — troca de método' },
     { key: 'injetavel_atencao_intervalo', label: 'Caixa "Atenção" (injetável) — intervalo entre cartelas' },
     { key: 'pilula_importante_esquecimento', label: 'Caixa "Importante lembrar!" — esquecimento da pílula' },
@@ -98,6 +103,7 @@ export const SECTION_FIELD_SLOTS = {
     { key: 'mito_1', label: 'Card mito/verdade 1 (engorda)' },
     { key: 'mito_2', label: 'Card mito/verdade 2 (acne)' },
     { key: 'mito_3', label: 'Card mito/verdade 3 (outros benefícios)' },
+    { key: 'fique_por_dentro_lista', label: 'Lista "Fique por dentro!"' },
   ],
   'direitos-sexuais-reprodutivos': [
     { key: 'paragrafo_1', label: 'Parágrafo 1' },
