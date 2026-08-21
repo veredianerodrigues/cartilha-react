@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import '../loadEnv.js';
 import pool from './pool.js';
 
 // Piloto do editor rich text: leva o texto que já estava hardcoded (e validado)
