@@ -55,8 +55,10 @@ export const SECTION_FIELD_SLOTS = {
     { key: 'intro', label: 'Parágrafo introdutório' },
     { key: 'fique_ligado', label: 'Caixa "Fique ligado!!"' },
     { key: 'masculino_intro', label: 'Preservativo masculino — parágrafo introdutório' },
+    { key: 'masculino_citacao', label: 'Preservativo masculino — citação' },
     { key: 'feminino_intro_1', label: 'Preservativo feminino — parágrafo 1' },
     { key: 'feminino_intro_2', label: 'Preservativo feminino — parágrafo 2' },
+    { key: 'feminino_citacao', label: 'Preservativo feminino — citação' },
   ],
   diu: [
     { key: 'intro_1', label: 'Parágrafo introdutório 1' },
