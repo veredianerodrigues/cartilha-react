@@ -29,7 +29,7 @@ export default function GravidezAdolescenciaMudancas({ images }) {
 
   return (
     <div className="relative">
-      <PageHero pageLabel="24" weight="semibold" title="E se a gravidez acontecer..." />
+      <PageHero pageLabel="19" weight="semibold" title="E se a gravidez acontecer..." />
 
       <div className="mb-6">
         <IllustrationFrame src={teste?.url} alt={teste?.caption || 'Teste de gravidez'} className="w-full h-[220px]" />

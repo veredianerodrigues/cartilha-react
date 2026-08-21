@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "start": "node server/index.js",
     "server": "node server/index.js",
-    "seed": "node server/db/seed.js"
+    "seed": "node server/db/seed.js",
+    "update-page-labels": "node server/db/updatePageLabels.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",

@@ -65,39 +65,39 @@ export const TREE = [
       {
         slug: "diu",
         title: "Dispositivo Intrauterino (DIU)",
-        pageLabel: "16",
+        pageLabel: "15",
       },
       {
         slug: "metodos-hormonais",
         title: "Métodos hormonais",
-        pageLabel: "17",
+        pageLabel: "16",
       },
       {
         slug: "mitos-anticoncepcional",
         title: "Mitos relacionados ao anticoncepcional hormonal",
-        pageLabel: "22",
+        pageLabel: "17",
       },
     ],
   },
   {
     slug: "direitos-sexuais-reprodutivos",
     title: "Vamos falar sobre direitos sexuais e reprodutivos?",
-    pageLabel: "23",
+    pageLabel: "18",
   },
   {
     slug: "gravidez-adolescencia-mudancas",
     title: "E se a gravidez acontecer...",
-    pageLabel: "24",
+    pageLabel: "19",
   },
   {
     slug: "orientacao-quem-pode-ajudar",
     title: "Se eu precisar de orientação, quem poderá me ajudar?",
-    pageLabel: "26",
+    pageLabel: "20",
   },
   {
     slug: "referencias",
     title: "Referências",
-    pageLabel: "27",
+    pageLabel: "21",
   },
 ];
 

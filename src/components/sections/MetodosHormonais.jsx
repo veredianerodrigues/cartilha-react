@@ -3,8 +3,10 @@ import PageHero from '../PageHero.jsx';
 import TextCard from './shared/TextCard.jsx';
 import Cite from './shared/Cite.jsx';
 
-// Citações no padrão numérico: itens { type: 'cite', n: [...] } fecham um bloco,
-// e onde a citação precisa ficar no meio do texto o conteúdo vira JSX com <Cite>.
+// Citações no padrão numérico: sempre coladas ao fim do trecho a que pertencem
+// (texto vira JSX terminando em <Cite n={...} />), nunca como item à parte —
+// um item de citação separado herdaria o space-y do TextCard e flutuaria solto,
+// em vez de grudar visualmente na frase que ele credita.
 const CONTENT = [
   { type: 'p', text: 'Os anticoncepcionais trouxeram liberdade para as mulheres, porque permitem que elas planejem com segurança se e quando querem engravidar.' },
   { type: 'p', text: 'A maioria desses métodos são chamados de Anticoncepcionais Hormonais Combinados (AHC) porque juntam dois hormônios: o estrogênio e a progesterona.' },
@@ -37,10 +39,14 @@ const CONTENT = [
       'Primeira vez de uso: se a pílula for iniciada até o 5º dia da menstruação, a proteção contra a gravidez é imediata. Se for iniciada após esse período, ela também pode ser usada, desde que não haja gravidez, mas será necessário utilizar camisinha ou evitar relações sexuais durante os primeiros 7 dias.',
       'Troca de outro método hormonal: Se você já usava outro anticoncepcional hormonal (como injeção, adesivo, anel ou outra pílula) corretamente e não há risco de gravidez, a nova pílula pode ser iniciada imediatamente, sem precisar esperar a próxima menstruação e sem necessidade de usar preservativo como proteção.',
       'Troca do anticoncepcional injetável: a pílula pode ser iniciada na data em que seria aplicada a próxima injeção, sem necessidade de utilizar um método de apoio.',
-      'Após usar a pílula do dia seguinte: a pílula anticoncepcional pode ser iniciada imediatamente, sem esperar a próxima menstruação. Quem já utilizava a pílula deve continuar a cartela normalmente. É necessário usar camisinha ou evitar relações sexuais durante os primeiros 7 dias.',
+      <>
+        Após usar a pílula do dia seguinte: a pílula anticoncepcional pode ser iniciada imediatamente, sem esperar
+        a próxima menstruação. Quem já utilizava a pílula deve continuar a cartela normalmente. É necessário usar
+        camisinha ou evitar relações sexuais durante os primeiros 7 dias.
+        <Cite n={19} />
+      </>,
     ],
   },
-  { type: 'cite', n: [19] },
   { type: 'img', idx: 2, alt: 'Planejamento e uso regular do anticoncepcional' },
   { type: 'h', text: 'Anticoncepcional Injetável (Injeção)' },
   { type: 'p', text: 'O anticoncepcional injetável é um método contraceptivo prático e eficaz para quem prefere não precisar tomar um comprimido todos os dias. Existem dois tipos: o mensal e o trimestral. A aplicação é feita por um profissional de saúde, geralmente no músculo do braço ou do glúteo, e ambas são fornecidas pelo SUS.' },
@@ -59,10 +65,14 @@ const CONTENT = [
     type: 'ul',
     items: [
       'Primeira dose: recomenda-se que seja aplicada nos primeiros sete dias da menstruação. Nessa situação, a proteção contra a gravidez é imediata.',
-      'Se a aplicação ocorrer após esse período: a injeção pode ser iniciada desde que haja certeza de que não existe gravidez. Nesse caso, recomenda-se utilizar preservativo ou evitar relações sexuais durante os primeiros sete dias, até que o método atinja sua eficácia contraceptiva.',
+      <>
+        Se a aplicação ocorrer após esse período: a injeção pode ser iniciada desde que haja certeza de que não
+        existe gravidez. Nesse caso, recomenda-se utilizar preservativo ou evitar relações sexuais durante os
+        primeiros sete dias, até que o método atinja sua eficácia contraceptiva.
+        <Cite n={[19, 23]} />
+      </>,
     ],
   },
-  { type: 'cite', n: [19, 23] },
   {
     type: 'c',
     heading: 'Atenção',
@@ -74,19 +84,47 @@ const CONTENT = [
       </>,
     ],
   },
-  { type: 'c', heading: 'Importante lembrar!', text: 'Os comprimidos devem ser ingeridos diariamente e preferencialmente no mesmo horário. O esquecimento do uso implica em falha contraceptiva; nesse caso, recomenda-se o uso de método contraceptivo adicional, como preservativos.' },
-  { type: 'cite', n: [12, 23] },
+  {
+    type: 'c',
+    heading: 'Importante lembrar!',
+    text: (
+      <>
+        Os comprimidos devem ser ingeridos diariamente e preferencialmente no mesmo horário. O esquecimento do
+        uso implica em falha contraceptiva; nesse caso, recomenda-se o uso de método contraceptivo adicional,
+        como preservativos.
+        <Cite n={[12, 23]} />
+      </>
+    ),
+  },
   { type: 'p', text: 'Também... Existem outros dispositivos hormonais, são eles:' },
   { type: 'h', text: 'Anel Vaginal' },
   { type: 'img', idx: 3, alt: 'Anel vaginal anticoncepcional' },
   { type: 'p', text: 'É um anel de plástico bem flexível e macio que libera hormônios no corpo, impedindo a ovulação.' },
-  { type: 'p', text: 'Como usar: você mesma coloca e retira o anel de dentro da vagina. Ele deve ficar lá dentro por 3 semanas seguidas. Na 4ª semana, você tira o anel para fazer uma pausa (que é quando a menstruação desce) e depois coloca um anel novo. É discreto, regula o ciclo e não altera em nada a saúde da sua região íntima.' },
-  { type: 'cite', n: [12, 23] },
+  {
+    type: 'p',
+    text: (
+      <>
+        Como usar: você mesma coloca e retira o anel de dentro da vagina. Ele deve ficar lá dentro por 3 semanas
+        seguidas. Na 4ª semana, você tira o anel para fazer uma pausa (que é quando a menstruação desce) e depois
+        coloca um anel novo. É discreto, regula o ciclo e não altera em nada a saúde da sua região íntima.
+        <Cite n={[12, 23]} />
+      </>
+    ),
+  },
   { type: 'h', text: 'Adesivo Anticoncepcional' },
   { type: 'img', idx: 1, alt: 'Adesivo anticoncepcional' },
   { type: 'p', text: 'É um adesivo que vai soltando hormônios direto na corrente sanguínea para bloquear a ovulação. É bem fino e colante, você gruda na pele (pode ser no braço, nas costas ou na barriga) e troca por um novo uma vez por semana, durante 3 semanas. A 4ª semana é livre de adesivo (a semana de pausa para menstruar).' },
-  { type: 'p', text: 'É um método moderno e seguro, bom para quem esquece de tomar remédio todo dia. Porém, como ele fica colado na pele, fica visível, o que algumas adolescentes podem não curtir. Pode causar uma leve coceira ou irritação na pele onde foi colado.' },
-  { type: 'cite', n: [12, 23] },
+  {
+    type: 'p',
+    text: (
+      <>
+        É um método moderno e seguro, bom para quem esquece de tomar remédio todo dia. Porém, como ele fica
+        colado na pele, fica visível, o que algumas adolescentes podem não curtir. Pode causar uma leve coceira
+        ou irritação na pele onde foi colado.
+        <Cite n={[12, 23]} />
+      </>
+    ),
+  },
   { type: 'h', text: 'Contracepção de emergência (pílula do dia seguinte)' },
   { type: 'p', text: 'A pílula do dia seguinte é um método para ser usado apenas em emergências — como quando a camisinha estoura, sai do lugar ou você esquece de tomar o anticoncepcional comum.' },
   { type: 'p', text: 'Para que ela funcione e evite uma gravidez, o tempo é o fator mais importante.' },
@@ -125,7 +163,7 @@ export default function MetodosHormonais({ images }) {
 
   return (
     <div className="relative">
-      <PageHero pageLabel="17" weight="semibold" title="Anticoncepcionais hormonais" />
+      <PageHero pageLabel="16" weight="semibold" title="Anticoncepcionais hormonais" />
 
       <div className="mb-6 w-full sm:w-[70%]">
         <IllustrationFrame src={overview?.url} alt={overview?.caption || 'Métodos hormonais'} className="w-full h-[220px]" />
@@ -176,13 +214,6 @@ export default function MetodosHormonais({ images }) {
                   </li>
                 ))}
               </ul>
-            );
-          }
-          if (item.type === 'cite') {
-            return (
-              <p key={i} className="text-sm text-brand-darker">
-                <Cite n={item.n} />
-              </p>
             );
           }
           return (

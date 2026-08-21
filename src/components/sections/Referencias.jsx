@@ -30,7 +30,7 @@ const REFS = [
 export default function Referencias() {
   return (
     <div className="relative">
-      <PageHero pageLabel="27" weight="semibold" title="Referências" />
+      <PageHero pageLabel="21" weight="semibold" title="Referências" />
 
       {/* Lista numerada: o número de cada entrada é o que as seções citam em
           sobrescrito (ver shared/Cite.jsx). Ordem alfabética, como no Word. */}

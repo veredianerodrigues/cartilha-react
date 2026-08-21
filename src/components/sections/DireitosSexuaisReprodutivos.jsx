@@ -7,7 +7,7 @@ export default function DireitosSexuaisReprodutivos() {
   return (
     <div className="relative">
       <PageHero
-        pageLabel="23"
+        pageLabel="18"
         title={
           <>
             <span className="font-semibold">Vamos falar sobre</span> direitos sexuais, reprodutivos ...

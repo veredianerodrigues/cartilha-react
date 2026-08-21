@@ -10,7 +10,7 @@ export default function Diu({ images }) {
   return (
     <div className="relative">
       <PageHero
-        pageLabel="16"
+        pageLabel="15"
         weight="semibold"
         title="Métodos de contracepção reversíveis de longa duração (LARC)"
       />
@@ -105,9 +105,6 @@ export default function Diu({ images }) {
           </Paragraph>
         </div>
 
-        <p className="text-xs text-brand-darker">
-          Fonte: Elaborado pela autora com auxílio do ChatGPT (OpenAI), 2026.
-        </p>
       </TextCard>
 
     </div>

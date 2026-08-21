@@ -24,7 +24,7 @@ export default function MitosAnticoncepcional({ images }) {
 
   return (
     <div className="relative">
-      <PageHero pageLabel="22" weight="semibold" title="Mitos relacionados ao anticoncepcional hormonal" />
+      <PageHero pageLabel="17" weight="semibold" title="Mitos relacionados ao anticoncepcional hormonal" />
 
       <div className="flex flex-col sm:flex-row gap-4 items-stretch mb-6">
         <div className="w-full sm:w-[40%] shrink-0">

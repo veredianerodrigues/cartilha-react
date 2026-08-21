@@ -10,7 +10,7 @@ export default function OrientacaoQuemPodeAjudar({ images }) {
   return (
     <div className="relative">
       <PageHero
-        pageLabel="26"
+        pageLabel="20"
         title={
           <>
             Se eu precisar de orientação, <span className="font-semibold">quem poderá me ajudar?</span>
