@@ -50,7 +50,13 @@ export default function IllustrationFrame({
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="block w-full h-full cursor-zoom-in"
+            // touch-manipulation: sem isso, um toque com qualquer micro-deslize
+            // (comum em tela de vidro) pode fazer o navegador mobile (Safari
+            // principalmente) simplesmente não disparar o clique — o toque
+            // "some" sem reação nenhuma. data-zoomable é o gancho que
+            // useSwipeNavigation usa pra não competir com esse toque.
+            className="block w-full h-full cursor-zoom-in touch-manipulation"
+            data-zoomable="true"
             aria-label={`Ampliar imagem${alt ? `: ${alt}` : ''}`}
           >
             <img src={src} alt={alt} loading="lazy" decoding="async" className={imgClassName} />
