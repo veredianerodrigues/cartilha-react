@@ -2,9 +2,8 @@ import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import HighlightCard from './shared/HighlightCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
-import Cite from './shared/Cite.jsx';
 
-export default function TransformacoesMenina({ images }) {
+export default function TransformacoesMenina({ images, fields = {} }) {
   const [mamas, foto, pelos] = images;
 
   return (
@@ -24,15 +23,7 @@ export default function TransformacoesMenina({ images }) {
       <IllustrationFrame src={foto?.url} alt={foto?.caption || 'Adolescentes'} className="w-full h-[300px]" />
 
       <HighlightCard variant="cream">
-        <Paragraph>
-          Nas meninas, o primeiro sinal visível da puberdade é o surgimento do broto mamário, que corresponde ao
-          início do desenvolvimento das mamas. Esse processo ocorre geralmente entre os 9 e 10 anos, podendo iniciar
-          normalmente entre os 8 e os 13 anos. Em seguida, ou quase ao mesmo tempo, começam a surgir os pelos
-          pubianos e inicia-se o estirão puberal, período em que ocorre o crescimento mais acelerado da altura, cujo
-          pico costuma acontecer entre os 11 e 12 anos. O maior ganho de peso também ocorre, em geral, entre os 12 e
-          13 anos. Após a menarca (primeira menstruação), o crescimento desacelera progressivamente.
-          <Cite n={[2, 15, 17]} />
-        </Paragraph>
+        <Paragraph html={fields.transformacoes_corpo_menina} />
       </HighlightCard>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -42,14 +33,7 @@ export default function TransformacoesMenina({ images }) {
       </div>
 
       <HighlightCard variant="cream">
-        <Paragraph>
-          Nas meninas, são observados o crescimento das mamas (M) e dos pelos pubianos (P), classificados em cinco
-          estágios, de 1 a 5. Assim como no caso dos meninos, o estágio 1 corresponde ao período antes do início da
-          puberdade, enquanto o estágio 5 indica que o desenvolvimento físico foi concluído. Os estágios
-          intermediários representam as diferentes mudanças que acontecem durante a puberdade.
-          <Cite n={[17, 18]} />
-        </Paragraph>
-        
+        <Paragraph html={fields.tanner_estagios_meninas} />
       </HighlightCard>
 
     </div>

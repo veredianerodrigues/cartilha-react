@@ -1,5 +1,7 @@
+import { useEffect, useRef, useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import TextAlign from '@tiptap/extension-text-align';
 import { Node, mergeAttributes } from '@tiptap/core';
 
 // Citação vira um "token" inserido no texto (não um estilo aplicado a uma
@@ -63,7 +65,77 @@ function ToolbarButton({ active, onClick, title, children }) {
   );
 }
 
+function CitationModal({ onConfirm, onClose }) {
+  const [value, setValue] = useState('');
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === 'Escape') onClose();
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const cleaned = value.trim();
+    if (!cleaned) return;
+    onConfirm(cleaned);
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Inserir citação"
+    >
+      <form
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={handleSubmit}
+        className="w-full max-w-xs rounded-xl bg-white p-4 shadow-xl space-y-3"
+      >
+        <p className="font-poppins font-semibold text-brand-dark text-sm">Inserir citação</p>
+        <div>
+          <input
+            ref={inputRef}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="Ex.: 19 ou 24,8"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/40"
+          />
+          <p className="text-xs text-slate-500 mt-1">Número(s) da referência, separados por vírgula.</p>
+        </div>
+        <div className="flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-3 py-1.5 rounded-full text-xs font-poppins border border-slate-300 text-brand-dark hover:bg-slate-50"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            disabled={!value.trim()}
+            className="px-3 py-1.5 rounded-full text-xs font-poppins bg-brand-dark text-white disabled:opacity-40"
+          >
+            Inserir
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
 export default function RichTextEditor({ value, onChange }) {
+  const [citationModalOpen, setCitationModalOpen] = useState(false);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -78,6 +150,9 @@ export default function RichTextEditor({ value, onChange }) {
         italic: false,
       }),
       Citation,
+      // Alinhamento por parágrafo — mesmo padrão visual do resto da cartilha
+      // (texto justificado) é o default; o admin pode trocar por parágrafo.
+      TextAlign.configure({ types: ['paragraph'], defaultAlignment: 'justify' }),
     ],
     content: value || '',
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
@@ -89,10 +164,9 @@ export default function RichTextEditor({ value, onChange }) {
     },
   });
 
-  function handleCitation() {
-    const n = window.prompt('Número(s) da citação (ex.: 19 ou 24,8):');
-    if (!n) return;
-    editor?.chain().focus().insertCitation(n.trim()).run();
+  function handleCitationConfirm(n) {
+    editor?.chain().focus().insertCitation(n).run();
+    setCitationModalOpen(false);
   }
 
   if (!editor) return null;
@@ -103,11 +177,46 @@ export default function RichTextEditor({ value, onChange }) {
         <ToolbarButton active={editor.isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()} title="Negrito">
           <strong>N</strong>
         </ToolbarButton>
-        <ToolbarButton onClick={handleCitation} title="Inserir citação">
+        <ToolbarButton onClick={() => setCitationModalOpen(true)} title="Inserir citação">
           [n]
+        </ToolbarButton>
+
+        <span className="w-px h-4 bg-slate-300 mx-0.5" />
+
+        <ToolbarButton
+          active={editor.isActive({ textAlign: 'left' })}
+          onClick={() => editor.chain().focus().setTextAlign('left').run()}
+          title="Alinhar à esquerda"
+        >
+          E
+        </ToolbarButton>
+        <ToolbarButton
+          active={editor.isActive({ textAlign: 'center' })}
+          onClick={() => editor.chain().focus().setTextAlign('center').run()}
+          title="Centralizar"
+        >
+          C
+        </ToolbarButton>
+        <ToolbarButton
+          active={editor.isActive({ textAlign: 'right' })}
+          onClick={() => editor.chain().focus().setTextAlign('right').run()}
+          title="Alinhar à direita"
+        >
+          D
+        </ToolbarButton>
+        <ToolbarButton
+          active={editor.isActive({ textAlign: 'justify' })}
+          onClick={() => editor.chain().focus().setTextAlign('justify').run()}
+          title="Justificar"
+        >
+          J
         </ToolbarButton>
       </div>
       <EditorContent editor={editor} />
+
+      {citationModalOpen && (
+        <CitationModal onConfirm={handleCitationConfirm} onClose={() => setCitationModalOpen(false)} />
+      )}
     </div>
   );
 }

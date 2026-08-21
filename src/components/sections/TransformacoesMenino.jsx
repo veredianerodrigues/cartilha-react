@@ -2,9 +2,8 @@ import IllustrationFrame from '../IllustrationFrame.jsx';
 import { PageHeroBlob } from '../PageHero.jsx';
 import HighlightCard from './shared/HighlightCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
-import Cite from './shared/Cite.jsx';
 
-export default function TransformacoesMenino({ images }) {
+export default function TransformacoesMenino({ images, fields = {} }) {
   const [menino] = images;
 
   return (
@@ -26,22 +25,8 @@ export default function TransformacoesMenino({ images }) {
       </div>
 
       <HighlightCard variant="blue" className="space-y-4">
-        <Paragraph>
-          Nos meninos, a puberdade é marcada por diversas transformações físicas. Uma das mais evidentes é o estirão
-          de crescimento, período em que ocorre um aumento acelerado da altura, com crescimento médio de 8-9 cm/ano.
-          Esse crescimento costuma atingir sua velocidade máxima entre os 13 e 14 anos e desacelera progressivamente
-          até o final da adolescência. O maior ganho de peso também ocorre, em geral, por volta dos 14 anos.
-        </Paragraph>
-        <Paragraph>
-          O primeiro sinal da puberdade masculina é o aumento do volume dos testículos, que geralmente ocorre entre
-          10 e 11 anos. Em seguida, acontece o crescimento do pênis e o surgimento dos pelos pubianos.
-          Correspondente ao período de 12 e 14 anos, começam a aparecer os pelos nas axilas, no rosto e em outras
-          regiões do corpo. Nessa fase,
-          também aumenta a atividade das glândulas sudoríparas, o que favorece o suor e o odor corporal
-          característicos da adolescência. É ainda durante esse período que as ereções espontâneas se tornam mais
-          frequentes e ocorre a espermarca (primeira ejaculação).
-          <Cite n={[2, 15, 17]} />
-        </Paragraph>
+        <Paragraph html={fields.estirao_crescimento} />
+        <Paragraph html={fields.puberdade_sinais} />
       </HighlightCard>
 
     </div>

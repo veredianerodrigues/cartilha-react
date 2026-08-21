@@ -2,9 +2,8 @@ import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import TextCard from './shared/TextCard.jsx';
 import Paragraph from './shared/Paragraph.jsx';
-import Cite from './shared/Cite.jsx';
 
-export default function ErecaoEjaculacao({ images }) {
+export default function ErecaoEjaculacao({ images, fields = {} }) {
   const [imagem] = images;
 
   return (
@@ -31,20 +30,8 @@ export default function ErecaoEjaculacao({ images }) {
         </div>
 
         <TextCard className="relative flex-1 space-y-4">
-          <Paragraph>
-            A ereção é o enrijecimento do pênis causado pelo aumento do fluxo de sangue nessa região. Na adolescência,
-            ela pode ocorrer em resposta ao desejo sexual, mas também é comum acontecer de forma espontânea e
-            involuntária, como parte do desenvolvimento normal do organismo. Já a ejaculação é a saída do sêmen pelo
-            pênis. O sêmen é um líquido esbranquiçado que tem a função de nutrir e transportar os espermatozoides.
-          </Paragraph>
-          <Paragraph>
-            Como mencionado, a primeira ejaculação do menino é chamada de espermarca e geralmente ocorre por volta
-            dos 13 anos, embora possa acontecer em idades diferentes. Ela pode ocorrer durante o sono, em um
-            fenômeno normal conhecido como polução noturna, ou em outras situações. A espermarca representa um
-            importante marco da puberdade e indica que o sistema reprodutor masculino está amadurecendo e
-            adquirindo capacidade reprodutiva.
-            <Cite n={[15, 17, 19]} />
-          </Paragraph>
+          <Paragraph html={fields.erecao_ejaculacao_definicao} />
+          <Paragraph html={fields.espermarca_explicacao} />
         </TextCard>
       </div>
 

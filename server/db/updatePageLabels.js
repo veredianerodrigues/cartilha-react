@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import '../loadEnv.js';
 import pool from './pool.js';
 import { TREE } from './fullContent.js';
 

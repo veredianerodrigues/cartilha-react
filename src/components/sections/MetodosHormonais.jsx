@@ -2,25 +2,30 @@ import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import TextCard from './shared/TextCard.jsx';
 import Cite from './shared/Cite.jsx';
+import Paragraph from './shared/Paragraph.jsx';
 
 // Citações no padrão numérico: sempre coladas ao fim do trecho a que pertencem
 // (texto vira JSX terminando em <Cite n={...} />), nunca como item à parte —
 // um item de citação separado herdaria o space-y do TextCard e flutuaria solto,
 // em vez de grudar visualmente na frase que ele credita.
+//
+// Itens 'p' e 'c' tiveram o texto migrado pro banco (fields.<chave>) — ver
+// server/db/migrateMetodosHormonaisText.js. Itens 'h', 'ul' e 'img' continuam
+// 100% hardcoded, sem alteração de conteúdo ou estrutura.
 const CONTENT = [
-  { type: 'p', text: 'Os anticoncepcionais trouxeram liberdade para as mulheres, porque permitem que elas planejem com segurança se e quando querem engravidar.' },
-  { type: 'p', text: 'A maioria desses métodos são chamados de Anticoncepcionais Hormonais Combinados (AHC) porque juntam dois hormônios: o estrogênio e a progesterona.' },
+  { type: 'p', field: 'intro_liberdade' },
+  { type: 'p', field: 'intro_ahc_combinados' },
   { type: 'h', text: 'Como eles funcionam?' },
-  { type: 'p', text: 'A progesterona age fazendo com que o corpo não libere nenhum óvulo (um processo chamado de anovulação). Sem um óvulo disponível, o espermatozoide não tem quem fecundar e a gravidez simplesmente não acontece.' },
-  { type: 'p', text: 'Esses hormônios podem ser colocados no corpo de várias formas (como adesivos na pele, comprimidos ou injeções), mas o formato mais conhecido e utilizado no Brasil e no mundo é a chamada pílula anticoncepcional.' },
+  { type: 'p', field: 'pilula_como_funciona' },
+  { type: 'p', field: 'pilula_formas_administracao' },
   {
     type: 'ul',
     items: [
       'Ela é um método reversível: isso significa que, se a mulher parar de tomar, o corpo volta a ovular normalmente e ela pode engravidar.',
     ],
   },
-  { type: 'c', heading: 'Como você sabe...', text: 'A pílula não protege contra Infecções Sexualmente Transmissíveis (ISTs). Para se proteger delas, o único método indicado é o uso da camisinha (masculina ou feminina) em todas as relações.' },
-  { type: 'p', text: 'Para o sucesso da pílula, duas regras são fundamentais:' },
+  { type: 'c', heading: 'Como você sabe...', field: 'pilula_nao_protege_ist' },
+  { type: 'p', field: 'pilula_duas_regras_intro' },
   {
     type: 'ul',
     items: [
@@ -49,17 +54,8 @@ const CONTENT = [
   },
   { type: 'img', idx: 2, alt: 'Planejamento e uso regular do anticoncepcional' },
   { type: 'h', text: 'Anticoncepcional Injetável (Injeção)' },
-  { type: 'p', text: 'O anticoncepcional injetável é um método contraceptivo prático e eficaz para quem prefere não precisar tomar um comprimido todos os dias. Existem dois tipos: o mensal e o trimestral. A aplicação é feita por um profissional de saúde, geralmente no músculo do braço ou do glúteo, e ambas são fornecidas pelo SUS.' },
-  {
-    type: 'p',
-    text: (
-      <>
-        Primeira aplicação: a injeção anticoncepcional pode ser iniciada nos primeiros 7 dias da menstruação, com
-        proteção imediata contra a gravidez. Também pode ser iniciada em outros momentos, desde que haja certeza
-        de que não existe gravidez.<Cite n={23} />
-      </>
-    ),
-  },
+  { type: 'p', field: 'injetavel_intro' },
+  { type: 'p', field: 'injetavel_primeira_aplicacao' },
   { type: 'h', text: 'Como usar?' },
   {
     type: 'ul',
@@ -76,89 +72,38 @@ const CONTENT = [
   {
     type: 'c',
     heading: 'Atenção',
-    texts: [
-      'Quando as mulheres utilizam anticoncepcionais injetáveis trimestrais, implante hormonal ou DIU hormonal e desejam fazer a troca por pílulas anticoncepcionais, devem iniciar a cartela imediatamente após o término da validade do método usado anteriormente.',
-      <>
-        Com relação ao intervalo entre as cartelas, alguns contraceptivos preveem pausas de quatro a sete dias e
-        algumas formulações não preveem pausas.<Cite n={[12, 23]} />
-      </>,
-    ],
+    fields: ['injetavel_atencao_troca', 'injetavel_atencao_intervalo'],
   },
   {
     type: 'c',
     heading: 'Importante lembrar!',
-    text: (
-      <>
-        Os comprimidos devem ser ingeridos diariamente e preferencialmente no mesmo horário. O esquecimento do
-        uso implica em falha contraceptiva; nesse caso, recomenda-se o uso de método contraceptivo adicional,
-        como preservativos.
-        <Cite n={[12, 23]} />
-      </>
-    ),
+    field: 'pilula_importante_esquecimento',
   },
-  { type: 'p', text: 'Também... Existem outros dispositivos hormonais, são eles:' },
+  { type: 'p', field: 'outros_dispositivos_intro' },
   { type: 'h', text: 'Anel Vaginal' },
   { type: 'img', idx: 3, alt: 'Anel vaginal anticoncepcional' },
-  { type: 'p', text: 'É um anel de plástico bem flexível e macio que libera hormônios no corpo, impedindo a ovulação.' },
-  {
-    type: 'p',
-    text: (
-      <>
-        Como usar: você mesma coloca e retira o anel de dentro da vagina. Ele deve ficar lá dentro por 3 semanas
-        seguidas. Na 4ª semana, você tira o anel para fazer uma pausa (que é quando a menstruação desce) e depois
-        coloca um anel novo. É discreto, regula o ciclo e não altera em nada a saúde da sua região íntima.
-        <Cite n={[12, 23]} />
-      </>
-    ),
-  },
+  { type: 'p', field: 'anel_descricao' },
+  { type: 'p', field: 'anel_como_usar' },
   { type: 'h', text: 'Adesivo Anticoncepcional' },
   { type: 'img', idx: 1, alt: 'Adesivo anticoncepcional' },
-  { type: 'p', text: 'É um adesivo que vai soltando hormônios direto na corrente sanguínea para bloquear a ovulação. É bem fino e colante, você gruda na pele (pode ser no braço, nas costas ou na barriga) e troca por um novo uma vez por semana, durante 3 semanas. A 4ª semana é livre de adesivo (a semana de pausa para menstruar).' },
-  {
-    type: 'p',
-    text: (
-      <>
-        É um método moderno e seguro, bom para quem esquece de tomar remédio todo dia. Porém, como ele fica
-        colado na pele, fica visível, o que algumas adolescentes podem não curtir. Pode causar uma leve coceira
-        ou irritação na pele onde foi colado.
-        <Cite n={[12, 23]} />
-      </>
-    ),
-  },
+  { type: 'p', field: 'adesivo_descricao' },
+  { type: 'p', field: 'adesivo_caracteristicas' },
   { type: 'h', text: 'Contracepção de emergência (pílula do dia seguinte)' },
-  { type: 'p', text: 'A pílula do dia seguinte é um método para ser usado apenas em emergências — como quando a camisinha estoura, sai do lugar ou você esquece de tomar o anticoncepcional comum.' },
-  { type: 'p', text: 'Para que ela funcione e evite uma gravidez, o tempo é o fator mais importante.' },
+  { type: 'p', field: 'emergencia_intro' },
+  { type: 'p', field: 'emergencia_tempo_fator' },
   {
     type: 'c',
     heading: 'Atenção',
-    texts: [
-      <>
-        A bula do medicamento garante o funcionamento seguro se tomado em até 72 horas (3 dias) após a relação. O
-        limite máximo é até 5 dias. A Organização Mundial da Saúde (OMS) afirma que a pílula ainda pode funcionar
-        se tomada em até 120 horas (5 dias). Porém o ideal é tomar a pílula o mais rápido possível. Se você tomar
-        nas primeiras 12 a 24 horas após a relação desprotegida, a eficácia dela é máxima.<Cite n={23} />
-      </>,
-      'Mas atenção: a chance de o remédio falhar aumenta drasticamente a cada dia que passa. Se você deixar para tomar depois do terceiro dia, o risco de engravidar é bem maior.',
-      'Lembre-se: Ela se chama pílula "do dia seguinte": quanto mais você demorar para tomar, menor será o efeito dela no organismo!',
-    ],
+    fields: ['emergencia_atencao_prazo', 'emergencia_atencao_risco', 'emergencia_atencao_lembrete'],
   },
   {
     type: 'c',
     heading: 'Olha só...',
-    text: (
-      <>
-        O adolescente tem direito à educação sexual, ao acesso à informação sobre contracepção, à
-        confidencialidade, ao sigilo sobre sua atividade sexual e à prescrição de métodos anticoncepcionais.
-        Nenhum método contraceptivo (com exceção dos métodos definitivos) deve ser contraindicado tendo como
-        única base a idade. Por outro lado, a falta de conhecimento, aconselhamento inadequado, mitos e
-        moralidade em relação à sexualidade são comuns e interferem na escolha e no uso do método.
-        <Cite n={11} />
-      </>
-    ),
+    field: 'emergencia_direitos_adolescente',
   },
 ];
 
-export default function MetodosHormonais({ images }) {
+export default function MetodosHormonais({ images, fields = {} }) {
   const overview = images[0];
 
   return (
@@ -194,13 +139,12 @@ export default function MetodosHormonais({ images }) {
             );
           }
           if (item.type === 'c') {
+            const fieldKeys = item.fields ?? [item.field];
             return (
               <div key={i} className="rounded-[20px] bg-white shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)] p-4 space-y-3">
                 <p className="font-poppins font-bold text-brand-blue text-sm mb-1">{item.heading}</p>
-                {(item.texts ?? [item.text]).map((text, j) => (
-                  <p key={j} className="font-worksans text-black text-sm leading-[22px] tracking-[0.14px] text-justify">
-                    {text}
-                  </p>
+                {fieldKeys.map((key) => (
+                  <Paragraph key={key} html={fields[key]} />
                 ))}
               </div>
             );
@@ -216,11 +160,7 @@ export default function MetodosHormonais({ images }) {
               </ul>
             );
           }
-          return (
-            <p key={i} className="font-worksans text-black text-sm leading-[22px] tracking-[0.14px] text-justify">
-              {item.text}
-            </p>
-          );
+          return <Paragraph key={i} html={fields[item.field]} />;
         })}
       </TextCard>
 

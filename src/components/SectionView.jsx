@@ -30,6 +30,21 @@ function extractParagraphs(blocks) {
   return (blocks || []).filter((b) => b.type === 'paragraph').map((b) => b.body || '');
 }
 
+// Igual extractParagraphs, mas indexado pela chave de slot (block.heading) em
+// vez da ordem — usado pelas seções com cards/caixas de destaque, onde cada
+// trecho de texto precisa ir dentro de um container específico do layout
+// (ver fieldSchemas.js). Blocks sem heading (ex. os da Apresentação, que usa
+// a lista posicional) simplesmente não entram aqui.
+function extractFields(blocks) {
+  const fields = {};
+  for (const b of blocks || []) {
+    if (b.type === 'paragraph' && b.heading) {
+      fields[b.heading] = b.body || '';
+    }
+  }
+  return fields;
+}
+
 function PageNumber({ pageLabel }) {
   if (!pageLabel) return null;
   return (
@@ -50,7 +65,7 @@ export default function SectionView({ title, blocks, slug, pageLabel, page = 1 }
     // seções com mais de uma (ver pageCounts.js).
     return (
       <article className="relative flex-1 w-full max-w-3xl mx-auto px-4 sm:px-8 pt-8 sm:pt-12 pb-20 sm:pb-24 overflow-hidden">
-        <Layout images={extractImages(blocks)} texts={extractParagraphs(blocks)} page={page} />
+        <Layout images={extractImages(blocks)} texts={extractParagraphs(blocks)} fields={extractFields(blocks)} page={page} />
       </article>
     );
   }

@@ -2,7 +2,7 @@ import IllustrationFrame from '../IllustrationFrame.jsx';
 import PageHero from '../PageHero.jsx';
 import Paragraph from './shared/Paragraph.jsx';
 
-export default function Fecundacao({ images }) {
+export default function Fecundacao({ images, fields = {} }) {
   const [diagram] = images;
 
   return (
@@ -17,13 +17,8 @@ export default function Fecundacao({ images }) {
         }
       />
 
-      <Paragraph className="mb-4">
-        A <span className="font-semibold">fecundação</span> é o encontro do espermatozoide e do óvulo. Esse momento
-        único marca o início da gestação e de um novo ser.
-      </Paragraph>
-      <Paragraph className="mb-6">
-        Para que a fecundação aconteça, o corpo passa por uma sequência precisa de eventos:
-      </Paragraph>
+      <Paragraph className="mb-4" html={fields.fecundacao_intro} />
+      <Paragraph className="mb-6" html={fields.sequencia_intro} />
 
       <IllustrationFrame
         src={diagram?.url}

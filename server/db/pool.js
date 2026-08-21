@@ -6,9 +6,13 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const schemaPath = path.join(__dirname, 'schema.sql');
 
+// Bancos locais (Docker/localhost, ex. docker-compose.dev.yml) não falam SSL —
+// só liga ssl pro host gerenciado de produção.
+const isLocalDb = /localhost|127\.0\.0\.1/.test(process.env.DATABASE_URL || '');
+
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
+  ssl: isLocalDb ? false : { rejectUnauthorized: false },
 });
 
 // Idempotente (CREATE TABLE/INDEX IF NOT EXISTS) — roda a cada boot, mesmo

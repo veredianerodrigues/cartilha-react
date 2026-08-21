@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import '../loadEnv.js';
 import bcrypt from 'bcryptjs';
 import pool, { ensureSchema } from './pool.js';
 import { TREE, SECTION_BLOCKS } from './fullContent.js';

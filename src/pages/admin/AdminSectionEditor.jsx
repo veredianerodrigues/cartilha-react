@@ -4,6 +4,7 @@ import { useSections } from '../../context/SectionsContext.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { api } from '../../lib/api.js';
 import RichTextEditor from '../../components/admin/RichTextEditor.jsx';
+import { SECTION_FIELD_SLOTS, fieldLabel } from '../../components/sections/fieldSchemas.js';
 
 const BLOCK_TYPE_LABELS = {
   heading: 'Subtítulo',
@@ -24,7 +25,7 @@ function textToItems(text) {
     .filter(Boolean);
 }
 
-function BlockEditor({ block, sectionId, token, onSaved, onDeleted, onMove, isFirst, isLast }) {
+function BlockEditor({ block, sectionId, token, onSaved, onDeleted, onMove, isFirst, isLast, slotLabel }) {
   const [form, setForm] = useState({
     heading: block.heading || '',
     body: block.body || '',
@@ -72,30 +73,34 @@ function BlockEditor({ block, sectionId, token, onSaved, onDeleted, onMove, isFi
     <div className="border border-slate-200 rounded-xl p-4 space-y-3 bg-white">
       <div className="flex items-center justify-between">
         <span className="text-xs font-poppins font-semibold text-brand-blue uppercase tracking-wide">
-          {BLOCK_TYPE_LABELS[block.type] || block.type}
+          {slotLabel || BLOCK_TYPE_LABELS[block.type] || block.type}
         </span>
-        <div className="flex items-center gap-2">
-          <button
-            disabled={isFirst}
-            onClick={() => onMove(-1)}
-            className="text-xs px-2 py-1 rounded border border-slate-300 disabled:opacity-30"
-          >
-            ↑
-          </button>
-          <button
-            disabled={isLast}
-            onClick={() => onMove(1)}
-            className="text-xs px-2 py-1 rounded border border-slate-300 disabled:opacity-30"
-          >
-            ↓
-          </button>
-          <button onClick={() => onDeleted(block.id)} className="text-xs px-2 py-1 rounded border border-red-300 text-red-600">
-            Remover
-          </button>
-        </div>
+        {/* Blocos de slot fixo (ver fieldSchemas.js) fazem parte do design da
+            página — não dá pra mover/remover, só editar a redação. */}
+        {!slotLabel && (
+          <div className="flex items-center gap-2">
+            <button
+              disabled={isFirst}
+              onClick={() => onMove(-1)}
+              className="text-xs px-2 py-1 rounded border border-slate-300 disabled:opacity-30"
+            >
+              ↑
+            </button>
+            <button
+              disabled={isLast}
+              onClick={() => onMove(1)}
+              className="text-xs px-2 py-1 rounded border border-slate-300 disabled:opacity-30"
+            >
+              ↓
+            </button>
+            <button onClick={() => onDeleted(block.id)} className="text-xs px-2 py-1 rounded border border-red-300 text-red-600">
+              Remover
+            </button>
+          </div>
+        )}
       </div>
 
-      {(block.type === 'heading' || block.type === 'callout') && (
+      {!slotLabel && (block.type === 'heading' || block.type === 'callout') && (
         <input
           value={form.heading}
           onChange={(e) => set('heading', e.target.value)}
@@ -154,6 +159,7 @@ export default function AdminSectionEditor() {
   const [status, setStatus] = useState('loading');
 
   const node = flatSections.find((s) => String(s.id) === id);
+  const slots = node ? SECTION_FIELD_SLOTS[node.slug] : null;
 
   useEffect(() => {
     if (!node) return;
@@ -208,6 +214,13 @@ export default function AdminSectionEditor() {
 
         {status === 'ready' && (
           <>
+            {slots && (
+              <p className="text-xs text-slate-500 -mt-2">
+                Esta página tem um design próprio — os campos abaixo são fixos (definidos no código), só a redação é
+                editável aqui.
+              </p>
+            )}
+
             <div className="space-y-3">
               {blocks.map((block, i) => (
                 <BlockEditor
@@ -220,29 +233,32 @@ export default function AdminSectionEditor() {
                   onMove={(dir) => handleMove(i, dir)}
                   isFirst={i === 0}
                   isLast={i === blocks.length - 1}
+                  slotLabel={slots ? fieldLabel(node.slug, block.heading) : null}
                 />
               ))}
             </div>
 
-            <div className="flex items-center gap-2 pt-4 border-t border-slate-200">
-              <select
-                value={newType}
-                onChange={(e) => setNewType(e.target.value)}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
-              >
-                {Object.entries(BLOCK_TYPE_LABELS).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-              <button
-                onClick={handleAddBlock}
-                className="px-4 py-2 rounded-full bg-brand-blue text-white text-sm font-poppins hover:opacity-90 transition"
-              >
-                Adicionar bloco
-              </button>
-            </div>
+            {!slots && (
+              <div className="flex items-center gap-2 pt-4 border-t border-slate-200">
+                <select
+                  value={newType}
+                  onChange={(e) => setNewType(e.target.value)}
+                  className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                >
+                  {Object.entries(BLOCK_TYPE_LABELS).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  onClick={handleAddBlock}
+                  className="px-4 py-2 rounded-full bg-brand-blue text-white text-sm font-poppins hover:opacity-90 transition"
+                >
+                  Adicionar bloco
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>
