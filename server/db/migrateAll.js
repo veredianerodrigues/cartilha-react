@@ -25,6 +25,7 @@ const SCRIPTS = [
   'migrateDireitosSexuaisReprodutivosText.js',
   'migrateGravidezAdolescenciaMudancasText.js',
   'migrateOrientacaoQuemPodeAjudarText.js',
+  'migrateReferenciasText.js',
 ];
 
 let failed = false;

@@ -16,6 +16,11 @@ export function SectionsProvider({ children }) {
   const [tree, setTree] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // {idEstável: posição atual} — resolve <sup data-citation data-n="N"> pra
+  // que número mostrar, na ordem em que as referências estão AGORA (podem
+  // ter sido reordenadas pelo admin desde que a citação foi escrita). Ver
+  // RichHtml.jsx e migrateReferenciasText.js.
+  const [citationMap, setCitationMap] = useState({});
 
   const reload = useCallback(() => {
     setLoading(true);
@@ -29,6 +34,19 @@ export function SectionsProvider({ children }) {
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
+
+    api
+      .getSection('referencias')
+      .then((data) => {
+        const map = {};
+        (data.blocks || [])
+          .filter((b) => b.type === 'paragraph' && b.heading)
+          .forEach((b, i) => {
+            map[b.heading] = i + 1;
+          });
+        setCitationMap(map);
+      })
+      .catch(() => {});
   }, []);
 
   useEffect(reload, [reload]);
@@ -36,7 +54,7 @@ export function SectionsProvider({ children }) {
   const flatSections = useMemo(() => flatten(tree), [tree]);
 
   return (
-    <SectionsContext.Provider value={{ tree, flatSections, loading, error, reload }}>
+    <SectionsContext.Provider value={{ tree, flatSections, loading, error, reload, citationMap }}>
       {children}
     </SectionsContext.Provider>
   );

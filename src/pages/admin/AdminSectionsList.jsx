@@ -43,14 +43,10 @@ function Row({ node, indent }) {
   );
 }
 
-// "referencias" ainda não foi migrada pro editor (o número de cada
-// referência é citado por posição em todas as outras páginas — reordenar
-// pelo admin quebraria as citações do site inteiro em silêncio, ver decisão
-// registrada na conversa). Ela ainda tem um block "list" sobrando do seed
-// antigo, então apareceria como "Editável" mesmo sem o Referencias.jsx ler
-// nada do banco — edição lá não teria efeito nenhum na página pública.
-// Escondida da listagem do admin até isso ser resolvido, pra não confundir.
-const HIDDEN_SLUGS = ['referencias'];
+// Seções escondidas da listagem do admin (nenhuma no momento). "referencias"
+// voltou a aparecer normalmente desde que passou a ser editável com
+// renumeração automática — ver migrateReferenciasText.js e RichHtml.jsx.
+const HIDDEN_SLUGS = [];
 
 export default function AdminSectionsList() {
   const { tree, loading } = useSections();

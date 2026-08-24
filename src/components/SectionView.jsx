@@ -45,6 +45,17 @@ function extractFields(blocks) {
   return fields;
 }
 
+// Igual extractParagraphs, mas mantendo a chave de estabilidade (block.heading)
+// ao lado do texto, em ordem — usado pela Referências, onde a lista inteira é
+// livre (add/mover/remover pelo admin), então não dá pra indexar por chave
+// fixa como em extractFields. A chave aqui é o id ESTÁVEL da referência (ver
+// migrateReferenciasText.js), não a posição de exibição.
+function extractOrderedFields(blocks) {
+  return (blocks || [])
+    .filter((b) => b.type === 'paragraph')
+    .map((b) => ({ key: b.heading, html: b.body || '' }));
+}
+
 function PageNumber({ pageLabel }) {
   if (!pageLabel) return null;
   return (
@@ -65,7 +76,13 @@ export default function SectionView({ title, blocks, slug, pageLabel, page = 1 }
     // seções com mais de uma (ver pageCounts.js).
     return (
       <article className="relative flex-1 w-full max-w-3xl mx-auto px-4 sm:px-8 pt-8 sm:pt-12 pb-20 sm:pb-24 overflow-hidden">
-        <Layout images={extractImages(blocks)} texts={extractParagraphs(blocks)} fields={extractFields(blocks)} page={page} />
+        <Layout
+          images={extractImages(blocks)}
+          texts={extractParagraphs(blocks)}
+          fields={extractFields(blocks)}
+          orderedFields={extractOrderedFields(blocks)}
+          page={page}
+        />
       </article>
     );
   }

@@ -28,6 +28,7 @@
     "migrate-direitos-sexuais-reprodutivos": "node server/db/migrateDireitosSexuaisReprodutivosText.js",
     "migrate-gravidez-adolescencia-mudancas": "node server/db/migrateGravidezAdolescenciaMudancasText.js",
     "migrate-orientacao-quem-pode-ajudar": "node server/db/migrateOrientacaoQuemPodeAjudarText.js",
+    "migrate-referencias": "node server/db/migrateReferenciasText.js",
     "migrate-all": "node server/db/migrateAll.js",
     "sync-images-from-prod": "node server/db/syncImagesFromProd.js"
   },

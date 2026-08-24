@@ -36,9 +36,24 @@ router.post('/sections/:id/blocks', async (req, res) => {
   const section = rows[0];
   if (!section) return res.status(404).json({ error: 'Seção não encontrada.' });
 
-  const { type, heading = null, body = null, items = null, image_url = null, image_caption = null } = req.body || {};
+  const { type, heading: requestedHeading = null, body = null, items = null, image_url = null, image_caption = null } =
+    req.body || {};
   if (!BLOCK_TYPES.includes(type)) {
     return res.status(400).json({ error: `Tipo de bloco inválido. Use um de: ${BLOCK_TYPES.join(', ')}` });
+  }
+
+  // Em "referencias", heading é o id ESTÁVEL que as citações apontam (ver
+  // migrateReferenciasText.js) — não deixamos o cliente escolher, pra nunca
+  // colidir com um id já citado em algum lugar da cartilha. Gera o próximo
+  // número livre automaticamente.
+  let heading = requestedHeading;
+  if (section.slug === 'referencias' && type === 'paragraph') {
+    const { rows: idRows } = await pool.query(
+      "SELECT heading FROM blocks WHERE section_id = $1 AND heading ~ '^[0-9]+$'",
+      [section.id]
+    );
+    const maxId = idRows.reduce((max, r) => Math.max(max, parseInt(r.heading, 10)), 0);
+    heading = String(maxId + 1);
   }
 
   const { rows: orderRows } = await pool.query(
