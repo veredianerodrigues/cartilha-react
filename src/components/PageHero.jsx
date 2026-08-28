@@ -1,11 +1,18 @@
-// Faixa do cabeçalho reservando o mesmo espaço de antes (pra não deslocar o
-// título/conteúdo abaixo), mas sem o bloco colorido — só o número da página.
-// -mx cancela o padding horizontal do <article> e -mt cancela o padding
-// superior (py-8 sm:py-12 em SectionView.jsx), pra manter a área de toque
-// alinhada com as bordas reais da página.
+import PageDecoration from './PageDecoration.jsx';
+
+// Faixa do cabeçalho: -mx cancela o padding horizontal do <article> e -mt
+// cancela o padding superior (py-8 sm:py-12 em SectionView.jsx), pra manter a
+// área de toque alinhada com as bordas reais da página. Altura reduzida (era
+// h-24/h-28, deixando um vão vazio grande demais acima do título) e com o
+// blob do design original de volta, só que translúcido em vez da cor sólida —
+// ver PageDecoration.jsx.
 export function PageHeroBlob({ pageLabel, className = '' }) {
   return (
-    <div className={`relative h-24 sm:h-28 -mx-4 sm:-mx-8 -mt-8 sm:-mt-12 mb-6 ${className}`}>
+    <div className={`relative h-12 sm:h-14 -mx-4 sm:-mx-8 -mt-8 sm:-mt-12 mb-4 overflow-hidden ${className}`}>
+      <PageDecoration
+        className="max-w-none"
+        style={{ top: '-70%', right: '-12%', width: '220px' }}
+      />
       {pageLabel && (
         <p className="absolute top-3 right-4 sm:top-4 sm:right-8 font-worksans text-brand-darker text-sm tracking-[0.14px]">
           {pageLabel}
