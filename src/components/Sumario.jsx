@@ -3,10 +3,15 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSections } from '../context/SectionsContext.jsx';
 
 function linkClasses(active, isChapter) {
-  const base = 'block rounded-lg px-3 py-1.5 text-sm font-worksans transition';
+  const base = 'flex items-baseline gap-2 rounded-lg px-3 py-1.5 text-sm font-worksans transition';
   const chapterFont = isChapter ? 'font-poppins font-medium' : '';
   if (active) return `${base} ${chapterFont} bg-brand-blue text-white`;
   return `${base} ${chapterFont} text-brand-dark hover:bg-[#e5f2f8]`;
+}
+
+function PageBadge({ page, active }) {
+  if (!page) return null;
+  return <span className={`shrink-0 text-xs ${active ? 'text-white/80' : 'text-slate-400'}`}>{page}</span>;
 }
 
 function TreeList({ nodes, activeSlug, onNavigate }) {
@@ -15,7 +20,8 @@ function TreeList({ nodes, activeSlug, onNavigate }) {
       {nodes.map((node) => (
         <li key={node.slug}>
           <Link to={`/secao/${node.slug}`} onClick={onNavigate} className={linkClasses(node.slug === activeSlug, true)}>
-            {node.title}
+            <span className="min-w-0 flex-1">{node.title}</span>
+            <PageBadge page={node.page_label} active={node.slug === activeSlug} />
           </Link>
           {node.children?.length > 0 && (
             <ul className="ml-3 border-l border-slate-200 pl-2 mt-1 space-y-1">
@@ -26,7 +32,8 @@ function TreeList({ nodes, activeSlug, onNavigate }) {
                     onClick={onNavigate}
                     className={linkClasses(child.slug === activeSlug, false)}
                   >
-                    {child.title}
+                    <span className="min-w-0 flex-1">{child.title}</span>
+                    <PageBadge page={child.page_label} active={child.slug === activeSlug} />
                   </Link>
                 </li>
               ))}
