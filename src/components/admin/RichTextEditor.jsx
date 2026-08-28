@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import TextAlign from '@tiptap/extension-text-align';
@@ -8,11 +8,20 @@ import { Node, mergeAttributes } from '@tiptap/core';
 // seleção), então é um Node atômico, não uma Mark — mesma lógica do <Cite n={...}/>
 // usado nas seções bespoke, só que salvo como HTML (<sup data-citation data-n="...">)
 // em vez de JSX, pra poder ser editado sem mexer em código.
+//
+// data-n guarda o(s) id(s) ESTÁVEL(EIS) da referência (block.heading), igual
+// à página pública (ver RichHtml.jsx) — mas o texto exibido dentro do <sup>
+// é a posição ATUAL na lista de Referências (headingToPosition, vindo de
+// referenceOptions), pra quem edita ver o mesmo número que o leitor vê, em
+// vez do id interno cru. Só o texto muda; data-n nunca é afetado.
 const Citation = Node.create({
   name: 'citation',
   group: 'inline',
   inline: true,
   atom: true,
+  addOptions() {
+    return { headingToPosition: {} };
+  },
   addAttributes() {
     return {
       n: {
@@ -26,13 +35,18 @@ const Citation = Node.create({
     return [{ tag: 'sup[data-citation]' }];
   },
   renderHTML({ node, HTMLAttributes }) {
+    const ids = (node.attrs.n || '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const label = ids.map((id) => this.options.headingToPosition[id] ?? id).join(',');
     return [
       'sup',
       mergeAttributes(HTMLAttributes, {
         'data-citation': '',
         class: 'text-[0.7em] leading-none align-super',
       }),
-      node.attrs.n,
+      label,
     ];
   },
   addCommands() {
@@ -157,40 +171,54 @@ function CitationModal({ referenceOptions, onConfirm, onClose }) {
 export default function RichTextEditor({ value, onChange, referenceOptions = [] }) {
   const [citationModalOpen, setCitationModalOpen] = useState(false);
 
-  const editor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        heading: false,
-        // Classes coladas direto no HTML que o editor gera — assim a lista já
-        // sai com o visual padrão da cartilha (marcador, recuo, tipografia)
-        // não importa onde a página bespoke jogue esse HTML na tela.
-        bulletList: { HTMLAttributes: { class: 'list-disc pl-5 space-y-2' } },
-        listItem: {
-          HTMLAttributes: {
-            class: 'font-worksans text-black text-sm leading-[22px] tracking-[0.14px] text-justify',
+  const headingToPosition = useMemo(() => {
+    const map = {};
+    referenceOptions.forEach((r) => {
+      map[r.heading] = r.position;
+    });
+    return map;
+  }, [referenceOptions]);
+
+  const editor = useEditor(
+    {
+      extensions: [
+        StarterKit.configure({
+          heading: false,
+          // Classes coladas direto no HTML que o editor gera — assim a lista já
+          // sai com o visual padrão da cartilha (marcador, recuo, tipografia)
+          // não importa onde a página bespoke jogue esse HTML na tela.
+          bulletList: { HTMLAttributes: { class: 'list-disc pl-5 space-y-2' } },
+          listItem: {
+            HTMLAttributes: {
+              class: 'font-worksans text-black text-sm leading-[22px] tracking-[0.14px] text-justify',
+            },
           },
+          orderedList: false,
+          blockquote: false,
+          codeBlock: false,
+          horizontalRule: false,
+          strike: false,
+          italic: false,
+        }),
+        Citation.configure({ headingToPosition }),
+        // Alinhamento por parágrafo — mesmo padrão visual do resto da cartilha
+        // (texto justificado) é o default; o admin pode trocar por parágrafo.
+        TextAlign.configure({ types: ['paragraph'], defaultAlignment: 'justify' }),
+      ],
+      content: value || '',
+      onUpdate: ({ editor }) => onChange(editor.getHTML()),
+      editorProps: {
+        attributes: {
+          class:
+            'font-worksans text-sm leading-[22px] tracking-[0.14px] text-black text-justify min-h-[110px] px-3 py-2 focus:outline-none',
         },
-        orderedList: false,
-        blockquote: false,
-        codeBlock: false,
-        horizontalRule: false,
-        strike: false,
-        italic: false,
-      }),
-      Citation,
-      // Alinhamento por parágrafo — mesmo padrão visual do resto da cartilha
-      // (texto justificado) é o default; o admin pode trocar por parágrafo.
-      TextAlign.configure({ types: ['paragraph'], defaultAlignment: 'justify' }),
-    ],
-    content: value || '',
-    onUpdate: ({ editor }) => onChange(editor.getHTML()),
-    editorProps: {
-      attributes: {
-        class:
-          'font-worksans text-sm leading-[22px] tracking-[0.14px] text-black text-justify min-h-[110px] px-3 py-2 focus:outline-none',
       },
     },
-  });
+    // Recria o editor quando o mapa heading->posição muda (ex.: referenceOptions
+    // chega depois do fetch), pra rótulos de citação já existentes no texto
+    // se atualizarem também — não só citações novas.
+    [headingToPosition]
+  );
 
   function handleCitationConfirm(n) {
     editor?.chain().focus().insertCitation(n).run();
