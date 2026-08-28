@@ -41,7 +41,7 @@ export default function Referencias({ orderedFields = [] }) {
               }`}
             >
               <span className="font-semibold tabular-nums">{i + 1}.</span>
-              <RichHtml className="text-justify break-words [&_p]:m-0" html={entry.html} />
+              <RichHtml className="min-w-0 text-justify break-words [&_p]:m-0" html={entry.html} />
             </li>
           );
         })}

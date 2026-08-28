@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import TextAlign from '@tiptap/extension-text-align';
@@ -65,13 +65,14 @@ function ToolbarButton({ active, onClick, title, children }) {
   );
 }
 
-function CitationModal({ onConfirm, onClose }) {
-  const [value, setValue] = useState('');
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+// Escolhe pela lista (não digita número) porque o valor salvo precisa ser o
+// id ESTÁVEL da referência (block.heading), não a posição visível — se
+// deixasse digitar a posição, a citação quebraria assim que alguém inserisse
+// ou reordenasse uma referência antes dela (ver RichHtml.jsx e
+// SectionsContext.jsx). O número mostrado aqui é só pra achar a referência
+// certa; o que vai pro HTML é o heading correspondente.
+function CitationModal({ referenceOptions, onConfirm, onClose }) {
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     function handleKeyDown(e) {
@@ -81,11 +82,16 @@ function CitationModal({ onConfirm, onClose }) {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
+  function toggle(heading) {
+    setSelected((s) => (s.includes(heading) ? s.filter((h) => h !== heading) : [...s, heading]));
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    const cleaned = value.trim();
-    if (!cleaned) return;
-    onConfirm(cleaned);
+    if (!selected.length) return;
+    // Mantém a ordem de exibição da lista de Referências, não a ordem de clique.
+    const ordered = referenceOptions.filter((r) => selected.includes(r.heading)).map((r) => r.heading);
+    onConfirm(ordered.join(','));
   }
 
   return (
@@ -99,18 +105,33 @@ function CitationModal({ onConfirm, onClose }) {
       <form
         onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit}
-        className="w-full max-w-xs rounded-xl bg-white p-4 shadow-xl space-y-3"
+        className="w-full max-w-sm rounded-xl bg-white p-4 shadow-xl space-y-3"
       >
         <p className="font-poppins font-semibold text-brand-dark text-sm">Inserir citação</p>
-        <div>
-          <input
-            ref={inputRef}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            placeholder="Ex.: 19 ou 24,8"
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/40"
-          />
-          <p className="text-xs text-slate-500 mt-1">Número(s) da referência, separados por vírgula.</p>
+        <p className="text-xs text-slate-500">
+          Marque a(s) referência(s). O número acompanha a posição atual em Referências automaticamente, mesmo
+          que a lista mude depois.
+        </p>
+        <div className="max-h-64 overflow-y-auto space-y-1 border border-slate-200 rounded-lg p-2">
+          {referenceOptions.length === 0 && (
+            <p className="text-xs text-slate-400 italic px-1 py-2">Nenhuma referência cadastrada ainda.</p>
+          )}
+          {referenceOptions.map((ref) => (
+            <label
+              key={ref.heading}
+              className="flex items-start gap-2 text-xs text-brand-dark px-1.5 py-1 rounded hover:bg-slate-50 cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                className="mt-0.5"
+                checked={selected.includes(ref.heading)}
+                onChange={() => toggle(ref.heading)}
+              />
+              <span>
+                <span className="font-semibold tabular-nums">{ref.position}.</span> {ref.preview}
+              </span>
+            </label>
+          ))}
         </div>
         <div className="flex justify-end gap-2">
           <button
@@ -122,7 +143,7 @@ function CitationModal({ onConfirm, onClose }) {
           </button>
           <button
             type="submit"
-            disabled={!value.trim()}
+            disabled={!selected.length}
             className="px-3 py-1.5 rounded-full text-xs font-poppins bg-brand-dark text-white disabled:opacity-40"
           >
             Inserir
@@ -133,7 +154,7 @@ function CitationModal({ onConfirm, onClose }) {
   );
 }
 
-export default function RichTextEditor({ value, onChange }) {
+export default function RichTextEditor({ value, onChange, referenceOptions = [] }) {
   const [citationModalOpen, setCitationModalOpen] = useState(false);
 
   const editor = useEditor({
@@ -229,7 +250,11 @@ export default function RichTextEditor({ value, onChange }) {
       <EditorContent editor={editor} />
 
       {citationModalOpen && (
-        <CitationModal onConfirm={handleCitationConfirm} onClose={() => setCitationModalOpen(false)} />
+        <CitationModal
+          referenceOptions={referenceOptions}
+          onConfirm={handleCitationConfirm}
+          onClose={() => setCitationModalOpen(false)}
+        />
       )}
     </div>
   );

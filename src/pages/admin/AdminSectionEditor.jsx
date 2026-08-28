@@ -25,7 +25,13 @@ function textToItems(text) {
     .filter(Boolean);
 }
 
-function BlockEditor({ block, sectionId, token, onSaved, onDeleted, onMove, isFirst, isLast, slotLabel }) {
+function stripHtml(html) {
+  const div = document.createElement('div');
+  div.innerHTML = html || '';
+  return div.textContent || '';
+}
+
+function BlockEditor({ block, sectionId, token, onSaved, onDeleted, onMove, isFirst, isLast, slotLabel, referenceOptions }) {
   const [form, setForm] = useState({
     heading: block.heading || '',
     body: block.body || '',
@@ -110,7 +116,7 @@ function BlockEditor({ block, sectionId, token, onSaved, onDeleted, onMove, isFi
       )}
 
       {(block.type === 'paragraph' || block.type === 'callout') && (
-        <RichTextEditor value={form.body} onChange={(html) => set('body', html)} />
+        <RichTextEditor value={form.body} onChange={(html) => set('body', html)} referenceOptions={referenceOptions} />
       )}
 
       {(block.type === 'quote_grid' || block.type === 'list') && (
@@ -157,6 +163,7 @@ export default function AdminSectionEditor() {
   const [blocks, setBlocks] = useState([]);
   const [newType, setNewType] = useState('paragraph');
   const [status, setStatus] = useState('loading');
+  const [referenceOptions, setReferenceOptions] = useState([]);
 
   const node = flatSections.find((s) => String(s.id) === id);
   const slots = node ? SECTION_FIELD_SLOTS[node.slug] : null;
@@ -172,6 +179,25 @@ export default function AdminSectionEditor() {
         setStatus('ready');
       })
       .catch(() => setStatus('error'));
+  }, [node?.slug]);
+
+  // Alimenta o seletor de citação (RichTextEditor) com a lista ATUAL de
+  // Referências — precisa ser refeita sempre que essa seção é editada em
+  // outra aba/sessão, senão o seletor mostra posições desatualizadas.
+  useEffect(() => {
+    api
+      .getSection('referencias')
+      .then((data) => {
+        const opts = (data.blocks || [])
+          .filter((b) => b.type === 'paragraph' && b.heading)
+          .map((b, i) => ({
+            heading: b.heading,
+            position: i + 1,
+            preview: stripHtml(b.body).slice(0, 90),
+          }));
+        setReferenceOptions(opts);
+      })
+      .catch(() => setReferenceOptions([]));
   }, [node?.slug]);
 
   async function handleAddBlock() {
@@ -234,6 +260,7 @@ export default function AdminSectionEditor() {
                   isFirst={i === 0}
                   isLast={i === blocks.length - 1}
                   slotLabel={slots ? fieldLabel(node.slug, block.heading) : null}
+                  referenceOptions={referenceOptions}
                 />
               ))}
             </div>
