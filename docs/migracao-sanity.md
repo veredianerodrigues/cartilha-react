@@ -21,13 +21,13 @@ Projeto Sanity: `0gjumgjk`, dataset `production` (público: o site lê sem token
 
 Pacote separado, porque o Sanity 6 exige React 19 e o app está no React 18.
 
-- `schemaTypes/secao.ts` — documento `secao`: `titulo`, `subtitulo`, `slug`, `numeroPagina`, `ordem`, `pai` (seção-mãe, opcional) e `blocos`.
+- `schemaTypes/secao.ts` — documento `secao`: `titulo`, `subtitulo`, `slug`, `numeroPagina`, `orderRank` (posição, definida arrastando as seções no painel; plugin `@sanity/orderable-document-list`), `pai` (seção-mãe, opcional) e `blocos`.
 - `schemaTypes/blocos.ts` — três tipos de bloco:
   - **Texto** (`blocoTexto`): tipo de caixa (normal, Saiba mais, Você sabia, Fique atenta, Importante, Olha só, Dica), título opcional e conteúdo em Portable Text.
   - **Imagem** (`blocoImagem`): imagem, texto alternativo, legenda ("Figura: …") e fonte, mais **tamanho** (automático = largura total, média = até 440 px, pequena = até 260 px) e **alinhamento** (esquerda, centro, direita). O alinhamento só se nota quando o tamanho não é automático. A grade de imagens não usa esses campos.
   - **Grade de imagens** (`blocoGradeImagens`): mínimo de 2 imagens, exibidas em grade ou carrossel.
 - `schemaTypes/portableText.ts` — negrito, itálico, sublinhado, link, listas e **citação como objeto inline** (menu "Inserir"), que aponta para uma `referencia`.
-- `schemaTypes/referencia.ts` — `referencia` (uma obra) e `listaReferencias` (singleton, id `lista-referencias`): a **posição na lista é o número exibido na citação**.
+- `schemaTypes/referencia.ts` — `referencia` (uma obra). O site ordena as obras em ordem alfabética (ABNT) e a **posição é o número exibido na citação**. Não há cadastro de ordem.
 - `structure.ts` — painel com as seções na ordem da cartilha, a ordem das referências e as obras.
 - Schema publicado no projeto (`npx sanity schema deploy`) e validado (`sanity schema validate`, `tsc --noEmit`).
 - CORS liberado, sem credenciais, para `http://localhost:5173` e `https://gravidezadolescencia.com.br`.
@@ -64,7 +64,7 @@ Com um dataset temporário (6 documentos, já apagado) e o app local no navegado
 - as 6 imagens carregam;
 - a numeração das citações segue a ordem da lista (invertida a ordem, o número mudou);
 - o link da citação rola até a referência e a destaca;
-- o índice da seção-mãe e o sumário respeitam `ordem` e `pai`;
+- o índice da seção-mãe e o sumário respeitam a ordem (`orderRank`) e `pai`;
 - `vite build` passa; `tsc --noEmit` e `sanity schema validate` do Studio passam.
 
 ## Como rodar
@@ -75,7 +75,7 @@ Studio (`studio/`): `npm install`, `.env` com `SANITY_STUDIO_PROJECT_ID` e `SANI
 
 ## Comportamentos conhecidos
 
-- Citação para uma referência que não está em `listaReferencias` aparece sem número (não há fallback de propósito).
+- Citação para uma referência que não existe mais (obra apagada) aparece sem número (não há fallback de propósito).
 - `variante` do bloco de texto é obrigatória no Studio; no frontend, uma variante inválida gera erro.
 - O texto fica alinhado à esquerda (decisão: a cartilha não usa texto justificado); o alinhamento por parágrafo do Tiptap não foi levado.
 - Texto alternativo da imagem é só um aviso de validação, não obrigatório.

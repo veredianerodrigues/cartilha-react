@@ -1,17 +1,12 @@
+import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
 import type {StructureResolver} from 'sanity/structure'
 
-export const structure: StructureResolver = (S) =>
+export const structure: StructureResolver = (S, context) =>
   S.list()
     .title('Cartilha')
     .items([
-      S.listItem()
-        .title('Seções')
-        .child(
-          S.documentList()
-            .title('Seções (na ordem da cartilha)')
-            .filter('_type == "secao"')
-            .defaultOrdering([{field: 'ordem', direction: 'asc'}]),
-        ),
+      // Arraste as seções para mudar a ordem da cartilha.
+      orderableDocumentListDeskItem({type: 'secao', title: 'Seções (arraste para ordenar)', S, context}),
       S.divider(),
       S.documentTypeListItem('referencia').title('Referências (obras)'),
     ])

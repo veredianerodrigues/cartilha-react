@@ -1,15 +1,14 @@
 import { client } from './sanity.js';
 
-// Uma única consulta traz o conteúdo inteiro: seções (na ordem da cartilha, com blocos)
+// Uma única consulta traz o conteúdo inteiro: seções (na ordem definida arrastando no Studio, com blocos)
 // e todas as referências (o número da citação é a posição na ordem alfabética).
 const CONTENT_QUERY = `{
-  "secoes": *[_type == "secao"] | order(ordem asc) {
+  "secoes": *[_type == "secao"] | order(orderRank asc) {
     _id,
     titulo,
     subtitulo,
     "slug": slug.current,
     numeroPagina,
-    ordem,
     "paiId": pai._ref,
     "blocos": coalesce(blocos[] {
       _key,
@@ -31,6 +30,7 @@ const CONTENT_QUERY = `{
         texto,
         imagem { "tipo": coalesce(tipo, "ilustracao"), alt, legenda, fonte, imagem }
       },
+      imagemLateral { "tipo": coalesce(tipo, "ilustracao"), alt, legenda, fonte, imagem },
       lembretes,
       nota
     }, [])

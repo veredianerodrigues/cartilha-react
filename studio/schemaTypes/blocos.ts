@@ -1,5 +1,25 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
+/**
+ * Controle da paginação do livro, comum a todos os blocos. O site divide o conteúdo em
+ * folhas conforme o tamanho da tela; este campo evita separações ruins.
+ */
+export const QUEBRAS = [
+  {title: 'Automático', value: 'auto'},
+  {title: 'Manter junto com o bloco seguinte', value: 'comProximo'},
+  {title: 'Começar numa folha nova', value: 'novaFolha'},
+]
+
+const campoQuebra = defineField({
+  name: 'quebra',
+  title: 'Na paginação',
+  type: 'string',
+  description:
+    'Automático: o site decide onde virar a folha. "Manter junto com o bloco seguinte": este bloco e o próximo nunca ficam em folhas diferentes (use para um texto curto que apresenta uma imagem, por exemplo). "Começar numa folha nova": o bloco abre sempre uma folha.',
+  options: {list: QUEBRAS, layout: 'radio'},
+  initialValue: 'auto',
+})
+
 /** Variantes visuais de um bloco de texto (o estilo de cada uma fica no frontend). */
 export const VARIANTES_TEXTO = [
   {title: 'Texto normal', value: 'normal'},
@@ -102,6 +122,7 @@ export const blocoTexto = defineType({
       type: 'string',
       description: 'Aparece em letra pequena abaixo da caixa. Ex.: "Fonte: Ministério da Saúde (2022)."',
     }),
+    campoQuebra,
   ],
   preview: {
     select: {titulo: 'titulo', variante: 'variante', conteudo: 'conteudo'},
@@ -162,6 +183,7 @@ export const blocoImagem = defineType({
       initialValue: 'centro',
       validation: (rule) => rule.required(),
     }),
+    campoQuebra,
   ],
   preview: {
     select: {legenda: 'imagem.legenda', fonte: 'imagem.fonte', media: 'imagem.imagem', tamanho: 'tamanho'},
@@ -174,17 +196,29 @@ export const blocoImagem = defineType({
 })
 
 /**
- * Passo a passo em HTML (no lugar de infográficos com texto dentro da imagem): passos
- * numerados com título, texto e um desenho opcional, mais lembretes curtos no final.
- * O texto fica legível em qualquer tela, segue a tipografia da cartilha e é editável.
+ * Passo a passo / lista ilustrada em HTML (no lugar de infográficos com texto dentro da
+ * imagem). Três estilos: passos numerados, lista de cartões sem número, e grade de itens
+ * pequenos com foto e legenda (ex.: sintomas). O texto fica legível em qualquer tela,
+ * segue a tipografia da cartilha e é editável.
  */
+export const ESTILOS_PASSOS = [
+  {title: 'Passos numerados (sequência)', value: 'numerado'},
+  {title: 'Lista de cartões (sem número)', value: 'lista'},
+  {title: 'Grade de itens com foto (ex.: sintomas)', value: 'grade'},
+]
+
 export const passoItem = defineType({
   name: 'passoItem',
   title: 'Passo',
   type: 'object',
   fields: [
     defineField({name: 'titulo', title: 'Título do passo', type: 'string', validation: (rule) => rule.required()}),
-    defineField({name: 'texto', title: 'Texto', type: 'portableText', validation: (rule) => rule.required()}),
+    defineField({
+      name: 'texto',
+      title: 'Texto (opcional na grade)',
+      type: 'portableText',
+      description: 'No estilo Grade, o título já serve de legenda e o texto pode ficar vazio.',
+    }),
     defineField({
       name: 'imagem',
       title: 'Desenho (opcional)',
@@ -199,16 +233,32 @@ export const passoItem = defineType({
 
 export const blocoPassos = defineType({
   name: 'blocoPassos',
-  title: 'Passo a passo',
+  title: 'Passo a passo / lista ilustrada',
   type: 'object',
   fields: [
     defineField({name: 'titulo', title: 'Título', type: 'string', description: 'Ex.: "Como usar o preservativo externo".'}),
+    defineField({
+      name: 'estilo',
+      title: 'Estilo',
+      type: 'string',
+      options: {list: ESTILOS_PASSOS, layout: 'radio'},
+      initialValue: 'numerado',
+      validation: (rule) => rule.required(),
+    }),
     defineField({
       name: 'passos',
       title: 'Passos',
       type: 'array',
       of: [defineArrayMember({type: 'passoItem'})],
       validation: (rule) => rule.required().min(2),
+    }),
+    defineField({
+      name: 'imagemLateral',
+      title: 'Imagem ao lado (opcional)',
+      type: 'imagemItem',
+      description:
+        'Só no estilo Grade: a imagem ocupa a primeira coluna (25% da largura) e a grade fica ao lado. Ex.: a gestante ao lado dos sintomas. Prefira imagem em pé, sem fundo ou com fundo branco.',
+      hidden: ({parent}) => parent?.estilo !== 'grade',
     }),
     defineField({
       name: 'lembretes',
@@ -224,12 +274,13 @@ export const blocoPassos = defineType({
       description: 'Fecho do passo a passo, ex.: "A fecundação geralmente acontece na tuba uterina…".',
     }),
     defineField({name: 'fonte', title: 'Fonte', type: 'string'}),
+    campoQuebra,
   ],
   preview: {
-    select: {titulo: 'titulo', passos: 'passos'},
-    prepare: ({titulo, passos}) => ({
+    select: {titulo: 'titulo', passos: 'passos', estilo: 'estilo'},
+    prepare: ({titulo, passos, estilo}) => ({
       title: titulo || 'Passo a passo',
-      subtitle: `${(passos ?? []).length} passos`,
+      subtitle: `${ESTILOS_PASSOS.find((e) => e.value === estilo)?.title ?? ''} · ${(passos ?? []).length} itens`,
     }),
   },
 })
@@ -260,6 +311,7 @@ export const blocoGradeImagens = defineType({
       },
       initialValue: 'grade',
     }),
+    campoQuebra,
   ],
   preview: {
     select: {imagens: 'imagens', modo: 'modo', media: 'imagens.0.imagem'},

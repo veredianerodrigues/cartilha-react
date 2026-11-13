@@ -1,4 +1,5 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {orderRankField} from '@sanity/orderable-document-list'
 
 /**
  * Uma seção da cartilha = um documento. O conteúdo é uma lista ordenável de blocos:
@@ -34,13 +35,8 @@ export const secao = defineType({
       type: 'string',
       description: 'Como aparece impresso, ex.: "05".',
     }),
-    defineField({
-      name: 'ordem',
-      title: 'Ordem',
-      type: 'number',
-      description: 'Posição da seção na cartilha (1, 2, 3...).',
-      validation: (rule) => rule.required().integer().min(1),
-    }),
+    // Posição na cartilha: definida arrastando as seções na lista (Cartilha → Seções).
+    orderRankField({type: 'secao'}),
     defineField({
       name: 'pai',
       title: 'Seção-mãe (opcional)',
@@ -61,14 +57,11 @@ export const secao = defineType({
       ],
     }),
   ],
-  orderings: [
-    {title: 'Ordem da cartilha', name: 'ordemAsc', by: [{field: 'ordem', direction: 'asc'}]},
-  ],
   preview: {
-    select: {titulo: 'titulo', subtitulo: 'subtitulo', numero: 'numeroPagina', ordem: 'ordem'},
-    prepare: ({titulo, subtitulo, numero, ordem}) => ({
+    select: {titulo: 'titulo', subtitulo: 'subtitulo', numero: 'numeroPagina'},
+    prepare: ({titulo, subtitulo, numero}) => ({
       title: titulo,
-      subtitle: [numero ? `Página ${numero}` : ordem ? `Ordem ${ordem}` : null, subtitulo]
+      subtitle: [numero ? `Página ${numero}` : null, subtitulo]
         .filter(Boolean)
         .join(' · '),
     }),

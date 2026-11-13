@@ -27,6 +27,11 @@ export default {
         destaque: '#156e9a',
         'sobre-destaque': '#ffffff',
         fio: '#d6dee2',
+        // Pastéis dos cartões do passo a passo (tom informal, como os infográficos
+        // originais). Texto em tinta: contraste acima de 10:1 em todos.
+        'lilas-claro': '#ece4f7',
+        'rosa-claro': '#fbe2e6',
+        'amarelo-claro': '#fdf0cf',
       },
       fontFamily: {
         display: ['"Bebas Neue"', 'Poppins', 'system-ui', 'sans-serif'],

@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@sanity/orderable-document-list": "^2.0.29",
     "@sanity/vision": "^6.6.0",
     "react": "^19.2.2",
     "react-dom": "^19.2.2",

@@ -12,3 +12,4 @@ server/uploads/*
 !server/uploads/.gitkeep
 arquivos-dev
 .claude
+docs/migracao-sanity.md

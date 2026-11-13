@@ -12,7 +12,6 @@ function toNode(secao) {
     title: secao.titulo,
     subtitle: secao.subtitulo,
     page_label: secao.numeroPagina,
-    order_index: secao.ordem,
     parentId: secao.paiId,
     blocks: secao.blocos,
     children: [],
