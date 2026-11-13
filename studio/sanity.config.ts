@@ -6,7 +6,7 @@ import {structure} from './structure'
 
 export default defineConfig({
   name: 'cartilha',
-  title: 'Cartilha — Gravidez na adolescência',
+  title: 'Gravidez na adolescência',
   projectId: process.env.SANITY_STUDIO_PROJECT_ID!,
   dataset: process.env.SANITY_STUDIO_DATASET || 'production',
   plugins: [structureTool({structure}), visionTool()],

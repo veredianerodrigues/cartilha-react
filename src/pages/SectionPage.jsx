@@ -1,77 +1,75 @@
 import { useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
 import { useSections } from '../context/SectionsContext.jsx';
 import SectionView from '../components/SectionView.jsx';
 import SectionIndex from '../components/SectionIndex.jsx';
-import PrevNextNav from '../components/PrevNextNav.jsx';
-import useSwipeNavigation from '../hooks/useSwipeNavigation.js';
-
-const PAGE_CARD =
-  'flex flex-col w-full max-w-3xl min-h-[750px] sm:min-h-[950px] bg-[#f5f5ef] shadow-xl rounded-2xl overflow-hidden';
+import LivroPaginas from '../components/livro/LivroPaginas.jsx';
 
 export default function SectionPage() {
   const { slug } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { flatSections, getSection, loading, error } = useSections();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
 
-  const index = flatSections.findIndex((s) => s.slug === slug);
-  const prevSection = index > 0 ? flatSections[index - 1] : null;
-  const nextSection = index >= 0 && index < flatSections.length - 1 ? flatSections[index + 1] : null;
-
-  const swipeHandlers = useSwipeNavigation(
-    prevSection ? `/secao/${prevSection.slug}` : null,
-    nextSection ? `/secao/${nextSection.slug}` : null,
-  );
-
   if (loading) {
-    return <div className="max-w-3xl mx-auto px-4 py-16 text-center text-brand-dark">Carregando...</div>;
+    return <div className="max-w-3xl mx-auto px-4 py-16 text-center text-tinta">Carregando...</div>;
   }
 
   if (error) {
-    return <div className="max-w-3xl mx-auto px-4 py-16 text-center text-brand-dark">{error}</div>;
+    return <div className="max-w-3xl mx-auto px-4 py-16 text-center text-tinta">{error}</div>;
   }
 
   const section = getSection(slug);
 
   if (!section) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-16 text-center text-brand-dark space-y-3">
+      <div className="max-w-3xl mx-auto px-4 py-16 text-center text-tinta space-y-3">
         <p>Seção não encontrada.</p>
-        <Link to="/" className="text-brand-blue underline">
+        <Link to="/" className="text-azul-texto underline">
           Voltar ao início
         </Link>
       </div>
     );
   }
 
+  const index = flatSections.findIndex((s) => s.slug === slug);
+  const prevSection = index > 0 ? flatSections[index - 1] : null;
+  const nextSection = index < flatSections.length - 1 ? flatSections[index + 1] : null;
+
+  // Antes da primeira seção vem o sumário. Voltar abre a seção anterior na última folha.
+  const onSecaoAnterior = prevSection
+    ? () => navigate(`/secao/${prevSection.slug}`, { state: { direcao: 'anterior', abrirNoFim: true } })
+    : () => navigate('/sumario');
+  const onProximaSecao = nextSection
+    ? () => navigate(`/secao/${nextSection.slug}`, { state: { direcao: 'proximo' } })
+    : null;
+
+  // Cabeça corrente: o capítulo (seção raiz) a que a seção pertence. Na abertura de
+  // um capítulo ela some, como nos livros.
+  let capitulo = section;
+  while (capitulo.parentId) capitulo = flatSections.find((s) => s.id === capitulo.parentId);
+
   // Seção só com subseções (sem blocos próprios) mostra o índice das subseções.
   const showIndex = section.children.length > 0 && section.blocks.length === 0;
 
   return (
-    <div
-      className="flex flex-col min-h-full"
-      onPointerDown={swipeHandlers.onPointerDown}
-      onPointerUp={swipeHandlers.onPointerUp}
-      onPointerCancel={swipeHandlers.onPointerCancel}
+    <LivroPaginas
+      key={slug}
+      rubrica={capitulo.title}
+      esconderRubricaNaAbertura={capitulo === section}
+      folio={section.page_label}
+      abrirNoFim={Boolean(location.state?.abrirNoFim)}
+      ancora={location.hash || null}
+      direcao={location.state?.direcao ?? 'proximo'}
+      onSecaoAnterior={onSecaoAnterior}
+      onProximaSecao={onProximaSecao}
+      posicao={{ indice: index, total: flatSections.length }}
     >
-      <div className="flex-1">
-        <div className="overflow-x-auto py-8 flex justify-center">
-          <div className={PAGE_CARD}>
-            {showIndex ? (
-              <SectionIndex title={section.title} children={section.children} />
-            ) : (
-              <SectionView section={section} />
-            )}
-          </div>
-        </div>
-      </div>
-      <PrevNextNav
-        prev={prevSection && { slug: prevSection.slug, title: prevSection.title }}
-        next={nextSection && { slug: nextSection.slug, title: nextSection.title }}
-      />
-    </div>
+      {showIndex ? <SectionIndex title={section.title} children={section.children} /> : <SectionView section={section} />}
+    </LivroPaginas>
   );
 }

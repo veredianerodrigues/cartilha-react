@@ -1,22 +1,13 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
-export default function IllustrationFrame({
-  src,
-  alt = '',
-  side = 'left',
-  className = '',
-  fit = 'cover',
-  rounded = true,
-  shadow = false,
-  zoomable = true,
-}) {
+// Imagem que amplia ao toque (lightbox). A moldura (retrato, cena, ilustração) fica
+// em ImagemComLegenda; aqui é só a imagem e o zoom. Carrega já (eager): nas folhas do
+// livro fora da tela, o carregamento preguiçoso atrasava a imagem ao virar a página.
+// O lightbox vai por portal para o <body>: as páginas do livro são deslocadas com
+// transform, e um position: fixed dentro delas ficaria preso à página em vez da tela.
+export default function IllustrationFrame({ src, alt = '', largura, altura, imgClassName = '', style }) {
   const [open, setOpen] = useState(false);
-  const cornerClass = !rounded
-    ? ''
-    : side === 'left'
-      ? 'rounded-r-[24px] sm:rounded-r-[50px]'
-      : 'rounded-l-[24px] sm:rounded-l-[50px]';
-  const shadowClass = shadow ? 'shadow-[0px_2px_2px_0px_rgba(0,0,0,0.15)]' : '';
 
   // Fecha com Esc; só escuta enquanto o lightbox está aberto.
   useEffect(() => {
@@ -28,63 +19,51 @@ export default function IllustrationFrame({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [open]);
 
-  if (!src) {
-    return (
-      <div
-        className={`flex items-center justify-center min-h-[160px] border-2 border-dashed border-brand-blue/40 bg-[rgba(29,67,85,0.03)] ${cornerClass} ${className}`}
-      >
-        <span className="font-worksans text-xs text-brand-darker/60 text-center px-4">Imagem a cadastrar</span>
-      </div>
-    );
-  }
-
-  // fit="contain" mostra a imagem inteira, sem cortar (para infográficos/diagramas
-  // que precisam aparecer por completo) — "cover" (padrão) preenche o quadro cortando
-  // as bordas, para fotos soltas.
-  const imgClassName = fit === 'contain' ? 'w-full h-auto object-contain' : 'w-full h-full object-cover';
-
   return (
     <>
-      <div className={`overflow-hidden ${cornerClass} ${shadowClass} ${className}`}>
-        {zoomable ? (
-          <button
-            type="button"
-            onClick={() => setOpen(true)}
-            // touch-manipulation: sem isso, um toque com qualquer micro-deslize
-            // (comum em tela de vidro) pode fazer o navegador mobile (Safari
-            // principalmente) simplesmente não disparar o clique — o toque
-            // "some" sem reação nenhuma. data-zoomable é o gancho que
-            // useSwipeNavigation usa pra não competir com esse toque.
-            className="block w-full h-full cursor-zoom-in touch-manipulation"
-            data-zoomable="true"
-            aria-label={`Ampliar imagem${alt ? `: ${alt}` : ''}`}
-          >
-            <img src={src} alt={alt} loading="lazy" decoding="async" className={imgClassName} />
-          </button>
-        ) : (
-          <img src={src} alt={alt} loading="lazy" decoding="async" className={imgClassName} />
-        )}
-      </div>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        // touch-manipulation: sem isso, um toque com qualquer micro-deslize pode fazer
+        // o navegador mobile (Safari principalmente) não disparar o clique.
+        // data-zoomable é o gancho que useSwipeNavigation usa pra não competir com o toque.
+        className="block w-full h-full cursor-zoom-in touch-manipulation"
+        data-zoomable="true"
+        aria-label={`Ampliar imagem${alt ? `: ${alt}` : ''}`}
+      >
+        <img
+          src={src}
+          alt={alt}
+          width={largura}
+          height={altura}
+          loading="eager"
+          decoding="async"
+          className={imgClassName}
+          style={style}
+        />
+      </button>
 
-      {open && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 sm:p-4 cursor-zoom-out"
-          onClick={() => setOpen(false)}
-          role="dialog"
-          aria-modal="true"
-          aria-label={alt || 'Imagem ampliada'}
-        >
-          <img src={src} alt={alt} className="max-w-[80vw] max-h-[95vh] w-auto h-auto object-contain" />
-          <button
-            type="button"
+      {open &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 sm:p-4 cursor-zoom-out"
             onClick={() => setOpen(false)}
-            className="absolute top-4 right-4 text-white text-2xl leading-none p-2 rounded-full hover:bg-white/10"
-            aria-label="Fechar"
+            role="dialog"
+            aria-modal="true"
+            aria-label={alt || 'Imagem ampliada'}
           >
-            ✕
-          </button>
-        </div>
-      )}
+            <img src={src} alt={alt} className="max-w-[90vw] max-h-[95vh] w-auto h-auto object-contain" />
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="absolute top-4 right-4 text-white text-2xl leading-none p-2 rounded-full hover:bg-white/10"
+              aria-label="Fechar"
+            >
+              ✕
+            </button>
+          </div>,
+          document.body,
+        )}
     </>
   );
 }

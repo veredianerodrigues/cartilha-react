@@ -7,7 +7,7 @@ function Seta({ direcao, onClick }) {
       type="button"
       onClick={onClick}
       aria-label={direcao === 'prev' ? 'Imagem anterior' : 'Próxima imagem'}
-      className="shrink-0 w-9 h-9 rounded-full bg-brand-dark text-white font-poppins hover:bg-brand-darker transition"
+      className="shrink-0 w-10 h-10 rounded-full bg-tinta-forte text-papel font-titulo hover:bg-azul-texto transition"
     >
       {direcao === 'prev' ? '←' : '→'}
     </button>

@@ -1,10 +1,10 @@
 import Page02 from './Page02.jsx';
 import ScaledCanvas from '../components/ScaledCanvas.jsx';
 import PrevNextNav from '../components/PrevNextNav.jsx';
-import useSwipeNavigation from '../hooks/useSwipeNavigation.js';
+import { useSwipeEntreRotas } from '../hooks/useSwipeNavigation.js';
 
 export default function FichaCatalografica() {
-  const swipeHandlers = useSwipeNavigation('/contracapa', '/sumario');
+  const swipeHandlers = useSwipeEntreRotas('/contracapa', '/sumario');
 
   return (
     <div

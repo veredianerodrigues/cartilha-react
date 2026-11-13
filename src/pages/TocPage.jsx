@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useSections } from '../context/SectionsContext.jsx';
 import PrevNextNav from '../components/PrevNextNav.jsx';
-import useSwipeNavigation from '../hooks/useSwipeNavigation.js';
+import { useSwipeEntreRotas } from '../hooks/useSwipeNavigation.js';
 import deco2 from '../assets/page03/deco2.svg';
 
 function Row({ to, label, page, bold }) {
@@ -24,7 +24,7 @@ function Row({ to, label, page, bold }) {
 export default function TocPage() {
   const { tree, loading } = useSections();
   const firstChapter = tree[0];
-  const swipeHandlers = useSwipeNavigation(
+  const swipeHandlers = useSwipeEntreRotas(
     '/ficha-catalografica',
     firstChapter ? `/secao/${firstChapter.slug}` : null,
   );

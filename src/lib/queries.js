@@ -17,9 +17,20 @@ const CONTENT_QUERY = `{
       variante,
       titulo,
       conteudo,
-      imagem { alt, legenda, fonte, imagem },
+      imagem { "tipo": coalesce(tipo, "ilustracao"), alt, legenda, fonte, imagem },
+      tamanho,
+      alinhamento,
       modo,
-      imagens[] { _key, alt, legenda, fonte, imagem }
+      imagens[] { _key, "tipo": coalesce(tipo, "ilustracao"), alt, legenda, fonte, imagem },
+      fonte,
+      passos[] {
+        _key,
+        titulo,
+        texto,
+        imagem { "tipo": coalesce(tipo, "ilustracao"), alt, legenda, fonte, imagem }
+      },
+      lembretes,
+      nota
     }, [])
   },
   "referencias": coalesce(*[_id == "lista-referencias"][0].itens[]-> { _id, texto }, [])

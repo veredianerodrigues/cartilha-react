@@ -24,7 +24,7 @@ Pacote separado, porque o Sanity 6 exige React 19 e o app está no React 18.
 - `schemaTypes/secao.ts` — documento `secao`: `titulo`, `subtitulo`, `slug`, `numeroPagina`, `ordem`, `pai` (seção-mãe, opcional) e `blocos`.
 - `schemaTypes/blocos.ts` — três tipos de bloco:
   - **Texto** (`blocoTexto`): tipo de caixa (normal, Saiba mais, Você sabia, Fique atenta, Importante, Olha só, Dica), título opcional e conteúdo em Portable Text.
-  - **Imagem** (`blocoImagem`): imagem, texto alternativo, legenda ("Figura: …") e fonte.
+  - **Imagem** (`blocoImagem`): imagem, texto alternativo, legenda ("Figura: …") e fonte, mais **tamanho** (automático = largura total, média = até 440 px, pequena = até 260 px) e **alinhamento** (esquerda, centro, direita). O alinhamento só se nota quando o tamanho não é automático. A grade de imagens não usa esses campos.
   - **Grade de imagens** (`blocoGradeImagens`): mínimo de 2 imagens, exibidas em grade ou carrossel.
 - `schemaTypes/portableText.ts` — negrito, itálico, sublinhado, link, listas e **citação como objeto inline** (menu "Inserir"), que aponta para uma `referencia`.
 - `schemaTypes/referencia.ts` — `referencia` (uma obra) e `listaReferencias` (singleton, id `lista-referencias`): a **posição na lista é o número exibido na citação**.
@@ -77,5 +77,5 @@ Studio (`studio/`): `npm install`, `.env` com `SANITY_STUDIO_PROJECT_ID` e `SANI
 
 - Citação para uma referência que não está em `listaReferencias` aparece sem número (não há fallback de propósito).
 - `variante` do bloco de texto é obrigatória no Studio; no frontend, uma variante inválida gera erro.
-- O texto é justificado por estilo global (`text-justify`); o alinhamento por parágrafo do Tiptap não foi levado.
+- O texto fica alinhado à esquerda (decisão: a cartilha não usa texto justificado); o alinhamento por parágrafo do Tiptap não foi levado.
 - Texto alternativo da imagem é só um aviso de validação, não obrigatório.

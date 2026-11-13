@@ -11,6 +11,13 @@ export const client = createClient({
 
 const builder = createImageUrlBuilder(client);
 
+// O _ref do asset traz as dimensões originais ("image-<id>-1000x750-png"); com elas o
+// <img> reserva o espaço certo antes de carregar e a paginação do livro não pula.
+export function dimensoes(source) {
+  const [largura, altura] = source.asset._ref.split('-')[2].split('x').map(Number);
+  return { largura, altura };
+}
+
 export function urlFor(source) {
   return builder.image(source).auto('format');
 }

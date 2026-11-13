@@ -3,12 +3,12 @@ import { useSections } from '../context/SectionsContext.jsx';
 import Page00 from './Page00.jsx';
 import ScaledCanvas from '../components/ScaledCanvas.jsx';
 import FrontMatterTrail from '../components/FrontMatterTrail.jsx';
-import useSwipeNavigation from '../hooks/useSwipeNavigation.js';
+import { useSwipeEntreRotas } from '../hooks/useSwipeNavigation.js';
 
 export default function CoverPage() {
   const { flatSections } = useSections();
   const first = flatSections[0];
-  const swipeHandlers = useSwipeNavigation(null, first ? `/secao/${first.slug}` : null);
+  const swipeHandlers = useSwipeEntreRotas(null, first ? `/secao/${first.slug}` : null);
 
   return (
     <div

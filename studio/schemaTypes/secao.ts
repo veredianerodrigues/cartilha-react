@@ -57,6 +57,7 @@ export const secao = defineType({
         defineArrayMember({type: 'blocoTexto'}),
         defineArrayMember({type: 'blocoImagem'}),
         defineArrayMember({type: 'blocoGradeImagens'}),
+        defineArrayMember({type: 'blocoPassos'}),
       ],
     }),
   ],

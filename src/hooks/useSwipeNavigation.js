@@ -6,7 +6,7 @@ const SWIPE_THRESHOLD = 60;
 // arrasto. Cobre a micro-oscilação normal de um toque em tela de vidro.
 const TAP_THRESHOLD = 10;
 
-// Navega para a página anterior/próxima de duas formas: arrastando na tela
+// Vira para a página anterior/próxima de duas formas: arrastando na tela
 // (mobile via toque, desktop via mouse) ou com um toque parado — lado direito
 // avança, esquerdo volta, como um leitor de quadrinhos/stories. Usa Pointer
 // Events, que cobre touch, mouse e pen num só listener (também funciona ao
@@ -15,14 +15,16 @@ const TAP_THRESHOLD = 10;
 // canvas fixo), de uma imagem ampliável (o toque nela abre o zoom, não navega)
 // ou de qualquer elemento interativo (link, botão, campo — o toque neles já
 // faz outra coisa, não deve também trocar de página).
-export default function useSwipeNavigation(prevPath, nextPath) {
-  const navigate = useNavigate();
+export default function useSwipeNavigation(onPrev, onNext) {
   const start = useRef(null);
 
   function isInsideHorizontalScroller(target) {
     let el = target;
     while (el && el !== document.body) {
-      if (el.scrollWidth > el.clientWidth + 1) return true;
+      // Só conta quem rola de verdade (overflow-x auto/scroll, ex.: carrossel). As
+      // colunas do livro também transbordam na horizontal, mas ficam escondidas.
+      const { overflowX } = window.getComputedStyle(el);
+      if ((overflowX === 'auto' || overflowX === 'scroll') && el.scrollWidth > el.clientWidth + 1) return true;
       el = el.parentElement;
     }
     return false;
@@ -64,15 +66,15 @@ export default function useSwipeNavigation(prevPath, nextPath) {
     // pelo lado da tela onde o toque começou.
     if (isTouch && Math.abs(deltaX) < TAP_THRESHOLD && Math.abs(deltaY) < TAP_THRESHOLD) {
       const isRightHalf = startX > window.innerWidth / 2;
-      if (isRightHalf && nextPath) navigate(nextPath);
-      else if (!isRightHalf && prevPath) navigate(prevPath);
+      if (isRightHalf && onNext) onNext();
+      else if (!isRightHalf && onPrev) onPrev();
       return;
     }
 
     if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaX) < Math.abs(deltaY)) return;
 
-    if (deltaX < 0 && nextPath) navigate(nextPath);
-    else if (deltaX > 0 && prevPath) navigate(prevPath);
+    if (deltaX < 0 && onNext) onNext();
+    else if (deltaX > 0 && onPrev) onPrev();
   }
 
   function onPointerCancel() {
@@ -80,4 +82,11 @@ export default function useSwipeNavigation(prevPath, nextPath) {
   }
 
   return { onPointerDown, onPointerUp, onPointerCancel };
+}
+
+// Para as páginas de abertura (capa, contracapa, ficha, sumário), que viram direto
+// para outra rota.
+export function useSwipeEntreRotas(prevPath, nextPath) {
+  const navigate = useNavigate();
+  return useSwipeNavigation(prevPath && (() => navigate(prevPath)), nextPath && (() => navigate(nextPath)));
 }
