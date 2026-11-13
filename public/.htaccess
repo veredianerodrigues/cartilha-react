@@ -1,0 +1,17 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # SPA: qualquer rota que não seja arquivo ou pasta real (/studio, /sumario,
+  # /secao/x...) devolve o index.html e o React Router resolve no navegador.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# HTML e service worker sempre revalidados, para publicar versões novas.
+<IfModule mod_headers.c>
+  <FilesMatch "^(index\.html|sw\.js|workbox-.*\.js|manifest\.webmanifest|registerSW\.js)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
