@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSections } from '../../context/SectionsContext.jsx';
 import PortableTextView from './shared/PortableTextView.jsx';
 
-// Lista numerada de referências, na ordem de `listaReferencias` no Sanity. O número
+// Lista numerada de referências, em ordem alfabética (ordenada em queries.js). O número
 // exibido é a posição atual na lista; as citações apontam para a referência pelo id
 // estável e chegam aqui por /secao/referencias#ref-N. O livro (LivroPaginas.jsx) abre
 // na folha que contém a entrada; aqui ela só é destacada por alguns segundos.

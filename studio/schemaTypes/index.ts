@@ -1,13 +1,12 @@
 import {blocoGradeImagens, blocoImagem, blocoPassos, blocoTexto, imagemItem, passoItem} from './blocos'
 import {portableText} from './portableText'
-import {listaReferencias, referencia} from './referencia'
+import {referencia} from './referencia'
 import {secao} from './secao'
 
 export const schemaTypes = [
   // documentos
   secao,
   referencia,
-  listaReferencias,
   // blocos de conteúdo
   blocoTexto,
   blocoImagem,

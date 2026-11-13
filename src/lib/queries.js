@@ -1,7 +1,7 @@
 import { client } from './sanity.js';
 
 // Uma única consulta traz o conteúdo inteiro: seções (na ordem da cartilha, com blocos)
-// e a lista de referências (a posição na lista é o número mostrado na citação).
+// e todas as referências (o número da citação é a posição na ordem alfabética).
 const CONTENT_QUERY = `{
   "secoes": *[_type == "secao"] | order(ordem asc) {
     _id,
@@ -23,6 +23,8 @@ const CONTENT_QUERY = `{
       modo,
       imagens[] { _key, "tipo": coalesce(tipo, "ilustracao"), alt, legenda, fonte, imagem },
       fonte,
+      "estilo": coalesce(estilo, "numerado"),
+      "quebra": coalesce(quebra, "auto"),
       passos[] {
         _key,
         titulo,
@@ -33,9 +35,18 @@ const CONTENT_QUERY = `{
       nota
     }, [])
   },
-  "referencias": coalesce(*[_id == "lista-referencias"][0].itens[]-> { _id, texto }, [])
+  "referencias": *[_type == "referencia"] { _id, texto }
 }`;
 
-export function fetchContent() {
-  return client.fetch(CONTENT_QUERY);
+const textoSimples = (texto) =>
+  texto.map((b) => (b.children ?? []).map((c) => c.text).join('')).join(' ');
+
+// Referências em ordem alfabética (ABNT), ignorando acentos e maiúsculas: a posição
+// de cada uma é o número mostrado nas citações.
+export async function fetchContent() {
+  const data = await client.fetch(CONTENT_QUERY);
+  const referencias = [...data.referencias].sort((a, b) =>
+    textoSimples(a.texto).localeCompare(textoSimples(b.texto), 'pt-BR', { sensitivity: 'base' }),
+  );
+  return { ...data, referencias };
 }
