@@ -26,7 +26,6 @@ export default function App() {
             <Route path="/ficha-catalografica" element={<FichaCatalografica />} />
             <Route path="/sumario" element={<TocPage />} />
             <Route path="/secao/:slug" element={<SectionPage />} />
-            <Route path="/secao/:slug/:page" element={<SectionPage />} />
           </Route>
 
           <Route

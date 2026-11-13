@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import PageHero from '../PageHero.jsx';
-import RichHtml from './shared/RichHtml.jsx';
+import { useSections } from '../../context/SectionsContext.jsx';
+import PortableTextView from './shared/PortableTextView.jsx';
 
-// Quando chega via link de citação (ver RichHtml.jsx, que aponta pra
-// /secao/referencias#ref-N), rola até a entrada certa e destaca ela por
-// alguns segundos — o link é um <a href> puro dentro de HTML salvo, então
-// sempre é navegação de página inteira, nunca troca de rota só no cliente;
-// esse efeito roda de novo a cada carregamento.
-export default function Referencias({ orderedFields = [] }) {
+// Lista numerada de referências, na ordem de `listaReferencias` no Sanity. O número
+// exibido é a posição atual na lista; as citações apontam para a referência pelo id
+// estável e chegam aqui por /secao/referencias#ref-N. Ao carregar com esse hash, rola
+// até a entrada e a destaca por alguns segundos.
+export default function Referencias() {
+  const { referencias } = useSections();
   const [highlighted, setHighlighted] = useState(null);
 
   useEffect(() => {
@@ -22,30 +22,22 @@ export default function Referencias({ orderedFields = [] }) {
   }, []);
 
   return (
-    <div className="relative">
-      <PageHero pageLabel="21" weight="semibold" title="Referências" />
-
-      {/* Lista numerada e editável pelo /admin (add/mover/remover) — o número
-          exibido é sempre a posição atual (índice + 1), nunca a chave interna
-          estável (block.heading) usada pelas citações pra apontar aqui. Cada
-          <li> tem id="ref-N" (N = posição) pra ser alvo do link. */}
-      <ol className="space-y-4">
-        {orderedFields.map((entry, i) => {
-          const id = `ref-${i + 1}`;
-          return (
-            <li
-              key={entry.key ?? i}
-              id={id}
-              className={`grid grid-cols-[1.75rem_1fr] gap-1 font-worksans text-black text-xs leading-[20px] tracking-[0.12px] rounded-md transition-colors duration-500 ${
-                highlighted === id ? 'bg-yellow-100' : ''
-              }`}
-            >
-              <span className="font-semibold tabular-nums">{i + 1}.</span>
-              <RichHtml className="min-w-0 text-justify break-words [&_p]:m-0" html={entry.html} />
-            </li>
-          );
-        })}
-      </ol>
-    </div>
+    <ol className="space-y-4">
+      {referencias.map((ref, i) => {
+        const id = `ref-${i + 1}`;
+        return (
+          <li
+            key={ref._id}
+            id={id}
+            className={`grid grid-cols-[1.75rem_1fr] gap-1 font-worksans text-black text-xs leading-[20px] tracking-[0.12px] rounded-md transition-colors duration-500 ${
+              highlighted === id ? 'bg-yellow-100' : ''
+            }`}
+          >
+            <span className="font-semibold tabular-nums">{i + 1}.</span>
+            <PortableTextView className="min-w-0 break-words [&_p]:m-0" value={ref.texto} />
+          </li>
+        );
+      })}
+    </ol>
   );
 }

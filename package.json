@@ -33,6 +33,9 @@
     "sync-images-from-prod": "node server/db/syncImagesFromProd.js"
   },
   "dependencies": {
+    "@portabletext/react": "^6.2.0",
+    "@sanity/client": "^8.16.0",
+    "@sanity/image-url": "^2.1.1",
     "@supabase/supabase-js": "^2.45.4",
     "@tiptap/core": "^3.30.2",
     "@tiptap/extension-text-align": "^3.30.2",
