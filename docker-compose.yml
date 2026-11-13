@@ -5,17 +5,7 @@ services:
     restart: unless-stopped
 
     expose:
-      - "3001"
-
-    environment:
-      NODE_ENV: production
-      PORT: "3001"
-      HOST: "0.0.0.0"
-      JWT_SECRET: ${JWT_SECRET}
-
-    volumes:
-      - cartilha_db:/app/server/data
-      - cartilha_uploads:/app/server/uploads
+      - "80"
 
     networks:
       - traefik-public
@@ -25,12 +15,8 @@ services:
       - traefik.http.routers.cartilha-react.rule=Host(`gravidezadolescencia.com.br`)
       - traefik.http.routers.cartilha-react.entrypoints=websecure
       - traefik.http.routers.cartilha-react.tls.certresolver=letsencrypt
-      - traefik.http.services.cartilha-react.loadbalancer.server.port=3001
+      - traefik.http.services.cartilha-react.loadbalancer.server.port=80
 
 networks:
   traefik-public:
     external: true
-
-volumes:
-  cartilha_db:
-  cartilha_uploads:

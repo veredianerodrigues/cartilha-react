@@ -1,60 +1,80 @@
 import { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
-import { api } from '../lib/api.js';
-import { precacheWholeCartilha } from '../lib/offlineSync.js';
+import { fetchContent } from '../lib/queries.js';
 
 const SectionsContext = createContext(null);
+
+// Converte o documento `secao` do Sanity no formato que sumário, capa, índice e
+// navegação já consomem (slug, title, page_label, children).
+function toNode(secao) {
+  return {
+    id: secao._id,
+    slug: secao.slug,
+    title: secao.titulo,
+    subtitle: secao.subtitulo,
+    page_label: secao.numeroPagina,
+    parentId: secao.paiId,
+    blocks: secao.blocos,
+    children: [],
+  };
+}
+
+function buildTree(secoes) {
+  const nodes = secoes.map(toNode);
+  const byId = new Map(nodes.map((n) => [n.id, n]));
+  const roots = [];
+  for (const node of nodes) {
+    if (node.parentId) byId.get(node.parentId).children.push(node);
+    else roots.push(node);
+  }
+  return roots;
+}
 
 function flatten(nodes, depth = 0, out = []) {
   for (const node of nodes) {
     out.push({ ...node, depth });
-    if (node.children?.length) flatten(node.children, depth + 1, out);
+    if (node.children.length) flatten(node.children, depth + 1, out);
   }
   return out;
 }
 
 export function SectionsProvider({ children }) {
   const [tree, setTree] = useState([]);
+  const [referencias, setReferencias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // {idEstável: posição atual} — resolve <sup data-citation data-n="N"> pra
-  // que número mostrar, na ordem em que as referências estão AGORA (podem
-  // ter sido reordenadas pelo admin desde que a citação foi escrita). Ver
-  // RichHtml.jsx e migrateReferenciasText.js.
-  const [citationMap, setCitationMap] = useState({});
 
   const reload = useCallback(() => {
     setLoading(true);
-    api
-      .getSectionsTree()
+    fetchContent()
       .then((data) => {
-        setTree(data);
+        setTree(buildTree(data.secoes));
+        setReferencias(data.referencias);
         setError(null);
-        // Não bloqueia a navegação — roda depois que a árvore já renderizou.
-        setTimeout(() => precacheWholeCartilha(data), 0);
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-
-    api
-      .getSection('referencias')
-      .then((data) => {
-        const map = {};
-        (data.blocks || [])
-          .filter((b) => b.type === 'paragraph' && b.heading)
-          .forEach((b, i) => {
-            map[b.heading] = i + 1;
-          });
-        setCitationMap(map);
-      })
-      .catch(() => {});
   }, []);
 
   useEffect(reload, [reload]);
 
   const flatSections = useMemo(() => flatten(tree), [tree]);
 
+  // {_id estável da referência: posição atual na lista} — resolve as citações para o
+  // número exibido, que acompanha a ordem da lista sem editar os textos.
+  const citationMap = useMemo(() => {
+    const map = {};
+    referencias.forEach((ref, i) => {
+      map[ref._id] = i + 1;
+    });
+    return map;
+  }, [referencias]);
+
+  const getSection = useCallback((slug) => flatSections.find((s) => s.slug === slug), [flatSections]);
+
   return (
-    <SectionsContext.Provider value={{ tree, flatSections, loading, error, reload, citationMap }}>
+    <SectionsContext.Provider
+      value={{ tree, flatSections, getSection, referencias, citationMap, loading, error, reload }}
+    >
       {children}
     </SectionsContext.Provider>
   );

@@ -19,11 +19,11 @@ function targetPath(target) {
 
 export default function PrevNextNav({ prev, next }) {
   return (
-    <div className="sticky bottom-0 z-30 flex items-center justify-center gap-4 w-full h-[6rem] sm:h-[10rem] px-4 border-t border-slate-200 bg-[#f5f5ef]/95 backdrop-blur-sm">
+    <div className="sticky bottom-0 z-30 flex items-center justify-center gap-4 w-full h-[6rem] sm:h-[10rem] px-4 border-t border-fio bg-mesa/95 backdrop-blur-sm">
       {prev ? (
         <Link
           to={targetPath(prev)}
-          className="px-5 py-2 rounded-full bg-brand-dark text-white font-poppins text-sm hover:bg-brand-darker transition"
+          className="px-5 py-2 rounded-full bg-tinta-forte text-papel font-titulo font-semibold text-sm hover:bg-azul-texto transition"
         >
           ← Anterior
         </Link>
@@ -34,7 +34,7 @@ export default function PrevNextNav({ prev, next }) {
       <Link
         to="/"
         aria-label="Voltar ao início"
-        className="shrink-0 p-2.5 rounded-full border border-slate-300 text-brand-dark hover:bg-[#e5f2f8] hover:border-brand-blue transition"
+        className="shrink-0 p-2.5 rounded-full border border-fio text-tinta-forte hover:bg-azul-claro transition"
       >
         <HomeIcon />
       </Link>
@@ -42,7 +42,7 @@ export default function PrevNextNav({ prev, next }) {
       {next ? (
         <Link
           to={targetPath(next)}
-          className="px-5 py-2 rounded-full bg-brand-dark text-white font-poppins text-sm hover:bg-brand-darker transition"
+          className="px-5 py-2 rounded-full bg-tinta-forte text-papel font-titulo font-semibold text-sm hover:bg-azul-texto transition"
         >
           Próximo →
         </Link>
