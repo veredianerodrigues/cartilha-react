@@ -14,7 +14,7 @@ Atualizado em 12/11/2026. Veja o que já foi feito em `docs/migracao-sanity.md`.
   - Confirmar as datas de acesso: Pinheiro ("18 de out. 2020") e Favier Torres ("05 set. 2020") estão com 2020 no PDF, enquanto as demais novas têm 2026.
 - [ ] **Tamanho e alinhamento das imagens:** as 47 imagens foram ajustadas por mim (4 pequenas, 10 médias, 33 automáticas, todas centralizadas). Revisar no Studio, no bloco de imagem.
 - [ ] **Revisar o texto da proposta antes de digitar:** erros como "mentrual", "nocorpo", "feira por um médico", "etonorgestrel" e "Voce". Anotações internas do PDF ("VERE NA CARTILHA…", "CHAT", "CANVA", "AJUSTADA PELO CHAT", "Banco gemini") não entram no conteúdo. Padronizar as fontes das imagens geradas por IA.
-- [ ] **Publicar o Studio:** `npx sanity deploy` dentro de `studio/` (escolher o endereço `*.sanity.studio`) e convidar as editoras no painel do Sanity.
+- [x] **Studio embutido no site** (`/studio`, mesmo domínio do app, sem `sanity deploy`). Pendente: no painel do Sanity (API → CORS origins), os domínios do site e `http://localhost:5173` precisam ter **Credentials: Allowed**, senão o login do Studio falha. Convidar as editoras em Members.
 - [ ] **Testar o clique das setas do carrossel** em um navegador real. A rolagem animada não funciona no navegador automatizado, então só o encaixe foi confirmado.
 - [ ] **Testar o build da imagem Docker** (`docker build`) e uma rota profunda como `/secao/x`. O Docker não estava rodando quando foi montado.
 - [ ] **Confirmar como a imagem é publicada.** O compose usa `ghcr.io/veredianerodrigues/cartilha-react:latest`, mas este repositório não tem workflow de build/push. Definir onde a imagem é construída e como o deploy acontece.

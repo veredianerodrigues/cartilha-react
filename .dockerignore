@@ -15,4 +15,4 @@ arquivos-dev
 *.md
 .vscode
 .idea
-studio
+studio/scripts

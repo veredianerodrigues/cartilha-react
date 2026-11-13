@@ -2,9 +2,26 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// O Studio (/studio) é carregado sob demanda e tem dezenas de MB de JS. Só os
+// chunks alcançáveis por import estático a partir da entrada vão pro precache
+// do PWA; o resto (Studio) é baixado só quando alguém abre /studio.
+const appChunks = new Set();
+const trackAppChunks = {
+  name: 'track-app-chunks',
+  generateBundle(_, bundle) {
+    const visit = (name) => {
+      if (appChunks.has(name) || !bundle[name]) return;
+      appChunks.add(name);
+      bundle[name].imports?.forEach(visit);
+    };
+    Object.values(bundle).forEach((c) => c.type === 'chunk' && c.isEntry && visit(c.fileName));
+  },
+};
+
 export default defineConfig({
   plugins: [
     react(),
+    trackAppChunks,
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: false,
@@ -28,8 +45,16 @@ export default defineConfig({
         // build-time) vai todo pro precache — funciona offline sem depender
         // de o usuário já ter visitado a página.
         globPatterns: ['**/*.{js,css,html,png,svg,jpg,jpeg,webp,woff2}'],
+        // Sem limite de tamanho aqui: o filtro do Studio é o manifestTransforms abaixo.
+        maximumFileSizeToCacheInBytes: 50 * 1024 * 1024,
+        manifestTransforms: [
+          async (entries) => ({
+            manifest: entries.filter((e) => !e.url.endsWith('.js') || e.url === 'sw.js' || appChunks.has(e.url)),
+            warnings: [],
+          }),
+        ],
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/api\//],
+        navigateFallbackDenylist: [/^\/api\//, /^\/studio/],
         runtimeCaching: [
           {
             // Conteúdo das seções vindo da API (texto dos blocos) — busca na
