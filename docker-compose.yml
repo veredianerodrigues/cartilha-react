@@ -4,6 +4,10 @@ services:
     container_name: cartilha-react-app
     restart: unless-stopped
 
+    environment:
+      # Segredo do webhook do Sanity (o mesmo informado ao criar o webhook). Defina no .env do servidor.
+      - SANITY_WEBHOOK_SECRET=${SANITY_WEBHOOK_SECRET:?defina SANITY_WEBHOOK_SECRET}
+
     expose:
       - "80"
 

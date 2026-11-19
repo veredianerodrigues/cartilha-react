@@ -43,19 +43,35 @@ export function SectionsProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const reload = useCallback(() => {
-    setLoading(true);
+  // silencioso: atualização em segundo plano, sem trocar a tela por "carregando".
+  const reload = useCallback((silencioso = false) => {
+    if (silencioso !== true) setLoading(true);
     fetchContent()
       .then((data) => {
         setTree(buildTree(data.secoes));
         setReferencias(data.referencias);
         setError(null);
       })
-      .catch((err) => setError(err.message))
+      .catch((err) => silencioso !== true && setError(err.message))
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(reload, [reload]);
+  useEffect(() => {
+    reload();
+  }, [reload]);
+
+  // Publicação no Studio: o servidor avisa pelo fluxo de eventos e o conteúdo é
+  // recarregado na hora. Ao voltar para a aba, confere de novo (cobre conexão perdida).
+  useEffect(() => {
+    const fonte = new EventSource('/api/events');
+    fonte.addEventListener('atualizado', () => reload(true));
+    const aoVoltar = () => document.visibilityState === 'visible' && reload(true);
+    document.addEventListener('visibilitychange', aoVoltar);
+    return () => {
+      fonte.close();
+      document.removeEventListener('visibilitychange', aoVoltar);
+    };
+  }, [reload]);
 
   const flatSections = useMemo(() => flatten(tree), [tree]);
 

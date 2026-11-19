@@ -1,6 +1,5 @@
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
-import {visionTool} from '@sanity/vision'
 import {schemaTypes} from '../../studio/schemaTypes'
 import {structure} from '../../studio/structure'
 import {tutorialPlugin} from '../../studio/tutorial'
@@ -12,6 +11,8 @@ export default defineConfig({
   basePath: '/studio',
   projectId: import.meta.env.VITE_SANITY_PROJECT_ID,
   dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
-  plugins: [structureTool({structure}), visionTool(), tutorialPlugin()],
+  plugins: [structureTool({structure, title: 'Conteúdo'}), tutorialPlugin()],
+  // Menu enxuto para a equipe editorial: sem Vision (consultas técnicas) e sem Releases.
+  releases: {enabled: false},
   schema: {types: schemaTypes},
 })

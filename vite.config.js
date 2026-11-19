@@ -19,6 +19,8 @@ const trackAppChunks = {
 };
 
 export default defineConfig({
+  // Em desenvolvimento a API roda à parte (npm run api, porta 3001).
+  server: { proxy: { "/api": "http://localhost:3001" } },
   plugins: [
     react(),
     trackAppChunks,
@@ -57,10 +59,10 @@ export default defineConfig({
         navigateFallbackDenylist: [/^\/api\//, /^\/studio/],
         runtimeCaching: [
           {
-            // Conteúdo das seções vindo da API (texto dos blocos) — busca na
+            // Conteúdo da cartilha vindo da API (/api/content) — busca na
             // rede quando online (mantém atualizado), cai pro cache salvo
             // quando offline.
-            urlPattern: ({ url }) => url.pathname.startsWith('/api/sections'),
+            urlPattern: ({ url }) => url.pathname === '/api/content',
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-sections',
