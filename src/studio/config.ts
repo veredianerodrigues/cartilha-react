@@ -3,6 +3,7 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from '../../studio/schemaTypes'
 import {structure} from '../../studio/structure'
+import {tutorialPlugin} from '../../studio/tutorial'
 
 // Studio embutido no site, servido em /studio. Mesmo schema do studio/.
 export default defineConfig({
@@ -11,6 +12,6 @@ export default defineConfig({
   basePath: '/studio',
   projectId: import.meta.env.VITE_SANITY_PROJECT_ID,
   dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
-  plugins: [structureTool({structure}), visionTool()],
+  plugins: [structureTool({structure}), visionTool(), tutorialPlugin()],
   schema: {types: schemaTypes},
 })
