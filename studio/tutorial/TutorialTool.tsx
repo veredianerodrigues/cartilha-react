@@ -594,7 +594,7 @@ const capitulos: Capitulo[] = [
         </Pergunta>
         <Pergunta pergunta="O texto não ficou ao lado da imagem.">
           O tamanho deve ser Média ou Pequena, o alinhamento Esquerda ou Direita, e o bloco de texto deve vir imediatamente após o bloco de
-          imagem. Caixas coloridas (Saiba mais, Dica etc.) não contornam a imagem.
+          imagem. Caixas coloridas (Saiba mais, Dica etc.) ficam ao lado da imagem, sem passar por baixo dela; se não houver largura suficiente, descem para depois da imagem.
         </Pergunta>
         <Pergunta pergunta="Uma imagem ficou sozinha em uma folha.">
           É o comportamento do tamanho Página inteira. Se não for a intenção, altere o tamanho para Automático.

@@ -18,8 +18,8 @@ const ALINHAMENTOS = {
 // seguintes corre ao lado. No celular continua em coluna única. O bloco seguinte perde a
 // margem de cima para o texto começar alinhado ao topo da imagem.
 const FLUTUANTE = {
-  esquerda: 'sm:float-left sm:mr-5 sm:mb-2 [&+*]:!mt-0',
-  direita: 'sm:float-right sm:ml-5 sm:mb-2 [&+*]:!mt-0',
+  esquerda: 'sm:float-left sm:mr-8 sm:mb-3 [&+*]:!mt-0',
+  direita: 'sm:float-right sm:ml-8 sm:mb-3 [&+*]:!mt-0',
 };
 // Em fração da coluna (a coluna é a página do livro, que muda com a tela): assim o
 // texto ao lado nunca fica espremido.

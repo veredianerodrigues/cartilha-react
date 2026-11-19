@@ -2,7 +2,9 @@ import PortableTextView from '../shared/PortableTextView.jsx';
 
 // As 7 variantes do Studio ("Tipo de caixa") viram 4 visuais de caixa + o texto
 // corrido (Design System, componente Caixa). Nenhuma caixa tem sombra.
-const CAIXA = 'rounded-caixa p-6 break-inside-avoid';
+// flow-root: ao lado de uma imagem flutuante a caixa fica ao lado dela (e desce se não couber),
+// em vez de passar por baixo da imagem.
+const CAIXA = 'rounded-caixa p-6 break-inside-avoid flow-root';
 const TITULO_CAIXA = 'font-titulo text-titulo-caixa mb-2';
 
 const CURIOSIDADE = { caixa: `${CAIXA} bg-azul-claro text-tinta`, titulo: `${TITULO_CAIXA} text-azul-texto` };
@@ -34,7 +36,7 @@ export default function BlocoTexto({ bloco, abre = false }) {
 
   const { caixa, titulo } = VISUAIS[bloco.variante];
   return (
-    <div className="break-inside-avoid">
+    <div className="break-inside-avoid flow-root">
       <div className={caixa}>
         {bloco.titulo && <p className={titulo}>{bloco.titulo}</p>}
         <PortableTextView value={bloco.conteudo} />
