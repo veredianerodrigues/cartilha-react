@@ -13,7 +13,7 @@ Data: 12/11/2026
 | Estrutura | Cada seção é um documento; o conteúdo é uma lista de blocos (texto, imagem, grade de imagens) |
 | Hospedagem | App Node.js na Hostinger Cloud (`api/server.mjs` serve o `dist/` e a `/api`); Docker removido em 20/11/2026 |
 | Fallbacks | Nenhum código de contingência no frontend |
-| PWA | Fora do escopo por enquanto (configuração antiga mantida, sem edições) |
+| PWA | Removido em 20/11/2026; só resta um `sw.js` que se autodestrói, para limpar o service worker antigo dos navegadores |
 
 Projeto Sanity: `0gjumgjk`, dataset `production` (público: o site lê sem token, via CDN).
 

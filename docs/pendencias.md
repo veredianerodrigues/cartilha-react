@@ -44,11 +44,10 @@ Script `studio/scripts/migrar-infograficos.ts` troca os da página 14 (Fique lig
 - [ ] **Texto alternativo das imagens:** hoje é só um aviso; tornar obrigatório, se for desejado (acessibilidade).
 - [ ] **Novos tipos de bloco ou de caixa:** a lista atual (normal, Saiba mais, Você sabia, Fique atenta, Importante, Olha só, Dica) pode precisar de ajuste conforme o conteúdo novo. Cada tipo novo exige alterar o schema do Studio e o mapa de estilos em `BlocoTexto.jsx`.
 
-## Etapa futura: PWA / offline (adiada a pedido)
+## PWA / offline (removido)
 
-- [ ] Trocar as regras de cache de `vite.config.js`: a de `/api/sections` e a do Supabase não existem mais. Criar regras para `*.apicdn.sanity.io` (conteúdo) e `cdn.sanity.io/images/*` (imagens).
-- [ ] Reintroduzir o pré-carregamento offline do conteúdo, agora com uma única consulta (não N requisições).
-- [ ] Revisar `navigateFallbackDenylist` e o comentário do `workbox` sobre "páginas legado".
+- [x] **Offline removido em 20/11/2026.** O service worker antigo guardava uma versão velha do site e escondia as publicações. O `vite.config.js` agora só gera um `/sw.js` que se autodestrói (`selfDestroying`): apaga os caches e se desregistra nos navegadores que ainda têm o antigo. Não remover o plugin nem esse `sw.js`, senão quem ainda tem o worker antigo fica preso na versão velha.
+- [ ] Se o offline voltar um dia: conteúdo vem de `/api/content` (uma consulta só) e imagens de `cdn.sanity.io/images/*`; o HTML não pode ficar preso no cache.
 
 ## Ambiente e acessos
 
