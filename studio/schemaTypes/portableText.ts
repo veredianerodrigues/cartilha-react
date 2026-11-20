@@ -1,4 +1,5 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {VARIANTES_TEXTO} from './blocos'
 
 /**
  * Texto rico da cartilha. Substitui o HTML do Tiptap.
@@ -14,7 +15,16 @@ export const portableText = defineType({
   of: [
     defineArrayMember({
       type: 'block',
-      styles: [{title: 'Parágrafo', value: 'normal'}],
+      // O Portable Text não tem alinhamento por parágrafo: cada alinhamento é um estilo.
+      styles: [
+        {title: 'Parágrafo', value: 'normal'},
+        {title: 'Parágrafo centralizado', value: 'centro'},
+        {title: 'Parágrafo à direita', value: 'direita'},
+        {title: 'Parágrafo justificado', value: 'justificado'},
+        {title: 'Subtítulo', value: 'h3'},
+        {title: 'Subtítulo menor', value: 'h4'},
+        {title: 'Destaque (frase em evidência)', value: 'blockquote'},
+      ],
       lists: [
         {title: 'Marcadores', value: 'bullet'},
         {title: 'Numerada', value: 'number'},
@@ -63,5 +73,56 @@ export const portableText = defineType({
         }),
       ],
     }),
+    // Blocos dentro do texto (menu "Inserir").
+    defineArrayMember({
+      name: 'aviso',
+      title: 'Caixa (Você sabia, Dica…)',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'variante',
+          title: 'Tipo de caixa',
+          type: 'string',
+          options: {list: VARIANTES_TEXTO.filter((v) => v.value !== 'normal'), layout: 'dropdown'},
+          initialValue: 'voceSabia',
+          validation: (rule) => rule.required(),
+        }),
+        defineField({name: 'titulo', title: 'Título (opcional)', type: 'string'}),
+        defineField({name: 'texto', title: 'Texto', type: 'text', rows: 4, validation: (rule) => rule.required()}),
+      ],
+      preview: {
+        select: {titulo: 'titulo', texto: 'texto', variante: 'variante'},
+        prepare: ({titulo, texto, variante}) => ({
+          title: titulo || (texto ?? '').slice(0, 70) || 'Caixa',
+          subtitle: VARIANTES_TEXTO.find((v) => v.value === variante)?.title,
+        }),
+      },
+    }),
+    defineArrayMember({
+      name: 'separador',
+      title: 'Separador',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'estilo',
+          title: 'Estilo',
+          type: 'string',
+          options: {
+            list: [
+              {title: 'Linha', value: 'linha'},
+              {title: 'Espaço em branco', value: 'espaco'},
+            ],
+            layout: 'radio',
+          },
+          initialValue: 'linha',
+          validation: (rule) => rule.required(),
+        }),
+      ],
+      preview: {
+        select: {estilo: 'estilo'},
+        prepare: ({estilo}) => ({title: estilo === 'espaco' ? 'Separador (espaço)' : 'Separador (linha)'}),
+      },
+    }),
+    defineArrayMember({name: 'imagem', title: 'Imagem', type: 'imagemItem'}),
   ],
 })

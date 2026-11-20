@@ -1,5 +1,23 @@
 import { PortableText } from '@portabletext/react';
 import { useSections } from '../../../context/SectionsContext.jsx';
+import ImagemComLegenda from '../blocos/ImagemComLegenda.jsx';
+import { VISUAIS_CAIXA } from './caixas.js';
+
+// Caixa inserida no meio do texto (Você sabia, Dica…), com o mesmo visual do bloco de texto.
+function Aviso({ value }) {
+  const { caixa, titulo } = VISUAIS_CAIXA[value.variante];
+  return (
+    <div className={`${caixa} my-6`}>
+      {value.titulo && <p className={titulo}>{value.titulo}</p>}
+      <p className="m-0 whitespace-pre-line">{value.texto}</p>
+    </div>
+  );
+}
+
+function Separador({ value }) {
+  if (value.estilo === 'espaco') return <div aria-hidden="true" className="h-8" />;
+  return <hr className="my-8 border-0 border-t border-fio" />;
+}
 
 // Citação inline: mostra o número de cada referência (posição atual na lista) e leva
 // até a entrada em /secao/referencias. É um <a> comum de propósito: a página
@@ -27,6 +45,21 @@ function Citacao({ value }) {
 const components = {
   block: {
     normal: ({ children }) => <p className="mb-4 last:mb-0">{children}</p>,
+    centro: ({ children }) => <p className="mb-4 last:mb-0 text-center">{children}</p>,
+    direita: ({ children }) => <p className="mb-4 last:mb-0 text-right">{children}</p>,
+    justificado: ({ children }) => <p className="mb-4 last:mb-0 text-justify hyphens-auto">{children}</p>,
+    // Subtítulos dentro do texto: degraus abaixo do título do bloco (text-subtitulo, h2).
+    h3: ({ children }) => (
+      <h3 className="font-titulo text-subtitulo text-azul-texto mt-8 mb-2 first:mt-0 break-after-avoid">{children}</h3>
+    ),
+    h4: ({ children }) => (
+      <h4 className="font-titulo text-titulo-caixa text-azul-texto mt-6 mb-2 first:mt-0 break-after-avoid">{children}</h4>
+    ),
+    blockquote: ({ children }) => (
+      <blockquote className="my-6 border-l-[3px] border-azul-marca pl-5 font-texto text-abre-texto italic text-azul-texto break-inside-avoid">
+        {children}
+      </blockquote>
+    ),
   },
   list: {
     bullet: ({ children }) => (
@@ -53,6 +86,9 @@ const components = {
   },
   types: {
     citacao: Citacao,
+    aviso: Aviso,
+    separador: Separador,
+    imagem: ({ value }) => <ImagemComLegenda item={value} className="my-6" />,
   },
 };
 
