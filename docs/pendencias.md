@@ -16,8 +16,7 @@ Atualizado em 12/11/2026. Veja o que já foi feito em `docs/migracao-sanity.md`.
 - [ ] **Revisar o texto da proposta antes de digitar:** erros como "mentrual", "nocorpo", "feira por um médico", "etonorgestrel" e "Voce". Anotações internas do PDF ("VERE NA CARTILHA…", "CHAT", "CANVA", "AJUSTADA PELO CHAT", "Banco gemini") não entram no conteúdo. Padronizar as fontes das imagens geradas por IA.
 - [x] **Studio embutido no site** (`/studio`, mesmo domínio do app, sem `sanity deploy`). Pendente: no painel do Sanity (API → CORS origins), os domínios do site e `http://localhost:5173` precisam ter **Credentials: Allowed**, senão o login do Studio falha. Convidar as editoras em Members.
 - [ ] **Testar o clique das setas do carrossel** em um navegador real. A rolagem animada não funciona no navegador automatizado, então só o encaixe foi confirmado.
-- [ ] **Testar o build da imagem Docker** (`docker build`) e uma rota profunda como `/secao/x`. O Docker não estava rodando quando foi montado.
-- [ ] **Confirmar como a imagem é publicada.** O compose usa `ghcr.io/veredianerodrigues/cartilha-react:latest`, mas este repositório não tem workflow de build/push. Definir onde a imagem é construída e como o deploy acontece.
+- [x] **Deploy definido:** app Node.js na Hostinger Cloud, com deploy automático pela `main` (`api/server.mjs` serve o `dist/` e a `/api`). O Docker foi removido em 20/11/2026.
 
 ## Revisar no conteúdo cadastrado
 

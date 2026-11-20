@@ -11,7 +11,7 @@ Data: 12/11/2026
 | Linguagem | TypeScript no Studio; o frontend continua em JS |
 | Conteúdo antigo | **Não migrado.** O cliente vai trocar muito texto, então o conteúdo é digitado do zero no Studio |
 | Estrutura | Cada seção é um documento; o conteúdo é uma lista de blocos (texto, imagem, grade de imagens) |
-| Hospedagem | Docker + Nginx servindo o build estático |
+| Hospedagem | App Node.js na Hostinger Cloud (`api/server.mjs` serve o `dist/` e a `/api`); Docker removido em 20/11/2026 |
 | Fallbacks | Nenhum código de contingência no frontend |
 | PWA | Fora do escopo por enquanto (configuração antiga mantida, sem edições) |
 
@@ -45,10 +45,8 @@ Pacote separado, porque o Sanity 6 exige React 19 e o app está no React 18.
 
 ## Infra
 
-- `Dockerfile` — build do Vite (Node 22) + Nginx. Build args `VITE_SANITY_PROJECT_ID` e `VITE_SANITY_DATASET`, com os ids deste projeto como padrão.
-- `nginx.conf` — fallback de SPA, cache longo em `/assets/`, sem cache em `index.html` e no service worker.
-- `docker-compose.yml` — porta 80, sem volumes nem segredos do servidor; labels do Traefik mantidos.
-- `.dockerignore` — exclui `studio`. `.env.example` com as duas variáveis.
+- Hostinger Cloud, app Node.js: build `npm run build` (saída `dist`), entrada `api/server.mjs`, deploy automático pela `main`. O servidor entrega o `dist/` (cache longo em `/assets/`, `no-cache` no HTML e no service worker, `index.html` nas rotas da SPA) e a `/api` (conteúdo em cache, SSE e webhook de revalidação).
+- Variáveis no hPanel: `VITE_SANITY_PROJECT_ID`, `VITE_SANITY_DATASET` e `SANITY_WEBHOOK_SECRET`. `.env.example` com as variáveis do build.
 
 ## Limpeza do legado
 
