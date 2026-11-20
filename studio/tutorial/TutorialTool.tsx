@@ -123,7 +123,7 @@ const capitulos: Capitulo[] = [
         <Tabela
           cabecalho={['Bloco', 'Finalidade']}
           linhas={[
-            ['Texto', 'Parágrafos, listas e caixas de destaque, como “Saiba mais” e “Dica”.'],
+            ['Texto', 'Parágrafos, subtítulos, listas e caixas de destaque, como “Saiba mais” e “Dica”. Aceita também caixas, separadores e imagens no meio do texto.'],
             ['Imagem', 'Uma imagem com legenda e fonte, com escolha de tipo, tamanho e alinhamento.'],
             ['Grade de imagens', 'Duas ou mais imagens, exibidas lado a lado ou em carrossel.'],
             ['Passo a passo / lista ilustrada', 'Passos numerados, cartões sem numeração ou grade de itens com foto. Substitui infográficos que traziam texto dentro da imagem.'],
@@ -397,10 +397,41 @@ const capitulos: Capitulo[] = [
             ['Citação (número sobrescrito)', 'Veja o capítulo “Citações e referências”.'],
           ]}
         />
+
+        <H3>Estilos de parágrafo</H3>
+        <P>
+          Coloque o cursor no parágrafo e escolha o estilo no menu suspenso à esquerda da barra (ele mostra <UI>Parágrafo</UI>). O estilo
+          vale para o parágrafo inteiro.
+        </P>
+        <Tabela
+          cabecalho={['Estilo', 'Quando usar']}
+          linhas={[
+            ['Parágrafo', 'Texto corrido, alinhado à esquerda. É o padrão e serve para quase tudo.'],
+            ['Parágrafo centralizado / à direita / justificado', 'Muda só o alinhamento do parágrafo. Use com moderação: na cartilha, o texto alinhado à esquerda é o mais fácil de ler.'],
+            ['Subtítulo', 'Divide um texto longo em partes, dentro do mesmo bloco. Fica abaixo do Título do bloco na hierarquia.'],
+            ['Subtítulo menor', 'Um nível abaixo do Subtítulo, para subdivisões dentro de uma parte.'],
+            ['Destaque (frase em evidência)', 'Uma frase curta que merece atenção, como um depoimento ou uma ideia-chave. Aparece maior, em itálico, com um fio azul à esquerda.'],
+          ]}
+        />
+        <P>Subtítulos e destaque ficam sempre alinhados à esquerda; o alinhamento existe apenas para parágrafos.</P>
+
+        <H3>Itens inseridos no meio do texto</H3>
+        <P>
+          Coloque o cursor numa linha vazia, abra o menu <UI>Insert</UI> da barra do editor e escolha o item. Para editar depois, clique
+          sobre ele; para remover, use o menu <UI>⋯</UI> do item.
+        </P>
+        <Tabela
+          cabecalho={['Item', 'Quando usar']}
+          linhas={[
+            ['Caixa (Você sabia, Dica…)', 'Uma caixa curta no meio do texto, com o mesmo visual das caixas do bloco de texto. Escolha o tipo, um título opcional e o texto (sem negrito nem links). Para uma caixa longa ou com formatação, prefira um bloco de texto próprio com o Tipo de caixa.'],
+            ['Separador', 'Linha: separa assuntos dentro do texto. Espaço em branco: apenas afasta os trechos.'],
+            ['Imagem', 'Uma imagem no meio do texto, com os mesmos campos do bloco de imagem (tipo, texto alternativo, legenda e fonte). Ocupa a largura do texto. Para escolher tamanho, alinhamento ou página inteira, use o bloco de imagem.'],
+          ]}
+        />
         <UL>
-          <li>Os textos da cartilha são alinhados à esquerda; não há botão de alinhamento nem de estilos de título.</li>
           <li>Ao colar texto de um arquivo do Word, confira o resultado: podem surgir parágrafos vazios entre os trechos, que devem ser apagados.</li>
           <li>O título de uma caixa (por exemplo, “Saiba mais!!!”) deve ser informado no campo <strong>Título do bloco</strong>, e não dentro do texto.</li>
+          <li>Os mesmos recursos aparecem no texto das referências, mas lá use apenas parágrafo, itálico e link, para manter o formato ABNT.</li>
         </UL>
       </>
     ),
