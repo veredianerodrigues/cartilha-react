@@ -90,6 +90,15 @@ function lerCorpo(req) {
   })
 }
 
+// O CDN da Hostinger comprime a resposta e marca o ETag como fraco (W/"..."); o navegador
+// devolve esse valor no If-None-Match. A comparação ignora o prefixo W/ dos dois lados.
+const semPrefixoFraco = (etag) => etag.trim().replace(/^W\//, '')
+function mesmoEtag(cabecalho, etag) {
+  if (!cabecalho) return false
+  const alvo = semPrefixoFraco(etag)
+  return cabecalho.split(',').some((valor) => semPrefixoFraco(valor) === alvo)
+}
+
 function responder(res, status, corpo, cabecalhos = {}) {
   res.writeHead(status, {'Content-Type': 'application/json; charset=utf-8', ...cabecalhos})
   res.end(typeof corpo === 'string' ? corpo : JSON.stringify(corpo))
@@ -124,7 +133,7 @@ async function servirArquivo(req, res, pathname) {
     'Cache-Control': cacheDe(alvo === join(DIST, 'index.html') ? '/index.html' : pathname),
     ETag: etag,
   }
-  if (req.headers['if-none-match'] === etag) {
+  if (mesmoEtag(req.headers['if-none-match'], etag)) {
     res.writeHead(304, cabecalhos)
     return res.end()
   }
@@ -140,7 +149,7 @@ createServer(async (req, res) => {
       const atual = cache ?? (await carregar())
       // no-cache: o navegador sempre pergunta; sem mudança, a resposta é um 304 sem corpo.
       const cabecalhos = {'Cache-Control': 'no-cache', ETag: atual.etag}
-      if (req.headers['if-none-match'] === atual.etag) {
+      if (mesmoEtag(req.headers['if-none-match'], atual.etag)) {
         res.writeHead(304, cabecalhos)
         return res.end()
       }
