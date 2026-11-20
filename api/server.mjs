@@ -1,16 +1,45 @@
 import {createHash, createHmac, timingSafeEqual} from 'node:crypto'
+import {createReadStream} from 'node:fs'
+import {stat} from 'node:fs/promises'
 import {createServer} from 'node:http'
+import {extname, join, normalize, sep} from 'node:path'
+import {fileURLToPath} from 'node:url'
 import {buscarConteudo} from './conteudo.mjs'
 
-// API da cartilha (atrás do Nginx, em /api):
+// Servidor da cartilha (app Node.js na Hostinger):
 //   GET  /api/content     conteúdo publicado, servido de um cache em memória
 //   GET  /api/events      fluxo (SSE): avisa os navegadores abertos quando o conteúdo muda
 //   POST /api/revalidate  webhook do Sanity: busca o conteúdo de novo, troca o cache e avisa
-const {SANITY_PROJECT_ID, SANITY_DATASET = 'production', SANITY_WEBHOOK_SECRET, PORT = '3001'} = process.env
-if (!SANITY_PROJECT_ID) throw new Error('Defina SANITY_PROJECT_ID.')
+//   GET  demais rotas     site gerado pelo Vite (dist/); rotas da SPA recebem o index.html
+const {VITE_SANITY_PROJECT_ID, VITE_SANITY_DATASET = 'production', SANITY_WEBHOOK_SECRET, PORT = '3001'} = process.env
+if (!VITE_SANITY_PROJECT_ID) throw new Error('Defina VITE_SANITY_PROJECT_ID.')
 if (!SANITY_WEBHOOK_SECRET) throw new Error('Defina SANITY_WEBHOOK_SECRET.')
 
-const origem = {projectId: SANITY_PROJECT_ID, dataset: SANITY_DATASET}
+const origem = {projectId: VITE_SANITY_PROJECT_ID, dataset: VITE_SANITY_DATASET}
+const DIST = fileURLToPath(new URL('../dist/', import.meta.url))
+const TIPOS = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.webmanifest': 'application/manifest+json',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
+  '.avif': 'image/avif',
+  '.gif': 'image/gif',
+  '.ico': 'image/x-icon',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+  '.ttf': 'font/ttf',
+  '.txt': 'text/plain; charset=utf-8',
+  '.xml': 'application/xml',
+  '.mp4': 'video/mp4',
+  '.pdf': 'application/pdf',
+}
 const TOLERANCIA_MS = 5 * 60 * 1000
 const LIMITE_CORPO = 1024 * 1024
 
@@ -66,6 +95,44 @@ function responder(res, status, corpo, cabecalhos = {}) {
   res.end(typeof corpo === 'string' ? corpo : JSON.stringify(corpo))
 }
 
+// Arquivos com hash no nome (em /assets/, gerados pelo Vite) ficam em cache longo;
+// HTML, service worker e manifesto são sempre revalidados, para publicar versões novas.
+function cacheDe(pathname) {
+  return pathname.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'no-cache'
+}
+
+async function servirArquivo(req, res, pathname) {
+  const caminho = normalize(join(DIST, decodeURIComponent(pathname)))
+  if (!caminho.startsWith(DIST.endsWith(sep) ? DIST : DIST + sep)) return responder(res, 400, {erro: 'caminho inválido'})
+
+  let alvo = caminho
+  let info = await stat(alvo).catch(() => null)
+  if (info?.isDirectory()) {
+    alvo = join(alvo, 'index.html')
+    info = await stat(alvo).catch(() => null)
+  }
+  if (!info?.isFile()) {
+    // Arquivo pedido que não existe (tem extensão) é 404; rota da SPA recebe o index.html.
+    if (extname(pathname)) return responder(res, 404, {erro: 'não encontrado'})
+    alvo = join(DIST, 'index.html')
+    info = await stat(alvo)
+  }
+
+  const etag = `W/"${info.size.toString(16)}-${info.mtimeMs.toString(16)}"`
+  const cabecalhos = {
+    'Content-Type': TIPOS[extname(alvo).toLowerCase()] ?? 'application/octet-stream',
+    'Cache-Control': cacheDe(alvo === join(DIST, 'index.html') ? '/index.html' : pathname),
+    ETag: etag,
+  }
+  if (req.headers['if-none-match'] === etag) {
+    res.writeHead(304, cabecalhos)
+    return res.end()
+  }
+  res.writeHead(200, {...cabecalhos, 'Content-Length': info.size})
+  if (req.method === 'HEAD') return res.end()
+  createReadStream(alvo).pipe(res)
+}
+
 createServer(async (req, res) => {
   const {pathname} = new URL(req.url, 'http://localhost')
   try {
@@ -109,7 +176,9 @@ createServer(async (req, res) => {
       return responder(res, 200, {ok: true, alterado: novo.etag !== anterior, ouvintes: ouvintes.size})
     }
 
-    responder(res, 404, {erro: 'não encontrado'})
+    if (pathname.startsWith('/api/')) return responder(res, 404, {erro: 'não encontrado'})
+    if (req.method === 'GET' || req.method === 'HEAD') return await servirArquivo(req, res, pathname)
+    responder(res, 405, {erro: 'método não permitido'})
   } catch (erro) {
     console.error(erro)
     responder(res, 502, {erro: 'falha ao consultar o Sanity'})
