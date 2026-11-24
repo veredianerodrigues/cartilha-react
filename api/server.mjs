@@ -7,9 +7,11 @@ import {fileURLToPath} from 'node:url'
 import {buscarConteudo} from './conteudo.mjs'
 
 // Servidor da cartilha (app Node.js na Hostinger):
-//   GET  /api/content     conteúdo publicado, servido de um cache em memória
-//   GET  /api/events      fluxo (SSE): avisa os navegadores abertos quando o conteúdo muda
-//   POST /api/revalidate  webhook do Sanity: busca o conteúdo de novo, troca o cache e avisa
+//   GET  /api/content     conteúdo publicado, servido de um cache em memória (ETag + 304);
+//                         as abas abertas conferem a versão de tempos em tempos
+//   POST /api/revalidate  webhook do Sanity: busca o conteúdo de novo e troca o cache
+// Não há conexão permanente (SSE): na Hostinger cada conexão aberta prende uma cópia do
+// app e o "Máximo de processos" ficava perto do limite.
 //   GET  demais rotas     site gerado pelo Vite (dist/); rotas da SPA recebem o index.html
 const {VITE_SANITY_PROJECT_ID, VITE_SANITY_DATASET = 'production', SANITY_WEBHOOK_SECRET, PORT = '3001'} = process.env
 if (!VITE_SANITY_PROJECT_ID) throw new Error('Defina VITE_SANITY_PROJECT_ID.')
@@ -47,7 +49,6 @@ const LIMITE_CORPO = 1024 * 1024
 let cache = null
 /** Busca em andamento: chamadas simultâneas compartilham a mesma. */
 let emAndamento = null
-const ouvintes = new Set()
 
 function carregar() {
   emAndamento ??= buscarConteudo(origem)
@@ -156,24 +157,6 @@ createServer(async (req, res) => {
       return responder(res, 200, atual.json, cabecalhos)
     }
 
-    if (req.method === 'GET' && pathname === '/api/events') {
-      res.writeHead(200, {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        Connection: 'keep-alive',
-        'X-Accel-Buffering': 'no',
-      })
-      res.write('retry: 3000\n\n')
-      ouvintes.add(res)
-      // Comentário periódico mantém a conexão aberta através de proxies.
-      const batida = setInterval(() => res.write(': ping\n\n'), 25000)
-      req.on('close', () => {
-        clearInterval(batida)
-        ouvintes.delete(res)
-      })
-      return
-    }
-
     if (req.method === 'POST' && pathname === '/api/revalidate') {
       const corpo = await lerCorpo(req)
       if (!assinaturaValida(req.headers['sanity-webhook-signature'], corpo)) {
@@ -181,8 +164,7 @@ createServer(async (req, res) => {
       }
       const anterior = cache?.etag
       const novo = await carregar()
-      if (novo.etag !== anterior) for (const o of ouvintes) o.write('event: atualizado\ndata: {}\n\n')
-      return responder(res, 200, {ok: true, alterado: novo.etag !== anterior, ouvintes: ouvintes.size})
+      return responder(res, 200, {ok: true, alterado: novo.etag !== anterior})
     }
 
     if (pathname.startsWith('/api/')) return responder(res, 404, {erro: 'não encontrado'})

@@ -1,7 +1,9 @@
-import { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { fetchContent } from '../lib/queries.js';
 
 const SectionsContext = createContext(null);
+
+const INTERVALO_CONFERENCIA = 90 * 1000;
 
 // Converte o documento `secao` do Sanity no formato que sumário, capa, índice e
 // navegação já consomem (slug, title, page_label, children).
@@ -43,13 +45,19 @@ export function SectionsProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Versão (ETag) do conteúdo exibido: a conferência só troca o conteúdo quando ela muda,
+  // para o livro não ser remontado sem necessidade.
+  const versaoAtual = useRef(null);
+
   // silencioso: atualização em segundo plano, sem trocar a tela por "carregando".
   const reload = useCallback((silencioso = false) => {
     if (silencioso !== true) setLoading(true);
     fetchContent()
-      .then((data) => {
-        setTree(buildTree(data.secoes));
-        setReferencias(data.referencias);
+      .then(({ versao, dados }) => {
+        if (silencioso === true && versao === versaoAtual.current) return;
+        versaoAtual.current = versao;
+        setTree(buildTree(dados.secoes));
+        setReferencias(dados.referencias);
         setError(null);
       })
       .catch((err) => silencioso !== true && setError(err.message))
@@ -60,16 +68,17 @@ export function SectionsProvider({ children }) {
     reload();
   }, [reload]);
 
-  // Publicação no Studio: o servidor avisa pelo fluxo de eventos e o conteúdo é
-  // recarregado na hora. Ao voltar para a aba, confere de novo (cobre conexão perdida).
+  // Publicação no Studio: a aba visível confere a versão a cada INTERVALO_CONFERENCIA e
+  // ao voltar a ficar visível. Sem mudança, o servidor responde 304 e libera a conexão
+  // na hora. (Uma conexão aberta por aba, como no SSE, prendia as cópias do app na
+  // Hostinger e levava o "Máximo de processos" para perto do limite.)
   useEffect(() => {
-    const fonte = new EventSource('/api/events');
-    fonte.addEventListener('atualizado', () => reload(true));
-    const aoVoltar = () => document.visibilityState === 'visible' && reload(true);
-    document.addEventListener('visibilitychange', aoVoltar);
+    const conferir = () => document.visibilityState === 'visible' && reload(true);
+    const timer = setInterval(conferir, INTERVALO_CONFERENCIA);
+    document.addEventListener('visibilitychange', conferir);
     return () => {
-      fonte.close();
-      document.removeEventListener('visibilitychange', aoVoltar);
+      clearInterval(timer);
+      document.removeEventListener('visibilitychange', conferir);
     };
   }, [reload]);
 

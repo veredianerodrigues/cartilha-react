@@ -45,7 +45,7 @@ Pacote separado, porque o Sanity 6 exige React 19 e o app está no React 18.
 
 ## Infra
 
-- Hostinger Cloud, app Node.js: build `npm run build` (saída `dist`), entrada `api/server.mjs`, deploy automático pela `main`. O servidor entrega o `dist/` (cache longo em `/assets/`, `no-cache` no HTML e no service worker, `index.html` nas rotas da SPA) e a `/api` (conteúdo em cache, SSE e webhook de revalidação).
+- Hostinger Cloud, app Node.js: build `npm run build` (saída `dist`), entrada `api/server.mjs`, deploy automático pela `main`. O servidor entrega o `dist/` (cache longo em `/assets/`, `no-cache` no HTML e no service worker, `index.html` nas rotas da SPA) e a `/api` (conteúdo em cache com ETag e webhook de revalidação). Não há SSE: as abas abertas conferem a versão a cada 90 s e ao voltar a ficar visíveis, porque na Hostinger cada conexão aberta prendia uma cópia do app e o "Máximo de processos" ficava perto do limite de 120.
 - Variáveis no hPanel: `VITE_SANITY_PROJECT_ID`, `VITE_SANITY_DATASET` e `SANITY_WEBHOOK_SECRET`. `.env.example` com as variáveis do build.
 
 ## Limpeza do legado
