@@ -1,4 +1,4 @@
-import PortableTextView from '../shared/PortableTextView.jsx';
+import PortableTextView, { temConteudo } from '../shared/PortableTextView.jsx';
 import IllustrationFrame from '../../IllustrationFrame.jsx';
 import { urlFor, dimensoes } from '../../../lib/sanity.js';
 
@@ -159,7 +159,7 @@ function Cartao({ item, numero, indice, tamanhoDesenho }) {
           >
             {item.titulo}
           </p>
-          {item.texto && <PortableTextView value={item.texto} />}
+          {temConteudo(item.texto) && <PortableTextView value={item.texto} />}
         </div>
         {item.imagem && !layout.embaixo && desenho}
       </div>
@@ -181,7 +181,7 @@ function ItemGrade({ item, indice }) {
         </div>
       )}
       <p className="m-0 font-texto text-legenda font-semibold text-tinta-forte">{item.titulo}</p>
-      {item.texto && <PortableTextView value={item.texto} className="!text-legenda" />}
+      {temConteudo(item.texto) && <PortableTextView value={item.texto} className="!text-legenda" />}
     </li>
   );
 }
@@ -248,7 +248,7 @@ export default function BlocoPassos({ bloco }) {
         </div>
       )}
 
-      {bloco.nota && (
+      {temConteudo(bloco.nota) && (
         <div className="relative mt-4 px-7 py-6">
           <Fundo {...formaCartao(4)} cor="fill-azul-claro" />
           <PortableTextView value={bloco.nota} className="relative" />

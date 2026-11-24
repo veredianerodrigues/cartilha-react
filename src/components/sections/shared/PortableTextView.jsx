@@ -92,6 +92,15 @@ const components = {
   },
 };
 
+// Campo opcional apagado no Studio: o editor deixa um parágrafo em branco no lugar, que
+// não deve virar uma caixa vazia no site. Tem conteúdo quem tem algum texto ou algum
+// elemento que não é parágrafo (imagem, caixa, separador).
+export function temConteudo(value) {
+  return Boolean(
+    value?.some((bloco) => bloco._type !== 'block' || bloco.children?.some((trecho) => trecho.text?.trim())),
+  );
+}
+
 export default function PortableTextView({ value, abre = false, className = '' }) {
   const abreClasse = abre ? '[&>p:first-child]:text-abre-texto [&>p:first-child]:mb-6' : '';
   return (

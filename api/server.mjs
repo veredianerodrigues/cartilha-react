@@ -122,8 +122,10 @@ async function servirArquivo(req, res, pathname) {
     info = await stat(alvo).catch(() => null)
   }
   if (!info?.isFile()) {
-    // Arquivo pedido que não existe (tem extensão) é 404; rota da SPA recebe o index.html.
-    if (extname(pathname)) return responder(res, 404, {erro: 'não encontrado'})
+    // Arquivo pedido que não existe (extensão de arquivo conhecida) é 404; qualquer outra
+    // rota é da SPA e recebe o index.html. Só "tem um ponto" não basta: os endereços do
+    // Studio levam pontos no caminho (ex.: …/blocos[…].passos[…]) e recarregá-los dava 404.
+    if (TIPOS[extname(pathname).toLowerCase()]) return responder(res, 404, {erro: 'não encontrado'})
     alvo = join(DIST, 'index.html')
     info = await stat(alvo)
   }
