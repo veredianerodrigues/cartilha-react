@@ -129,9 +129,9 @@ const capitulos: Capitulo[] = [
             ['Passo a passo / lista ilustrada', 'Passos numerados, cartões sem numeração ou grade de itens com foto. Substitui infográficos que traziam texto dentro da imagem.'],
           ]}
         />
-        <Nota titulo="Leitura em formato de livro">
-          O site divide o conteúdo de cada seção em folhas automaticamente: duas páginas lado a lado em telas grandes e uma página por vez em
-          celulares. Não é necessário dividir o conteúdo manualmente. Basta cadastrar os blocos na ordem correta.
+        <Nota titulo="Uma folha que se rola">
+          Cada seção aparece inteira numa folha de papel que o leitor rola até o fim, no computador e no celular. Não é preciso pensar em
+          quebras de página: basta cadastrar os blocos na ordem correta.
         </Nota>
         <P>
           As <strong>referências bibliográficas</strong> são cadastradas separadamente, uma por obra. Nos textos, apenas se indica o ponto em que
@@ -238,28 +238,6 @@ const capitulos: Capitulo[] = [
           na ordem da lista. Para reordenar, arraste o bloco pelo ícone de pontos à esquerda; para excluir, use o menu <UI>⋯</UI> do bloco.
         </P>
 
-        <H3>Campo comum a todos os blocos: Na paginação</H3>
-        <P>
-          O site divide o conteúdo em folhas automaticamente, e a divisão varia conforme o tamanho da tela. Para evitar que elementos
-          relacionados sejam separados, utilize o campo <strong>Na paginação</strong>, ao final de cada bloco.
-        </P>
-        <Tabela
-          cabecalho={['Opção', 'Efeito', 'Quando usar']}
-          linhas={[
-            ['Automático', 'O site decide onde virar a folha.', 'Maioria dos blocos. É o valor padrão.'],
-            [
-              'Manter junto com o bloco seguinte',
-              'Este bloco e o seguinte nunca ficam em folhas diferentes. Se o seguinte também estiver marcado, os três permanecem juntos, e assim sucessivamente.',
-              'Frase curta que apresenta uma imagem ou um passo a passo; subtítulo seguido do parágrafo correspondente.',
-            ],
-            ['Começar numa folha nova', 'O bloco sempre inicia uma folha.', 'Novo assunto dentro da seção ou bloco que deve ficar sozinho no alto da folha.'],
-          ]}
-        />
-        <Aviso titulo="Uso moderado">
-          Um grupo grande demais não cabe em uma folha e acaba dividido do mesmo modo. Una apenas o que precisa permanecer junto, em geral
-          dois blocos, e confira o resultado no computador e no celular.
-        </Aviso>
-
         <H3>Bloco de texto</H3>
         <Tabela
           cabecalho={['Campo', 'Preenchimento']}
@@ -314,9 +292,9 @@ const capitulos: Capitulo[] = [
         <Tabela
           cabecalho={['Tamanho', 'Largura na página', 'Indicado para']}
           linhas={[
-            ['Página inteira', 'A imagem ocupa uma folha inteira; o texto termina antes e continua na folha seguinte.', 'Infográficos com muito texto, que precisam de espaço para ficar legíveis.'],
-            ['Grande (texto embaixo)', 'Toda a coluna, com até 65% da altura da folha.', 'Uma imagem em destaque com uma frase curta embaixo. Marque Na paginação → “Manter junto com o bloco seguinte” para o texto ficar na mesma folha.'],
-            ['Automático (largura total)', 'Toda a coluna de texto.', 'Imagens que cabem na largura da página. É o valor padrão.'],
+            ['Destaque', 'Toda a largura, até quase a altura da tela.', 'Infográficos com muito texto, que precisam de espaço para ficar legíveis.'],
+            ['Grande', 'Toda a largura, até 65% da altura da tela.', 'Uma imagem em destaque com o texto logo abaixo.'],
+            ['Automático', 'Toda a largura, até metade da altura da tela.', 'Imagens que cabem na largura da página. É o valor padrão.'],
             ['Média (até 440 px)', 'Até 440 px; metade da coluna quando posicionada ao lado do texto.', 'Fotos e ilustrações.'],
             ['Pequena (até 260 px)', 'Até 260 px; 40% da coluna quando posicionada ao lado do texto.', 'Fotos pequenas ou de baixa resolução, para evitar perda de qualidade.'],
           ]}
@@ -351,8 +329,8 @@ const capitulos: Capitulo[] = [
           </li>
           <li>
             Nos estilos numerado e lista, <strong>Tamanho do desenho</strong> define o espaço do desenho (tabela a seguir). Para dar
-            destaque a um item, marque <strong>Destacar</strong> nele: o item ganha uma folha só para ele, com o desenho maior e fundo de
-            destaque.
+            destaque a um item, marque <strong>Destacar</strong> nele: o item ganha fundo na cor de destaque, mais espaço em volta e o
+            desenho maior embaixo do texto.
           </li>
           <li>
             Somente no estilo Grade, o campo <strong>Imagem ao lado (opcional)</strong> posiciona uma imagem na primeira coluna (25% da
@@ -372,9 +350,9 @@ const capitulos: Capitulo[] = [
         <Tabela
           cabecalho={['Tamanho do desenho', 'Apresentação', 'Quando usar']}
           linhas={[
-            ['Pequeno', 'Desenho pequeno ao lado do texto; vários cartões por folha. É o valor padrão.', 'Passos com bastante texto, em que o desenho só ilustra.'],
-            ['Grande (ao lado do texto)', 'Desenho com quase metade da largura, ao lado do texto; cerca de dois cartões por folha.', 'Frases curtas com desenho, como os direitos sexuais e reprodutivos.'],
-            ['Página inteira (um por folha)', 'Cada passo numa folha, com o desenho na largura toda embaixo do texto.', 'Desenhos largos e detalhados, como as fases da fecundação.'],
+            ['Pequeno', 'Desenho pequeno ao lado do texto. É o valor padrão.', 'Passos com bastante texto, em que o desenho só ilustra.'],
+            ['Grande (ao lado do texto)', 'Desenho com quase metade da largura, ao lado do texto.', 'Frases curtas com desenho, como os direitos sexuais e reprodutivos.'],
+            ['Largura total (embaixo do texto)', 'Desenho embaixo do texto, ocupando o cartão inteiro.', 'Desenhos largos e detalhados, como as fases da fecundação.'],
           ]}
         />
 
@@ -519,7 +497,6 @@ const capitulos: Capitulo[] = [
             ['Título do bloco (opcional)', null],
             ['Conteúdo', 'A primeira consulta é um momento para tirar dúvidas e conhecer o serviço de saúde.\n\nNão é preciso ter pressa nem medo de perguntar.'],
             ['Fonte (opcional)', null],
-            ['Na paginação', 'Automático'],
           ]}
         />
 
@@ -531,7 +508,6 @@ const capitulos: Capitulo[] = [
             ['Título do bloco (opcional)', 'Dica!'],
             ['Conteúdo', 'Leve a caderneta de vacinação e anote as perguntas antes da consulta.'],
             ['Fonte (opcional)', 'Fonte: texto ilustrativo, sem valor informativo.'],
-            ['Na paginação', 'Manter junto com o bloco seguinte'],
           ]}
         />
 
@@ -546,7 +522,6 @@ const capitulos: Capitulo[] = [
             ['Fonte', 'Banco de imagens (exemplo).'],
             ['Tamanho', 'Média (até 440 px)'],
             ['Alinhamento', 'Direita (texto ao lado)'],
-            ['Na paginação', 'Automático'],
           ]}
         />
 
@@ -589,18 +564,17 @@ const capitulos: Capitulo[] = [
           necessário restaurá-la.
         </Nota>
 
-        <H3>Como folhear a cartilha para conferir</H3>
+        <H3>Como navegar pela cartilha para conferir</H3>
         <Tabela
           cabecalho={['Para', 'Como fazer']}
           linhas={[
-            ['Virar a página', 'Botões Anterior e Próximo na barra inferior, setas ← → do teclado ou deslizar o dedo para o lado em celulares.'],
-            ['Saber a posição', 'O contador na barra indica a folha da seção (por exemplo, “2 de 4”). A linha azul acima dele mostra o avanço na cartilha inteira.'],
-            ['Ir para outra seção', 'Na última folha, Próximo abre a seção seguinte; o botão ☰ abre o sumário.'],
+            ['Ler a seção', 'Role a página: a seção inteira fica numa folha só.'],
+            ['Ir para outra seção', 'Botões Anterior e Próximo na barra inferior ou setas ← → do teclado; o botão ☰ abre o sumário.'],
+            ['Saber a posição', 'A barra mostra o número da página impressa da seção, e a linha azul acima dele, o avanço na cartilha inteira.'],
           ]}
         />
-        <Nota titulo="Confira em mais de um tamanho de tela">
-          No computador são exibidas duas páginas lado a lado; no celular, uma por vez, e por isso a mesma seção tem mais folhas. Se algum
-          elemento ficou separado daquilo que deveria acompanhar, utilize o campo <strong>Na paginação</strong> do bloco.
+        <Nota titulo="Confira no computador e no celular">
+          No celular a folha é mais estreita: imagens ao lado do texto passam para cima dele e os desenhos dos passos descem para baixo do texto.
         </Nota>
       </>
     ),
@@ -614,7 +588,7 @@ const capitulos: Capitulo[] = [
         <li>Nº da página igual ao da cartilha impressa.</li>
         <li>Cada bloco de texto com o tipo de caixa adequado.</li>
         <li>Tipo de imagem escolhido em todas as imagens (fotos com fundo como Cena).</li>
-        <li>Nenhum infográfico com texto pequeno demais: refeito como Passo a passo ou configurado como Página inteira.</li>
+        <li>Nenhum infográfico com texto pequeno demais: refeito como Passo a passo ou configurado como Destaque.</li>
         <li>Nenhum título repetido logo abaixo do título da página.</li>
         <li>Texto alternativo preenchido em todas as imagens.</li>
         <li>Fonte preenchida nas imagens que exigem crédito.</li>
@@ -635,14 +609,12 @@ const capitulos: Capitulo[] = [
           Em geral, a causa é o Endereço (URL) da seção, que não pode ter barra inicial, acentos ou espaços. Corrija o campo e publique.
         </Pergunta>
         <Pergunta pergunta="A imagem ficou grande ou pequena demais.">
-          Altere o Tamanho no bloco de imagem (Automático, Média ou Pequena). Para que o texto corra ao lado, utilize também o alinhamento Esquerda ou Direita.
+          Altere o Tamanho no bloco de imagem (Destaque, Grande, Automático, Média ou Pequena). Para que o texto corra ao lado, utilize Média
+          ou Pequena com o alinhamento Esquerda ou Direita.
         </Pergunta>
         <Pergunta pergunta="O texto não ficou ao lado da imagem.">
           O tamanho deve ser Média ou Pequena, o alinhamento Esquerda ou Direita, e o bloco de texto deve vir imediatamente após o bloco de
           imagem. Caixas coloridas (Saiba mais, Dica etc.) ficam ao lado da imagem, sem passar por baixo dela; se não houver largura suficiente, descem para depois da imagem.
-        </Pergunta>
-        <Pergunta pergunta="Uma imagem ficou sozinha em uma folha.">
-          É o comportamento do tamanho Página inteira. Se não for a intenção, altere o tamanho para Automático.
         </Pergunta>
         <Pergunta pergunta="A imagem aparece com a moldura errada.">
           Altere o Tipo de imagem: Ilustração para desenhos e infográficos, Retrato para pessoas recortadas sem fundo e Cena para as demais fotos.
@@ -650,20 +622,9 @@ const capitulos: Capitulo[] = [
         <Pergunta pergunta="A foto aparece dentro de um cartão com borda.">
           O Tipo de imagem está como Ilustração. Para fotos, escolha Cena: a foto fica sem borda e sem espaço ao redor.
         </Pergunta>
-        <Pergunta pergunta="Sobrou espaço em branco no fim de uma folha.">
-          Caixas coloridas, imagens, passos e grades não se dividem entre duas folhas. Quando não cabem no espaço restante, passam inteiros
-          para a folha seguinte. Trata-se do comportamento normal; se o espaço for excessivo, altere a ordem dos blocos ou reduza o tamanho da imagem.
-        </Pergunta>
-        <Pergunta pergunta="Um parágrafo ou frase ficou sozinho em uma folha, longe do que deveria acompanhar.">
-          No bloco que deve ficar junto do seguinte, altere Na paginação para “Manter junto com o bloco seguinte”, publique e confira em mais
-          de um tamanho de tela.
-        </Pergunta>
-        <Pergunta pergunta="Um assunto deve começar no alto de uma folha.">
-          No primeiro bloco do assunto, altere Na paginação para “Começar numa folha nova”.
-        </Pergunta>
         <Pergunta pergunta="O texto de um infográfico ficou pequeno demais para ler.">
           A melhor solução é refazê-lo com o bloco Passo a passo / lista ilustrada. Se o infográfico precisar continuar como imagem (um
-          diagrama com rótulos, por exemplo), utilize o tamanho Página inteira.
+          diagrama com rótulos, por exemplo), utilize o tamanho Destaque. O leitor também pode tocar na imagem para ampliá-la.
         </Pergunta>
         <Pergunta pergunta="Qual estilo escolher no passo a passo?">
           Passos numerados quando a ordem importa; Lista de cartões para itens sem ordem, como tipos ou opções; Grade para vários itens curtos com foto, como sintomas.

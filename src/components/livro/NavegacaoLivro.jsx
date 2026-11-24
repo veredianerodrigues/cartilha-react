@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom';
-import { ALTURA_NAVEGACAO } from './medidas.js';
+
+const ALTURA_NAVEGACAO = 76;
 
 const BOTAO =
   'inline-flex items-center gap-1.5 h-10 px-4 sm:px-5 rounded-full bg-tinta-forte text-papel font-titulo font-semibold text-sm ' +
   'hover:bg-azul-texto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-azul-marca ' +
   'disabled:opacity-35 disabled:hover:bg-tinta-forte transition';
 
-// Barra de folhear (Design System, componente Navegacao): progresso na cartilha,
-// anterior, contador, sumário e próximo.
+// Barra de navegação (Design System, componente Navegacao), presa embaixo da tela:
+// progresso na cartilha, seção anterior, página impressa, sumário e próxima seção.
 export default function NavegacaoLivro({ onAnterior, onProxima, rotulo, progresso }) {
   return (
     <nav
-      aria-label="Folhear a cartilha"
+      aria-label="Navegar pela cartilha"
       className="shrink-0 flex flex-col justify-center gap-2.5 px-4 bg-mesa"
       style={{ height: ALTURA_NAVEGACAO }}
     >
@@ -19,7 +20,7 @@ export default function NavegacaoLivro({ onAnterior, onProxima, rotulo, progress
         <span className="block h-full bg-azul-marca transition-[width] duration-300" style={{ width: `${progresso * 100}%` }} />
       </div>
       <div className="flex items-center justify-center gap-2 sm:gap-3">
-        <button type="button" className={BOTAO} onClick={onAnterior} disabled={!onAnterior} aria-label="Página anterior">
+        <button type="button" className={BOTAO} onClick={onAnterior} disabled={!onAnterior} aria-label="Seção anterior">
           ← <span className="hidden sm:inline">Anterior</span>
         </button>
         <span className="min-w-[88px] text-center font-texto text-folio text-tinta-suave tabular-nums">{rotulo}</span>
@@ -30,7 +31,7 @@ export default function NavegacaoLivro({ onAnterior, onProxima, rotulo, progress
         >
           ☰
         </Link>
-        <button type="button" className={BOTAO} onClick={onProxima} disabled={!onProxima} aria-label="Próxima página">
+        <button type="button" className={BOTAO} onClick={onProxima} disabled={!onProxima} aria-label="Próxima seção">
           <span className="hidden sm:inline">Próximo</span> →
         </button>
       </div>

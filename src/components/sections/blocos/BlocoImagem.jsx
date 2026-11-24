@@ -1,9 +1,11 @@
 import ImagemComLegenda from './ImagemComLegenda.jsx';
 
-// Largura máxima da imagem dentro da coluna de texto (nunca passa da largura da tela).
+// Largura máxima da imagem dentro da folha (nunca passa da largura da tela). A altura
+// máxima de cada tamanho fica em ImagemComLegenda.
 const TAMANHOS = {
-  auto: 'w-full',
+  pagina: 'w-full',
   grande: 'w-full',
+  auto: 'w-full',
   media: 'w-full max-w-[440px]',
   pequena: 'w-full max-w-[260px]',
 };
@@ -22,36 +24,16 @@ const FLUTUANTE = {
   esquerda: 'sm:float-left sm:mr-8 sm:mb-3 [&+*]:!mt-0',
   direita: 'sm:float-right sm:ml-8 sm:mb-3 [&+*]:!mt-0',
 };
-// Em fração da coluna (a coluna é a página do livro, que muda com a tela): assim o
-// texto ao lado nunca fica espremido.
+// Em fração da folha: assim o texto ao lado nunca fica espremido.
 const LARGURA_FLUTUANTE = {
   media: 'sm:w-1/2 sm:max-w-none',
   pequena: 'sm:w-[40%] sm:max-w-none',
 };
 
-export default function BlocoImagem({ bloco, ultimo = false }) {
-  // Página inteira: a figura ocupa uma folha sozinha; o texto para antes e continua
-  // na folha seguinte (no espelho, fica lado a lado com o texto). Se a imagem fecha a
-  // seção, não força a quebra depois: ela abriria uma folha em branco no fim.
-  if (bloco.tamanho === 'pagina') {
-    return (
-      <ImagemComLegenda
-        item={bloco.imagem}
-        paginaInteira
-        className={`break-before-column ${ultimo ? '' : 'break-after-column'}`}
-      />
-    );
-  }
-
-  // Grande: largura toda e até 65% da folha. Com "Manter junto com o bloco seguinte",
-  // o texto seguinte fica embaixo, na mesma folha.
-  if (bloco.tamanho === 'grande') {
-    return <ImagemComLegenda item={bloco.imagem} grande className={TAMANHOS.grande} />;
-  }
-
-  const flutua = bloco.tamanho !== 'auto' && FLUTUANTE[bloco.alinhamento];
+export default function BlocoImagem({ bloco }) {
+  const flutua = Boolean(LARGURA_FLUTUANTE[bloco.tamanho] && FLUTUANTE[bloco.alinhamento]);
   const classes = flutua
     ? `${TAMANHOS[bloco.tamanho]} ${ALINHAMENTOS[bloco.alinhamento]} ${FLUTUANTE[bloco.alinhamento]} ${LARGURA_FLUTUANTE[bloco.tamanho]}`
     : `${TAMANHOS[bloco.tamanho]} ${ALINHAMENTOS[bloco.alinhamento]}`;
-  return <ImagemComLegenda item={bloco.imagem} className={classes} />;
+  return <ImagemComLegenda item={bloco.imagem} tamanho={bloco.tamanho} className={classes} />;
 }

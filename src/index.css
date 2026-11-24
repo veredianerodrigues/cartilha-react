@@ -7,7 +7,7 @@ body {
   background: #e9ebe6; /* mesa */
 }
 
-/* Troca de seção no livro: a folha entra girando levemente sobre a lombada. */
+/* Troca de seção: a folha entra girando levemente, como uma página virada. */
 @keyframes folhear-proximo {
   from { opacity: 0; transform: perspective(1600px) rotateY(-10deg) translateX(24px); transform-origin: left center; }
   to { opacity: 1; transform: none; }

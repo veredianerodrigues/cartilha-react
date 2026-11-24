@@ -23,7 +23,6 @@ const CONTENT_QUERY = `{
       imagens[] { _key, "tipo": coalesce(tipo, "ilustracao"), alt, legenda, fonte, imagem },
       fonte,
       "estilo": coalesce(estilo, "numerado"),
-      "quebra": coalesce(quebra, "auto"),
       "tamanhoDesenho": coalesce(tamanhoDesenho, "pequeno"),
       passos[] {
         _key,

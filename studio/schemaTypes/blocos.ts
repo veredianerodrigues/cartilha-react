@@ -1,25 +1,5 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
-/**
- * Controle da paginação do livro, comum a todos os blocos. O site divide o conteúdo em
- * folhas conforme o tamanho da tela; este campo evita separações ruins.
- */
-export const QUEBRAS = [
-  {title: 'Automático', value: 'auto'},
-  {title: 'Manter junto com o bloco seguinte', value: 'comProximo'},
-  {title: 'Começar numa folha nova', value: 'novaFolha'},
-]
-
-const campoQuebra = defineField({
-  name: 'quebra',
-  title: 'Na paginação',
-  type: 'string',
-  description:
-    'Automático: o site decide onde virar a folha. "Manter junto com o bloco seguinte": este bloco e o próximo nunca ficam em folhas diferentes (use para um texto curto que apresenta uma imagem, por exemplo). "Começar numa folha nova": o bloco abre sempre uma folha.',
-  options: {list: QUEBRAS, layout: 'radio'},
-  initialValue: 'auto',
-})
-
 /** Variantes visuais de um bloco de texto (o estilo de cada uma fica no frontend). */
 export const VARIANTES_TEXTO = [
   {title: 'Texto normal', value: 'normal'},
@@ -122,7 +102,6 @@ export const blocoTexto = defineType({
       type: 'string',
       description: 'Aparece em letra pequena abaixo da caixa. Ex.: "Fonte: Ministério da Saúde (2022)."',
     }),
-    campoQuebra,
   ],
   preview: {
     select: {titulo: 'titulo', variante: 'variante', conteudo: 'conteudo'},
@@ -138,17 +117,20 @@ export const blocoTexto = defineType({
 })
 
 /**
- * Tamanhos da imagem no site (largura máxima dentro da coluna de texto, que tem ~700px no
- * computador). Escolha pelo tipo de imagem:
- * - auto: ocupa a largura toda. Use em infográficos e caixas com texto, para ficarem legíveis.
- * - media: até 440px. Use em fotos e ilustrações grandes.
- * - pequena: até 260px. Use em fotos pequenas ou de baixa resolução, para não pixelizar.
+ * Tamanhos da imagem no site. A seção é uma folha que se rola, com ~600px de texto no
+ * computador; a altura de cada tamanho é uma fração da altura da tela, para a imagem
+ * nunca passar dela. O valor "pagina" é o Destaque (nome antigo mantido nos dados).
+ * - pagina: largura toda, até quase a tela inteira. Infográficos densos.
+ * - grande: largura toda, até 65% da tela. Imagem em destaque com texto logo abaixo.
+ * - auto: largura toda, até metade da tela.
+ * - media: até 440px. Fotos e ilustrações.
+ * - pequena: até 260px. Fotos pequenas ou de baixa resolução, para não pixelizar.
  * No celular nenhuma passa da largura da tela.
  */
 export const TAMANHOS_IMAGEM = [
-  {title: 'Página inteira (infográfico com muito texto)', value: 'pagina'},
-  {title: 'Automático (largura total)', value: 'auto'},
-  {title: 'Grande (até 65% da folha, texto embaixo)', value: 'grande'},
+  {title: 'Destaque (largura total, quase a tela inteira)', value: 'pagina'},
+  {title: 'Grande (largura total, até 65% da tela)', value: 'grande'},
+  {title: 'Automático (largura total, até metade da tela)', value: 'auto'},
   {title: 'Média (até 440 px)', value: 'media'},
   {title: 'Pequena (até 260 px)', value: 'pequena'},
 ]
@@ -170,7 +152,7 @@ export const blocoImagem = defineType({
       title: 'Tamanho',
       type: 'string',
       description:
-        'Página inteira: a imagem ganha uma página só para ela (o texto continua na seguinte); use em infográficos densos. Automático: largura da coluna. Grande: largura da coluna e até 65% da folha; marque "Manter junto com o bloco seguinte" para o texto ficar embaixo, na mesma folha. Média: fotos e ilustrações. Pequena: fotos pequenas ou de baixa resolução. Se o infográfico é um passo a passo, prefira o bloco "Passo a passo".',
+        'Destaque: largura total e quase a altura da tela; use em infográficos densos. Grande: largura total e até 65% da tela; imagem em destaque com texto logo abaixo. Automático: largura total, até metade da tela. Média: fotos e ilustrações. Pequena: fotos pequenas ou de baixa resolução. Se o infográfico é um passo a passo, prefira o bloco "Passo a passo".',
       options: {list: TAMANHOS_IMAGEM, layout: 'radio'},
       initialValue: 'auto',
       validation: (rule) => rule.required(),
@@ -184,7 +166,6 @@ export const blocoImagem = defineType({
       initialValue: 'centro',
       validation: (rule) => rule.required(),
     }),
-    campoQuebra,
   ],
   preview: {
     select: {legenda: 'imagem.legenda', fonte: 'imagem.fonte', media: 'imagem.imagem', tamanho: 'tamanho'},
@@ -211,8 +192,8 @@ export const ESTILOS_PASSOS = [
 /** Espaço do desenho nos estilos numerado e lista (a grade tem tamanho fixo). */
 export const TAMANHOS_DESENHO = [
   {title: 'Pequeno (ao lado do texto)', value: 'pequeno'},
-  {title: 'Grande (ao lado do texto, ~2 por folha)', value: 'grande'},
-  {title: 'Página inteira (um passo por folha)', value: 'pagina'},
+  {title: 'Grande (ao lado do texto)', value: 'grande'},
+  {title: 'Largura total (embaixo do texto)', value: 'pagina'},
 ]
 
 export const passoItem = defineType({
@@ -237,7 +218,7 @@ export const passoItem = defineType({
       name: 'destaque',
       title: 'Destacar',
       type: 'boolean',
-      description: 'Nos estilos numerado e lista: o item ganha uma folha só para ele, com o desenho maior embaixo e fundo de destaque.',
+      description: 'Nos estilos numerado e lista: o item ganha fundo na cor de destaque, mais espaço em volta e o desenho maior embaixo do texto.',
       initialValue: false,
     }),
   ],
@@ -272,7 +253,7 @@ export const blocoPassos = defineType({
       title: 'Tamanho do desenho',
       type: 'string',
       description:
-        'Pequeno: desenho ao lado do texto, vários cartões por folha. Grande: desenho com quase metade da largura, ao lado do texto (cerca de dois cartões por folha). Página inteira: um passo por folha, com o desenho na largura toda embaixo do texto.',
+        'Pequeno: desenho pequeno ao lado do texto. Grande: desenho com quase metade da largura, ao lado do texto. Largura total: desenho embaixo do texto, ocupando o cartão inteiro (desenhos largos e detalhados).',
       options: {list: TAMANHOS_DESENHO, layout: 'radio'},
       initialValue: 'pequeno',
       hidden: ({parent}) => parent?.estilo === 'grade',
@@ -299,7 +280,6 @@ export const blocoPassos = defineType({
       description: 'Fecho do passo a passo, ex.: "A fecundação geralmente acontece na tuba uterina…".',
     }),
     defineField({name: 'fonte', title: 'Fonte', type: 'string'}),
-    campoQuebra,
   ],
   preview: {
     select: {titulo: 'titulo', passos: 'passos', estilo: 'estilo'},
@@ -336,7 +316,6 @@ export const blocoGradeImagens = defineType({
       },
       initialValue: 'grade',
     }),
-    campoQuebra,
   ],
   preview: {
     select: {imagens: 'imagens', modo: 'modo', media: 'imagens.0.imagem'},

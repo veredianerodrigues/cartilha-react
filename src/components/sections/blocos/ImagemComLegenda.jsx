@@ -3,24 +3,22 @@ import { urlFor, dimensoes } from '../../../lib/sanity.js';
 import forma from '../../../assets/page05/deco1.svg';
 
 // As 3 molduras do Design System (componente Figura). A moldura vem do campo "Tipo de
-// imagem" no Studio, não de ajustes caso a caso. Nenhuma imagem passa da metade da
-// altura da página (--altura-pagina, definida pelo livro em LivroPaginas.jsx), para a
-// figura caber junto com algum texto e não sobrar meia página em branco. Na "Página
-// inteira" ela usa a folha toda, menos o espaço da legenda.
-const ALTURA_MAX = { maxHeight: 'calc(var(--altura-pagina) * 0.5)' };
-// Desconta o cartão (padding e borda), a legenda e até duas linhas de fonte, para a
-// figura inteira caber na folha e a fonte não escorregar sozinha para a seguinte.
-const ALTURA_PAGINA = { maxHeight: 'calc(var(--altura-pagina) - 180px)' };
-// Retratos são decorativos: mais baixos, para caber junto com o conteúdo seguinte.
-const ALTURA_RETRATO = { maxHeight: 'calc(var(--altura-pagina) * 0.4)' };
-// Tamanho "Grande": a imagem em destaque, com espaço para algumas linhas de texto
-// embaixo na mesma folha (vale para qualquer moldura, inclusive retrato).
-const ALTURA_GRANDE = { maxHeight: 'calc(var(--altura-pagina) * 0.65)' };
+// imagem" no Studio, não de ajustes caso a caso. A altura máxima é uma fração da altura
+// de referência da tela (--altura-referencia, definida pelo leitor em LivroContinuo.jsx),
+// para a imagem nunca passar da tela e o texto em volta continuar à vista.
+// - Destaque (tamanho "pagina"): quase a tela toda, para infográficos densos;
+// - Grande: 65%, imagem em destaque com o texto logo abaixo;
+// - demais: metade da tela; retratos (decorativos) um pouco menos.
+const ALTURAS = {
+  pagina: { maxHeight: 'calc(var(--altura-referencia) * 0.9)' },
+  grande: { maxHeight: 'calc(var(--altura-referencia) * 0.65)' },
+};
+const ALTURA_PADRAO = { maxHeight: 'calc(var(--altura-referencia) * 0.5)' };
+const ALTURA_RETRATO = { maxHeight: 'calc(var(--altura-referencia) * 0.4)' };
 
-function alturaMaxima(item, paginaInteira, grande) {
-  if (paginaInteira) return ALTURA_PAGINA;
-  if (grande) return ALTURA_GRANDE;
-  return item.tipo === 'retrato' ? ALTURA_RETRATO : ALTURA_MAX;
+function alturaMaxima(item, tamanho) {
+  if (ALTURAS[tamanho]) return ALTURAS[tamanho];
+  return item.tipo === 'retrato' ? ALTURA_RETRATO : ALTURA_PADRAO;
 }
 
 function Retrato({ item, src, largura, altura, alturaMax }) {
@@ -66,11 +64,11 @@ function Cena({ item, src, largura, altura, alturaMax }) {
   );
 }
 
-// Na "Página inteira" o cartão perde o padding e a borda: a imagem usa a largura toda
-// da coluna (as imagens deitadas são limitadas pela largura, não pela altura).
-function Ilustracao({ item, src, largura, altura, alturaMax, paginaInteira }) {
+// No Destaque o cartão perde o padding e a borda: a imagem usa a largura toda da folha
+// (as imagens deitadas são limitadas pela largura, não pela altura).
+function Ilustracao({ item, src, largura, altura, alturaMax, semCartao }) {
   return (
-    <div className={paginaInteira ? 'bg-papel' : 'rounded-cartao border border-fio bg-papel p-4 sm:p-6'}>
+    <div className={semCartao ? 'bg-papel' : 'rounded-cartao border border-fio bg-papel p-4 sm:p-6'}>
       <IllustrationFrame
         src={src}
         alt={item.alt}
@@ -85,27 +83,22 @@ function Ilustracao({ item, src, largura, altura, alturaMax, paginaInteira }) {
 
 const MOLDURAS = { retrato: Retrato, cena: Cena, ilustracao: Ilustracao };
 
-// Uma imagem com legenda ("Figura: …") e fonte, sempre abaixo da imagem.
-// Na "Página inteira" a figura tem quase a altura da folha e fica centralizada nela (sem
-// a margem de cima entre blocos, que a faria passar da folha). A folga de 8px deixa o
-// marcador de fim do livro caber na mesma folha quando a figura fecha a seção.
-export default function ImagemComLegenda({ item, paginaInteira = false, grande = false, className = '' }) {
+// Uma imagem com legenda ("Figura: …") e fonte, sempre abaixo da imagem. `tamanho` vem
+// do bloco de imagem; nas grades e no meio do texto fica vazio (altura padrão).
+export default function ImagemComLegenda({ item, tamanho, className = '' }) {
   const Moldura = MOLDURAS[item.tipo];
   const { largura, altura } = dimensoes(item.imagem);
-  const src = urlFor(item.imagem).width(paginaInteira || grande ? 1600 : 1200).url();
+  const src = urlFor(item.imagem).width(ALTURAS[tamanho] ? 1600 : 1200).url();
 
   return (
-    <figure
-      className={`m-0 break-inside-avoid ${paginaInteira ? '!mt-0 flex flex-col justify-center' : ''} ${className}`}
-      style={paginaInteira ? { minHeight: 'calc(var(--altura-pagina) - 8px)' } : undefined}
-    >
+    <figure className={`m-0 ${className}`}>
       <Moldura
         item={item}
         src={src}
         largura={largura}
         altura={altura}
-        alturaMax={alturaMaxima(item, paginaInteira, grande)}
-        paginaInteira={paginaInteira}
+        alturaMax={alturaMaxima(item, tamanho)}
+        semCartao={tamanho === 'pagina'}
       />
       {(item.legenda || item.fonte) && (
         <figcaption className="mt-2 space-y-1 font-texto text-tinta-suave">

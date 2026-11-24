@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 // Imagem que amplia ao toque (lightbox). A moldura (retrato, cena, ilustração) fica
-// em ImagemComLegenda; aqui é só a imagem e o zoom. Carrega já (eager): nas folhas do
-// livro fora da tela, o carregamento preguiçoso atrasava a imagem ao virar a página.
-// O lightbox vai por portal para o <body>: as páginas do livro são deslocadas com
-// transform, e um position: fixed dentro delas ficaria preso à página em vez da tela.
+// em ImagemComLegenda; aqui é só a imagem e o zoom. Carrega sob demanda (lazy): a seção
+// é uma folha longa e as imagens lá embaixo só são baixadas quando o leitor chega
+// perto; largura e altura reservam o espaço, então a página não pula. O lightbox vai por
+// portal para o <body>: a folha entra com uma animação de transform, e um
+// position: fixed dentro dela ficaria preso à folha em vez da tela.
 export default function IllustrationFrame({ src, alt = '', largura, altura, imgClassName = '', style }) {
   const [open, setOpen] = useState(false);
 
@@ -36,7 +37,7 @@ export default function IllustrationFrame({ src, alt = '', largura, altura, imgC
           alt={alt}
           width={largura}
           height={altura}
-          loading="eager"
+          loading="lazy"
           decoding="async"
           className={imgClassName}
           style={style}

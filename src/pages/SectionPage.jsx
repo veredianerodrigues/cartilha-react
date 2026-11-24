@@ -3,7 +3,7 @@ import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
 import { useSections } from '../context/SectionsContext.jsx';
 import SectionView from '../components/SectionView.jsx';
 import SectionIndex from '../components/SectionIndex.jsx';
-import LivroPaginas from '../components/livro/LivroPaginas.jsx';
+import LivroContinuo from '../components/livro/LivroContinuo.jsx';
 
 export default function SectionPage() {
   const { slug } = useParams();
@@ -11,9 +11,11 @@ export default function SectionPage() {
   const navigate = useNavigate();
   const { flatSections, getSection, loading, error } = useSections();
 
+  // Seção nova abre no topo, exceto vindo de uma citação (#ref-N): aí o leitor rola até
+  // a referência.
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [slug]);
+    if (!location.hash) window.scrollTo(0, 0);
+  }, [slug, location.hash]);
 
   if (loading) {
     return <div className="max-w-3xl mx-auto px-4 py-16 text-center text-tinta">Carregando...</div>;
@@ -40,9 +42,9 @@ export default function SectionPage() {
   const prevSection = index > 0 ? flatSections[index - 1] : null;
   const nextSection = index < flatSections.length - 1 ? flatSections[index + 1] : null;
 
-  // Antes da primeira seção vem o sumário. Voltar abre a seção anterior na última folha.
+  // Antes da primeira seção vem o sumário.
   const onSecaoAnterior = prevSection
-    ? () => navigate(`/secao/${prevSection.slug}`, { state: { direcao: 'anterior', abrirNoFim: true } })
+    ? () => navigate(`/secao/${prevSection.slug}`, { state: { direcao: 'anterior' } })
     : () => navigate('/sumario');
   const onProximaSecao = nextSection
     ? () => navigate(`/secao/${nextSection.slug}`, { state: { direcao: 'proximo' } })
@@ -57,12 +59,11 @@ export default function SectionPage() {
   const showIndex = section.children.length > 0 && section.blocks.length === 0;
 
   return (
-    <LivroPaginas
+    <LivroContinuo
       key={slug}
       rubrica={capitulo.title}
-      esconderRubricaNaAbertura={capitulo === section}
+      esconderRubrica={capitulo === section}
       folio={section.page_label}
-      abrirNoFim={Boolean(location.state?.abrirNoFim)}
       ancora={location.hash || null}
       direcao={location.state?.direcao ?? 'proximo'}
       onSecaoAnterior={onSecaoAnterior}
@@ -70,6 +71,6 @@ export default function SectionPage() {
       posicao={{ indice: index, total: flatSections.length }}
     >
       {showIndex ? <SectionIndex title={section.title} children={section.children} /> : <SectionView section={section} />}
-    </LivroPaginas>
+    </LivroContinuo>
   );
 }

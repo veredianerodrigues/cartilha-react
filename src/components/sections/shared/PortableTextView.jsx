@@ -21,8 +21,8 @@ function Separador({ value }) {
 
 // Citação inline: mostra o número de cada referência (posição atual na lista) e leva
 // até a entrada em /secao/referencias. É um <a> comum de propósito: a página
-// Referências abre já virada na folha da entrada e a destaca (ver Referencias.jsx e
-// LivroPaginas.jsx).
+// Referências abre já rolada até a entrada e a destaca (ver Referencias.jsx e
+// LivroContinuo.jsx).
 function Citacao({ value }) {
   const { citationMap } = useSections();
   const numeros = value.referencias.map((ref) => citationMap[ref._ref]);

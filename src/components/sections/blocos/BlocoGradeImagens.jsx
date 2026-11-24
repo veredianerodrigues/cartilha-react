@@ -16,8 +16,8 @@ function Seta({ direcao, onClick }) {
 
 function Carrossel({ imagens }) {
   const pista = useRef(null);
-  // Rola uma "tela" por vez; a pista tem overflow horizontal, então o swipe de
-  // página (useSwipeNavigation) já a ignora e o gesto só rola as imagens.
+  // Rola uma "tela" por vez; a pista tem overflow horizontal, então o dedo rola as
+  // imagens de lado sem mexer na página.
   const rolar = (sentido) =>
     pista.current.scrollBy({ left: sentido * pista.current.clientWidth, behavior: 'smooth' });
 

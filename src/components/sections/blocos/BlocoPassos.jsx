@@ -7,9 +7,7 @@ import { urlFor, dimensoes } from '../../../lib/sanity.js';
 // - numerado: cartões com número em círculo (sequência de passos);
 // - lista: os mesmos cartões, sem número (itens que não têm ordem);
 // - grade: itens pequenos com foto redonda e legenda (ex.: sintomas).
-// Nenhum item (nem a grade inteira) se divide entre duas folhas do livro, e o bloco
-// começa abaixo de uma foto flutuante (clear), para a grade não ficar espremida. Na
-// grade, o título vai junto com ela para a mesma folha.
+// O bloco começa abaixo de uma foto flutuante (clear), para a grade não ficar espremida.
 //
 // Tom informal, para o público jovem: cada cartão, a caixa da grade e as faixas são
 // desenhados com formas orgânicas na mesma linguagem de curvas da capa, em pastel, sem
@@ -85,11 +83,10 @@ function Desenho({ imagem, className, larguraArquivo = 400 }) {
 }
 
 // Layout do cartão conforme o campo "Tamanho do desenho" do bloco (ou "Destacar" do item):
-// - pequeno: desenho pequeno à direita do texto; vários cartões por folha;
-// - grande: desenho com quase metade da largura, ao lado do texto (~2 cartões por folha);
-// - pagina: um passo por folha, desenho na largura toda embaixo do texto. O 1º passo
-//   não força a quebra, para poder ficar com o texto que apresenta o bloco;
-// - destaque: folha só para o item, desenho grande embaixo, fundo na cor de destaque.
+// - pequeno: desenho pequeno à direita do texto;
+// - grande: desenho com quase metade da largura, ao lado do texto;
+// - pagina: desenho na largura toda, embaixo do texto (desenhos largos e detalhados);
+// - destaque: desenho grande embaixo, fundo na cor de destaque e mais espaço em volta.
 // Em coluna estreita (celular), o flex-wrap leva o desenho ao lado para baixo do texto.
 const LAYOUTS = {
   pequeno: {
@@ -101,29 +98,29 @@ const LAYOUTS = {
   grande: {
     item: '',
     // Fora do celular o desenho fica sempre ao lado (sem quebrar a linha), senão o
-    // cartão dobra de altura e não cabem dois por folha.
+    // cartão dobra de altura.
     corpo: 'flex-wrap sm:flex-nowrap items-center',
     caixaDesenho: 'basis-full sm:basis-[42%] shrink-0',
     larguraArquivo: 800,
-    desenho: 'block w-full h-auto max-h-[calc(var(--altura-pagina)*0.3)] object-contain rounded-2xl',
+    desenho: 'block w-full h-auto max-h-[calc(var(--altura-referencia)*0.3)] object-contain rounded-2xl',
   },
   // pagina e destaque: o desenho vai para uma linha própria embaixo (fora do recuo do
   // número), com a largura toda do cartão.
   pagina: {
-    item: 'flex-wrap [&+li]:break-before-column [&+li]:!mt-0',
+    item: 'flex-wrap',
     corpo: '',
     caixaDesenho: 'relative basis-full',
     embaixo: true,
     larguraArquivo: 1400,
-    desenho: 'block w-full h-auto max-h-[calc(var(--altura-pagina)*0.6)] object-contain rounded-2xl',
+    desenho: 'block w-full h-auto max-h-[calc(var(--altura-referencia)*0.6)] object-contain rounded-2xl',
   },
   destaque: {
-    item: 'flex-wrap break-before-column !mt-0 !px-9',
+    item: 'flex-wrap !px-9 !py-8',
     corpo: '',
     caixaDesenho: 'relative basis-full',
     embaixo: true,
     larguraArquivo: 1400,
-    desenho: 'block w-auto max-w-full h-auto max-h-[calc(var(--altura-pagina)*0.5)] mx-auto object-contain rounded-2xl',
+    desenho: 'block w-auto max-w-full h-auto max-h-[calc(var(--altura-referencia)*0.5)] mx-auto object-contain rounded-2xl',
   },
 };
 
@@ -140,7 +137,7 @@ function Cartao({ item, numero, indice, tamanhoDesenho }) {
   );
   return (
     <li
-      className={`relative break-inside-avoid flex gap-3 px-7 py-6 ${layout.item} ${
+      className={`relative flex gap-3 px-7 py-6 ${layout.item} ${
         item.destaque ? 'text-sobre-destaque' : ''
       }`}
     >
@@ -174,7 +171,7 @@ function Cartao({ item, numero, indice, tamanhoDesenho }) {
 // Item da grade: foto redonda com borda branca sobre uma bolha pastel da capa.
 function ItemGrade({ item, indice }) {
   return (
-    <li className="break-inside-avoid flex flex-col items-center text-center gap-2">
+    <li className="flex flex-col items-center text-center gap-2">
       {item.imagem && (
         <div className="relative w-[96px] h-[90px] flex items-center justify-center">
           <Fundo {...bolhaCapa(indice + 1)} cor={PASTEIS[(indice + 2) % PASTEIS.length]} />
@@ -193,10 +190,10 @@ export default function BlocoPassos({ bloco }) {
   const grade = bloco.estilo === 'grade';
 
   return (
-    <section className={`clear-both text-tinta ${grade ? 'break-inside-avoid' : ''}`}>
+    <section className="clear-both text-tinta">
       {bloco.titulo && (
         <h2
-          className={`font-titulo text-azul-texto break-after-avoid ${
+          className={`font-titulo text-azul-texto ${
             grade ? 'text-titulo-caixa mt-6 mb-3' : 'text-subtitulo mt-8 mb-3'
           }`}
         >
@@ -205,7 +202,7 @@ export default function BlocoPassos({ bloco }) {
       )}
 
       {grade ? (
-        <div className="relative break-inside-avoid px-7 py-6">
+        <div className="relative px-7 py-6">
           <Fundo {...formaCartao(1)} cor="fill-amarelo-claro" />
           {/* "Imagem ao lado": a imagem na primeira coluna (25%) e a grade no resto. O
               multiply faz um fundo branco da foto assumir a cor da forma. */}
@@ -214,7 +211,7 @@ export default function BlocoPassos({ bloco }) {
               <div className="w-1/4 shrink-0">
                 <Desenho
                   imagem={bloco.imagemLateral}
-                  className="block w-full h-auto object-contain mix-blend-multiply max-h-[calc(var(--altura-pagina)*0.5)]"
+                  className="block w-full h-auto object-contain mix-blend-multiply max-h-[calc(var(--altura-referencia)*0.5)]"
                 />
               </div>
             )}
@@ -240,7 +237,7 @@ export default function BlocoPassos({ bloco }) {
       )}
 
       {bloco.lembretes?.length > 0 && (
-        <div className="relative break-inside-avoid mt-4 px-7 py-6 text-sobre-destaque">
+        <div className="relative mt-4 px-7 py-6 text-sobre-destaque">
           <Fundo {...formaCartao(2)} cor="fill-destaque" />
           <p className="relative font-titulo text-titulo-caixa mb-2">Importante</p>
           <ul className="relative m-0 pl-5 list-disc space-y-1.5 font-texto text-corpo">
@@ -252,7 +249,7 @@ export default function BlocoPassos({ bloco }) {
       )}
 
       {bloco.nota && (
-        <div className="relative break-inside-avoid mt-4 px-7 py-6">
+        <div className="relative mt-4 px-7 py-6">
           <Fundo {...formaCartao(4)} cor="fill-azul-claro" />
           <PortableTextView value={bloco.nota} className="relative" />
         </div>
