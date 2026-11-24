@@ -148,6 +148,7 @@ export const blocoTexto = defineType({
 export const TAMANHOS_IMAGEM = [
   {title: 'Página inteira (infográfico com muito texto)', value: 'pagina'},
   {title: 'Automático (largura total)', value: 'auto'},
+  {title: 'Grande (até 65% da folha, texto embaixo)', value: 'grande'},
   {title: 'Média (até 440 px)', value: 'media'},
   {title: 'Pequena (até 260 px)', value: 'pequena'},
 ]
@@ -169,7 +170,7 @@ export const blocoImagem = defineType({
       title: 'Tamanho',
       type: 'string',
       description:
-        'Página inteira: a imagem ganha uma página só para ela (o texto continua na seguinte); use em infográficos densos. Automático: largura da coluna. Média: fotos e ilustrações. Pequena: fotos pequenas ou de baixa resolução. Se o infográfico é um passo a passo, prefira o bloco "Passo a passo".',
+        'Página inteira: a imagem ganha uma página só para ela (o texto continua na seguinte); use em infográficos densos. Automático: largura da coluna. Grande: largura da coluna e até 65% da folha; marque "Manter junto com o bloco seguinte" para o texto ficar embaixo, na mesma folha. Média: fotos e ilustrações. Pequena: fotos pequenas ou de baixa resolução. Se o infográfico é um passo a passo, prefira o bloco "Passo a passo".',
       options: {list: TAMANHOS_IMAGEM, layout: 'radio'},
       initialValue: 'auto',
       validation: (rule) => rule.required(),
@@ -207,6 +208,13 @@ export const ESTILOS_PASSOS = [
   {title: 'Grade de itens com foto (ex.: sintomas)', value: 'grade'},
 ]
 
+/** Espaço do desenho nos estilos numerado e lista (a grade tem tamanho fixo). */
+export const TAMANHOS_DESENHO = [
+  {title: 'Pequeno (ao lado do texto)', value: 'pequeno'},
+  {title: 'Grande (ao lado do texto, ~2 por folha)', value: 'grande'},
+  {title: 'Página inteira (um passo por folha)', value: 'pagina'},
+]
+
 export const passoItem = defineType({
   name: 'passoItem',
   title: 'Passo',
@@ -223,7 +231,14 @@ export const passoItem = defineType({
       name: 'imagem',
       title: 'Desenho (opcional)',
       type: 'imagemItem',
-      description: 'Desenho pequeno do passo, sem texto dentro. Aparece ao lado do texto (abaixo, no celular).',
+      description: 'Desenho do passo, sem texto dentro. O tamanho vem do campo "Tamanho do desenho" do bloco.',
+    }),
+    defineField({
+      name: 'destaque',
+      title: 'Destacar',
+      type: 'boolean',
+      description: 'Nos estilos numerado e lista: o item ganha uma folha só para ele, com o desenho maior embaixo e fundo de destaque.',
+      initialValue: false,
     }),
   ],
   preview: {
@@ -251,6 +266,16 @@ export const blocoPassos = defineType({
       type: 'array',
       of: [defineArrayMember({type: 'passoItem'})],
       validation: (rule) => rule.required().min(2),
+    }),
+    defineField({
+      name: 'tamanhoDesenho',
+      title: 'Tamanho do desenho',
+      type: 'string',
+      description:
+        'Pequeno: desenho ao lado do texto, vários cartões por folha. Grande: desenho com quase metade da largura, ao lado do texto (cerca de dois cartões por folha). Página inteira: um passo por folha, com o desenho na largura toda embaixo do texto.',
+      options: {list: TAMANHOS_DESENHO, layout: 'radio'},
+      initialValue: 'pequeno',
+      hidden: ({parent}) => parent?.estilo === 'grade',
     }),
     defineField({
       name: 'imagemLateral',

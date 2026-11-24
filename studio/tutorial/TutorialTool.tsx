@@ -315,6 +315,7 @@ const capitulos: Capitulo[] = [
           cabecalho={['Tamanho', 'Largura na página', 'Indicado para']}
           linhas={[
             ['Página inteira', 'A imagem ocupa uma folha inteira; o texto termina antes e continua na folha seguinte.', 'Infográficos com muito texto, que precisam de espaço para ficar legíveis.'],
+            ['Grande (texto embaixo)', 'Toda a coluna, com até 65% da altura da folha.', 'Uma imagem em destaque com uma frase curta embaixo. Marque Na paginação → “Manter junto com o bloco seguinte” para o texto ficar na mesma folha.'],
             ['Automático (largura total)', 'Toda a coluna de texto.', 'Imagens que cabem na largura da página. É o valor padrão.'],
             ['Média (até 440 px)', 'Até 440 px; metade da coluna quando posicionada ao lado do texto.', 'Fotos e ilustrações.'],
             ['Pequena (até 260 px)', 'Até 260 px; 40% da coluna quando posicionada ao lado do texto.', 'Fotos pequenas ou de baixa resolução, para evitar perda de qualidade.'],
@@ -346,7 +347,12 @@ const capitulos: Capitulo[] = [
           <li>Em <strong>Estilo</strong>, escolha como os itens são exibidos (tabela a seguir).</li>
           <li>
             Em <strong>Passos</strong> (mínimo de dois), adicione um item para cada passo, com <strong>Título do passo</strong> (obrigatório),{' '}
-            <strong>Texto</strong> e <strong>Desenho (opcional)</strong>. O desenho deve ser pequeno e não conter texto.
+            <strong>Texto</strong> e <strong>Desenho (opcional)</strong>. O desenho não deve conter texto.
+          </li>
+          <li>
+            Nos estilos numerado e lista, <strong>Tamanho do desenho</strong> define o espaço do desenho (tabela a seguir). Para dar
+            destaque a um item, marque <strong>Destacar</strong> nele: o item ganha uma folha só para ele, com o desenho maior e fundo de
+            destaque.
           </li>
           <li>
             Somente no estilo Grade, o campo <strong>Imagem ao lado (opcional)</strong> posiciona uma imagem na primeira coluna (25% da
@@ -361,6 +367,14 @@ const capitulos: Capitulo[] = [
             ['Passos numerados (sequência)', 'Cartões coloridos com número em um círculo e o desenho ao lado do texto.', 'Quando a ordem importa: uso de um método, etapas da fecundação, puerpério.'],
             ['Lista de cartões (sem número)', 'Os mesmos cartões, sem numeração.', 'Itens sem ordem definida: tipos de DIU, comparação de métodos, direitos.'],
             ['Grade de itens com foto (ex.: sintomas)', 'Fotos redondas pequenas com legenda, três ou mais por linha.', 'Listas curtas e visuais, como sintomas. O Título do passo serve de legenda e o Texto pode ficar vazio.'],
+          ]}
+        />
+        <Tabela
+          cabecalho={['Tamanho do desenho', 'Apresentação', 'Quando usar']}
+          linhas={[
+            ['Pequeno', 'Desenho pequeno ao lado do texto; vários cartões por folha. É o valor padrão.', 'Passos com bastante texto, em que o desenho só ilustra.'],
+            ['Grande (ao lado do texto)', 'Desenho com quase metade da largura, ao lado do texto; cerca de dois cartões por folha.', 'Frases curtas com desenho, como os direitos sexuais e reprodutivos.'],
+            ['Página inteira (um por folha)', 'Cada passo numa folha, com o desenho na largura toda embaixo do texto.', 'Desenhos largos e detalhados, como as fases da fecundação.'],
           ]}
         />
 

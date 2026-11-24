@@ -3,6 +3,7 @@ import ImagemComLegenda from './ImagemComLegenda.jsx';
 // Largura máxima da imagem dentro da coluna de texto (nunca passa da largura da tela).
 const TAMANHOS = {
   auto: 'w-full',
+  grande: 'w-full',
   media: 'w-full max-w-[440px]',
   pequena: 'w-full max-w-[260px]',
 };
@@ -28,11 +29,24 @@ const LARGURA_FLUTUANTE = {
   pequena: 'sm:w-[40%] sm:max-w-none',
 };
 
-export default function BlocoImagem({ bloco }) {
+export default function BlocoImagem({ bloco, ultimo = false }) {
   // Página inteira: a figura ocupa uma folha sozinha; o texto para antes e continua
-  // na folha seguinte (no espelho, fica lado a lado com o texto).
+  // na folha seguinte (no espelho, fica lado a lado com o texto). Se a imagem fecha a
+  // seção, não força a quebra depois: ela abriria uma folha em branco no fim.
   if (bloco.tamanho === 'pagina') {
-    return <ImagemComLegenda item={bloco.imagem} paginaInteira className="break-before-column break-after-column" />;
+    return (
+      <ImagemComLegenda
+        item={bloco.imagem}
+        paginaInteira
+        className={`break-before-column ${ultimo ? '' : 'break-after-column'}`}
+      />
+    );
+  }
+
+  // Grande: largura toda e até 65% da folha. Com "Manter junto com o bloco seguinte",
+  // o texto seguinte fica embaixo, na mesma folha.
+  if (bloco.tamanho === 'grande') {
+    return <ImagemComLegenda item={bloco.imagem} grande className={TAMANHOS.grande} />;
   }
 
   const flutua = bloco.tamanho !== 'auto' && FLUTUANTE[bloco.alinhamento];

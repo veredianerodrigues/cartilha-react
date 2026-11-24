@@ -71,11 +71,11 @@ const bolhaCapa = (indice) => ({
   espelhada: Math.floor(indice / BOLHAS_CAPA.length) % 2 === 1,
 });
 
-function Desenho({ imagem, className }) {
+function Desenho({ imagem, className, larguraArquivo = 400 }) {
   const { largura, altura } = dimensoes(imagem.imagem);
   return (
     <IllustrationFrame
-      src={urlFor(imagem.imagem).width(400).url()}
+      src={urlFor(imagem.imagem).width(larguraArquivo).url()}
       alt={imagem.alt}
       largura={largura}
       altura={altura}
@@ -84,13 +84,67 @@ function Desenho({ imagem, className }) {
   );
 }
 
+// Layout do cartão conforme o campo "Tamanho do desenho" do bloco (ou "Destacar" do item):
+// - pequeno: desenho pequeno à direita do texto; vários cartões por folha;
+// - grande: desenho com quase metade da largura, ao lado do texto (~2 cartões por folha);
+// - pagina: um passo por folha, desenho na largura toda embaixo do texto. O 1º passo
+//   não força a quebra, para poder ficar com o texto que apresenta o bloco;
+// - destaque: folha só para o item, desenho grande embaixo, fundo na cor de destaque.
+// Em coluna estreita (celular), o flex-wrap leva o desenho ao lado para baixo do texto.
+const LAYOUTS = {
+  pequeno: {
+    item: '',
+    corpo: 'flex-wrap items-center',
+    caixaDesenho: 'shrink-0',
+    desenho: 'block w-auto h-auto max-w-[130px] max-h-[110px] rounded-2xl',
+  },
+  grande: {
+    item: '',
+    // Fora do celular o desenho fica sempre ao lado (sem quebrar a linha), senão o
+    // cartão dobra de altura e não cabem dois por folha.
+    corpo: 'flex-wrap sm:flex-nowrap items-center',
+    caixaDesenho: 'basis-full sm:basis-[42%] shrink-0',
+    larguraArquivo: 800,
+    desenho: 'block w-full h-auto max-h-[calc(var(--altura-pagina)*0.3)] object-contain rounded-2xl',
+  },
+  // pagina e destaque: o desenho vai para uma linha própria embaixo (fora do recuo do
+  // número), com a largura toda do cartão.
+  pagina: {
+    item: 'flex-wrap [&+li]:break-before-column [&+li]:!mt-0',
+    corpo: '',
+    caixaDesenho: 'relative basis-full',
+    embaixo: true,
+    larguraArquivo: 1400,
+    desenho: 'block w-full h-auto max-h-[calc(var(--altura-pagina)*0.6)] object-contain rounded-2xl',
+  },
+  destaque: {
+    item: 'flex-wrap break-before-column !mt-0 !px-9',
+    corpo: '',
+    caixaDesenho: 'relative basis-full',
+    embaixo: true,
+    larguraArquivo: 1400,
+    desenho: 'block w-auto max-w-full h-auto max-h-[calc(var(--altura-pagina)*0.5)] mx-auto object-contain rounded-2xl',
+  },
+};
+
 // Cartão de passo ou de lista: bolha pastel, título grande e encorpado, desenho solto
-// à direita do texto. O padding é maior que numa caixa reta, porque a bolha recolhe nos
-// cantos. Em coluna estreita (celular), o flex-wrap leva o desenho para baixo do texto.
-function Cartao({ item, numero, indice }) {
+// junto do texto. O padding é maior que numa caixa reta, porque a bolha recolhe nos
+// cantos.
+function Cartao({ item, numero, indice, tamanhoDesenho }) {
+  const layout = LAYOUTS[item.destaque ? 'destaque' : tamanhoDesenho];
+  const cor = item.destaque ? 'fill-destaque' : PASTEIS[indice % PASTEIS.length];
+  const desenho = item.imagem && (
+    <div className={layout.caixaDesenho}>
+      <Desenho imagem={item.imagem} className={layout.desenho} larguraArquivo={layout.larguraArquivo} />
+    </div>
+  );
   return (
-    <li className="relative break-inside-avoid flex gap-3 px-7 py-6">
-      <Fundo {...formaCartao(indice)} cor={PASTEIS[indice % PASTEIS.length]} />
+    <li
+      className={`relative break-inside-avoid flex gap-3 px-7 py-6 ${layout.item} ${
+        item.destaque ? 'text-sobre-destaque' : ''
+      }`}
+    >
+      <Fundo {...formaCartao(indice)} cor={cor} />
       {numero && (
         <span
           aria-hidden="true"
@@ -99,19 +153,20 @@ function Cartao({ item, numero, indice }) {
           {numero}
         </span>
       )}
-      <div className="relative min-w-0 flex-1 flex flex-wrap items-center gap-x-4 gap-y-3">
+      <div className={`relative min-w-0 flex-1 flex gap-x-4 gap-y-3 ${layout.corpo}`}>
         <div className="flex-[1_1_170px] min-w-0">
-          <p className={`font-titulo text-subtitulo font-bold text-tinta-forte mb-1.5 ${numero ? 'mt-1' : ''}`}>
+          <p
+            className={`font-titulo text-subtitulo font-bold mb-1.5 ${numero ? 'mt-1' : ''} ${
+              item.destaque ? 'text-sobre-destaque' : 'text-tinta-forte'
+            }`}
+          >
             {item.titulo}
           </p>
           {item.texto && <PortableTextView value={item.texto} />}
         </div>
-        {item.imagem && (
-          <div className="shrink-0">
-            <Desenho imagem={item.imagem} className="block w-auto h-auto max-w-[130px] max-h-[110px] rounded-2xl" />
-          </div>
-        )}
+        {item.imagem && !layout.embaixo && desenho}
       </div>
+      {item.imagem && layout.embaixo && desenho}
     </li>
   );
 }
@@ -173,7 +228,13 @@ export default function BlocoPassos({ bloco }) {
       ) : (
         <ol className="m-0 p-0 list-none space-y-4">
           {bloco.passos.map((item, i) => (
-            <Cartao key={item._key} item={item} indice={i} numero={bloco.estilo === 'numerado' ? i + 1 : null} />
+            <Cartao
+              key={item._key}
+              item={item}
+              indice={i}
+              numero={bloco.estilo === 'numerado' ? i + 1 : null}
+              tamanhoDesenho={bloco.tamanhoDesenho}
+            />
           ))}
         </ol>
       )}

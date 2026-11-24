@@ -13,6 +13,15 @@ const ALTURA_MAX = { maxHeight: 'calc(var(--altura-pagina) * 0.5)' };
 const ALTURA_PAGINA = { maxHeight: 'calc(var(--altura-pagina) - 180px)' };
 // Retratos são decorativos: mais baixos, para caber junto com o conteúdo seguinte.
 const ALTURA_RETRATO = { maxHeight: 'calc(var(--altura-pagina) * 0.4)' };
+// Tamanho "Grande": a imagem em destaque, com espaço para algumas linhas de texto
+// embaixo na mesma folha (vale para qualquer moldura, inclusive retrato).
+const ALTURA_GRANDE = { maxHeight: 'calc(var(--altura-pagina) * 0.65)' };
+
+function alturaMaxima(item, paginaInteira, grande) {
+  if (paginaInteira) return ALTURA_PAGINA;
+  if (grande) return ALTURA_GRANDE;
+  return item.tipo === 'retrato' ? ALTURA_RETRATO : ALTURA_MAX;
+}
 
 function Retrato({ item, src, largura, altura, alturaMax }) {
   // Pessoa sobre a forma orgânica em teal-claro. O multiply faz um fundo branco da foto
@@ -57,9 +66,11 @@ function Cena({ item, src, largura, altura, alturaMax }) {
   );
 }
 
-function Ilustracao({ item, src, largura, altura, alturaMax }) {
+// Na "Página inteira" o cartão perde o padding e a borda: a imagem usa a largura toda
+// da coluna (as imagens deitadas são limitadas pela largura, não pela altura).
+function Ilustracao({ item, src, largura, altura, alturaMax, paginaInteira }) {
   return (
-    <div className="rounded-cartao border border-fio bg-papel p-4 sm:p-6">
+    <div className={paginaInteira ? 'bg-papel' : 'rounded-cartao border border-fio bg-papel p-4 sm:p-6'}>
       <IllustrationFrame
         src={src}
         alt={item.alt}
@@ -75,19 +86,26 @@ function Ilustracao({ item, src, largura, altura, alturaMax }) {
 const MOLDURAS = { retrato: Retrato, cena: Cena, ilustracao: Ilustracao };
 
 // Uma imagem com legenda ("Figura: …") e fonte, sempre abaixo da imagem.
-export default function ImagemComLegenda({ item, paginaInteira = false, className = '' }) {
+// Na "Página inteira" a figura tem quase a altura da folha e fica centralizada nela (sem
+// a margem de cima entre blocos, que a faria passar da folha). A folga de 8px deixa o
+// marcador de fim do livro caber na mesma folha quando a figura fecha a seção.
+export default function ImagemComLegenda({ item, paginaInteira = false, grande = false, className = '' }) {
   const Moldura = MOLDURAS[item.tipo];
   const { largura, altura } = dimensoes(item.imagem);
-  const src = urlFor(item.imagem).width(paginaInteira ? 1600 : 1200).url();
+  const src = urlFor(item.imagem).width(paginaInteira || grande ? 1600 : 1200).url();
 
   return (
-    <figure className={`m-0 break-inside-avoid ${className}`}>
+    <figure
+      className={`m-0 break-inside-avoid ${paginaInteira ? '!mt-0 flex flex-col justify-center' : ''} ${className}`}
+      style={paginaInteira ? { minHeight: 'calc(var(--altura-pagina) - 8px)' } : undefined}
+    >
       <Moldura
         item={item}
         src={src}
         largura={largura}
         altura={altura}
-        alturaMax={paginaInteira ? ALTURA_PAGINA : item.tipo === 'retrato' ? ALTURA_RETRATO : ALTURA_MAX}
+        alturaMax={alturaMaxima(item, paginaInteira, grande)}
+        paginaInteira={paginaInteira}
       />
       {(item.legenda || item.fonte) && (
         <figcaption className="mt-2 space-y-1 font-texto text-tinta-suave">

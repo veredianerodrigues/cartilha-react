@@ -266,7 +266,8 @@ function Livro({
           }}
         >
           {children}
-          <span ref={fimRef} aria-hidden="true" className="block h-px" />
+          {/* Marcador de fim, sem a margem entre blocos: não pode abrir uma folha sozinho. */}
+          <span ref={fimRef} aria-hidden="true" className="block h-px !mt-0" />
         </div>
       </div>
     </div>

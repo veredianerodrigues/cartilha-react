@@ -24,10 +24,12 @@ const CONTENT_QUERY = `{
       fonte,
       "estilo": coalesce(estilo, "numerado"),
       "quebra": coalesce(quebra, "auto"),
+      "tamanhoDesenho": coalesce(tamanhoDesenho, "pequeno"),
       passos[] {
         _key,
         titulo,
         texto,
+        "destaque": coalesce(destaque, false),
         imagem { "tipo": coalesce(tipo, "ilustracao"), alt, legenda, fonte, imagem }
       },
       imagemLateral { "tipo": coalesce(tipo, "ilustracao"), alt, legenda, fonte, imagem },

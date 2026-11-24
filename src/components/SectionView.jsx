@@ -27,8 +27,9 @@ export default function SectionView({ section }) {
 
   const renderBloco = ({ bloco, indice }) => {
     const Bloco = BLOCOS[bloco._type];
-    // O primeiro bloco, se for texto corrido, abre a página com o estilo abre-texto.
-    return <Bloco key={bloco._key} bloco={bloco} abre={indice === 0} />;
+    // O primeiro bloco, se for texto corrido, abre a página com o estilo abre-texto. O
+    // último não força quebra de folha depois de si (ver BlocoImagem).
+    return <Bloco key={bloco._key} bloco={bloco} abre={indice === 0} ultimo={indice === blocks.length - 1} />;
   };
 
   return (
