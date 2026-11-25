@@ -233,6 +233,55 @@ const capitulos: Capitulo[] = [
     ),
   },
   {
+    id: 'dividir',
+    titulo: 'Dividir uma seção longa',
+    conteudo: (
+      <>
+        <P>
+          Uma seção muito longa pode ser dividida em duas ou mais. O jeito mais seguro é copiar a seção inteira para uma seção nova e
+          depois apagar, em cada uma, os blocos que ficam na outra. Assim imagens, citações, caixas e passos vão juntos, sem nada a
+          refazer.
+        </P>
+        <OL>
+          <li>
+            <strong>Escolha o corte.</strong> Divida num ponto em que comece um assunto novo (por exemplo, “O bebê nasceu, e agora?”) e anote o
+            primeiro bloco da parte que vai sair.
+          </li>
+          <li>
+            <strong>Copie a seção.</strong> Abra a seção e, no menu <UI>⋯</UI> do canto superior direito do documento, escolha{' '}
+            <UI>Copy document</UI>.
+          </li>
+          <li>
+            <strong>Crie a seção nova e cole.</strong> Em <UI>Seções (arraste para ordenar)</UI>, clique em <UI>+</UI>. No documento novo,
+            escolha <UI>⋯</UI> → <UI>Paste document</UI> (ou Ctrl+V).
+          </li>
+          <li>
+            <strong>Ajuste a seção nova:</strong> troque o <strong>Título</strong>, clique em <UI>Generate</UI> no{' '}
+            <strong>Endereço (URL)</strong> (o endereço colado é o da seção original e precisa mudar) e preencha a{' '}
+            <strong>Seção-mãe</strong>: a própria seção original, se a parte nova for uma subseção dela, ou a mesma seção-mãe da original,
+            se as duas ficarem lado a lado.
+          </li>
+          <li>
+            <strong>Apague os blocos que sobram.</strong> Na seção nova, exclua os blocos anteriores ao corte (menu <UI>⋯</UI> do bloco →{' '}
+            <UI>Remove</UI>). Na seção original, exclua os blocos a partir do corte.
+          </li>
+          <li>
+            <strong>Posicione e publique.</strong> Arraste a seção nova para logo depois da original na lista e clique em{' '}
+            <UI>Publish</UI> nas duas.
+          </li>
+        </OL>
+        <Nota titulo="O resto é automático">
+          Sumário, menu lateral, números de página, Anterior/Próximo e os números das citações se ajustam sozinhos. Os endereços das seções
+          que já existiam não mudam, então links compartilhados continuam funcionando.
+        </Nota>
+        <Aviso titulo="Confira antes de publicar">
+          Se o primeiro bloco da seção nova tiver um título igual ao da seção, apague o título do bloco para ele não aparecer duas vezes. Se
+          a divisão envolver muitos blocos ou mais de uma seção, peça à equipe de desenvolvimento: um script faz a mesma divisão de uma vez.
+        </Aviso>
+      </>
+    ),
+  },
+  {
     id: 'blocos',
     titulo: 'Tipos de bloco',
     conteudo: (
@@ -578,6 +627,34 @@ const capitulos: Capitulo[] = [
         />
         <Nota titulo="Confira no computador e no celular">
           No celular a folha é mais estreita: imagens ao lado do texto passam para cima dele e os desenhos dos passos descem para baixo do texto.
+        </Nota>
+      </>
+    ),
+  },
+  {
+    id: 'automatico',
+    titulo: 'O que o site faz sozinho',
+    conteudo: (
+      <>
+        <P>Estas partes se ajustam sem nenhuma edição. Não é preciso (nem possível) mudá-las à mão.</P>
+        <Tabela
+          cabecalho={['O quê', 'Como funciona']}
+          linhas={[
+            ['Número da página', 'Vem da ordem das seções: 04 na Apresentação, uma página por seção, subseções logo depois do capítulo. Criar, dividir ou arrastar seções renumera tudo.'],
+            ['Sumário e menu lateral', 'Montados com as seções publicadas: a ordem vem da lista arrastável e as subseções vêm do campo Seção-mãe.'],
+            ['Anterior / Próximo', 'Seguem a mesma ordem; as setas ← → do teclado também.'],
+            ['Capítulo no topo da folha', 'Nas subseções, o nome do capítulo aparece sozinho acima do título.'],
+            ['Leitura da seção', 'Cada seção é uma folha só, que se rola até o fim, sem quebras de página nem espaço em branco.'],
+            ['Tamanho das imagens', 'A altura máxima acompanha a tela; as imagens carregam conforme a pessoa rola a página.'],
+            ['Caixas vazias', 'Uma Nota final ou um texto de passo apagado não aparece como caixa em branco.'],
+            ['Número das citações', 'É a posição da obra na lista de referências (ordem alfabética). Ao cadastrar uma obra, todos os números se ajustam.'],
+            ['Link das citações', 'Leva até a referência, já rolada e destacada.'],
+            ['Publicação', 'Depois do Publish, o site recebe o conteúdo novo em poucos segundos; quem está com a página aberta vê a mudança em até 1 minuto e meio.'],
+          ]}
+        />
+        <Nota titulo="O que continua sendo manual">
+          Título, endereço (URL), seção-mãe e posição de cada seção; o conteúdo dos blocos (textos, imagens, tamanho, tipo e alinhamento);
+          cadastrar as obras e indicar as citações no texto; e clicar em Publish depois de editar.
         </Nota>
       </>
     ),
