@@ -193,7 +193,6 @@ const capitulos: Capitulo[] = [
               </>,
               'apresentacao',
             ],
-            ['Nº da página', 'Número impresso na cartilha.', '04'],
             ['Seção-mãe (opcional)', 'Preencher apenas quando a página for subseção de outra (capítulo “Ordem e subseções”).', '(vazio)'],
             ['Conteúdo', 'Lista de blocos da página.', '3 blocos de texto'],
           ]}
@@ -214,6 +213,11 @@ const capitulos: Capitulo[] = [
           <li>
             <strong>Ordem:</strong> a posição das seções no sumário e na navegação é definida arrastando-as na lista{' '}
             <UI>Seções (arraste para ordenar)</UI>. Não há campo numérico de ordem.
+          </li>
+          <li>
+            <strong>Número da página:</strong> calculado pelo site a partir dessa ordem, uma página por seção, começando em 04 na
+            Apresentação (as subseções vêm logo depois do capítulo). Ao criar, dividir ou reordenar seções, sumário, menu e rodapé se
+            renumeram sozinhos.
           </li>
           <li>
             <strong>Seção-mãe:</strong> uma seção que possui seção-mãe é exibida como subseção dela. Para criá-la, abra o campo{' '}
@@ -484,7 +488,6 @@ const capitulos: Capitulo[] = [
             ['Título', 'Cuidados na primeira consulta'],
             ['Subtítulo (opcional)', null],
             ['Endereço (URL)', 'cuidados-primeira-consulta'],
-            ['Nº da página', '12'],
             ['Seção-mãe (opcional)', null],
           ]}
         />
@@ -570,7 +573,7 @@ const capitulos: Capitulo[] = [
           linhas={[
             ['Ler a seção', 'Role a página: a seção inteira fica numa folha só.'],
             ['Ir para outra seção', 'Botões Anterior e Próximo na barra inferior ou setas ← → do teclado; o botão ☰ abre o sumário.'],
-            ['Saber a posição', 'A barra mostra o número da página impressa da seção, e a linha azul acima dele, o avanço na cartilha inteira.'],
+            ['Saber a posição', 'A barra mostra o número da página da seção, e a linha azul acima dele, o avanço na cartilha inteira.'],
           ]}
         />
         <Nota titulo="Confira no computador e no celular">
@@ -585,7 +588,6 @@ const capitulos: Capitulo[] = [
     conteudo: (
       <UL>
         <li>Endereço (URL) sem barra e sem acentos.</li>
-        <li>Nº da página igual ao da cartilha impressa.</li>
         <li>Cada bloco de texto com o tipo de caixa adequado.</li>
         <li>Tipo de imagem escolhido em todas as imagens (fotos com fundo como Cena).</li>
         <li>Nenhum infográfico com texto pequeno demais: refeito como Passo a passo ou configurado como Destaque.</li>

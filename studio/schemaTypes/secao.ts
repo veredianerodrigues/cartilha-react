@@ -29,13 +29,8 @@ export const secao = defineType({
       options: {source: 'titulo', maxLength: 96},
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'numeroPagina',
-      title: 'Nº da página',
-      type: 'string',
-      description: 'Como aparece impresso, ex.: "05".',
-    }),
-    // Posição na cartilha: definida arrastando as seções na lista (Cartilha → Seções).
+    // Posição na cartilha: definida arrastando as seções na lista (Cartilha → Seções). O
+    // número da página sai dessa posição, calculado pelo site (não há campo para digitar).
     orderRankField({type: 'secao'}),
     defineField({
       name: 'pai',
@@ -58,12 +53,10 @@ export const secao = defineType({
     }),
   ],
   preview: {
-    select: {titulo: 'titulo', subtitulo: 'subtitulo', numero: 'numeroPagina'},
-    prepare: ({titulo, subtitulo, numero}) => ({
+    select: {titulo: 'titulo', subtitulo: 'subtitulo', mae: 'pai.titulo'},
+    prepare: ({titulo, subtitulo, mae}) => ({
       title: titulo,
-      subtitle: [numero ? `Página ${numero}` : null, subtitulo]
-        .filter(Boolean)
-        .join(' · '),
+      subtitle: [mae ? `Dentro de: ${mae}` : null, subtitulo].filter(Boolean).join(' · '),
     }),
   },
 })

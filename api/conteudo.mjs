@@ -8,7 +8,6 @@ const CONTENT_QUERY = `{
     titulo,
     subtitulo,
     "slug": slug.current,
-    numeroPagina,
     "paiId": pai._ref,
     "blocos": coalesce(blocos[] {
       _key,

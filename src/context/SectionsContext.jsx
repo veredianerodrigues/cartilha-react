@@ -5,6 +5,9 @@ const SectionsContext = createContext(null);
 
 const INTERVALO_CONFERENCIA = 90 * 1000;
 
+// A primeira seção é a página 04: antes dela vêm capa, contracapa/ficha e sumário.
+const PRIMEIRA_PAGINA = 4;
+
 // Converte o documento `secao` do Sanity no formato que sumário, capa, índice e
 // navegação já consomem (slug, title, page_label, children).
 function toNode(secao) {
@@ -13,11 +16,20 @@ function toNode(secao) {
     slug: secao.slug,
     title: secao.titulo,
     subtitle: secao.subtitulo,
-    page_label: secao.numeroPagina,
     parentId: secao.paiId,
     blocks: secao.blocos,
     children: [],
   };
+}
+
+// Número da página de cada seção: uma página por seção, na ordem de leitura (capítulo e
+// depois as subseções dele). Dividir, juntar ou reordenar seções no Studio renumera tudo
+// sozinho; não há número para digitar.
+function numerar(nodes, proxima = { valor: PRIMEIRA_PAGINA }) {
+  for (const node of nodes) {
+    node.page_label = String(proxima.valor++).padStart(2, '0');
+    numerar(node.children, proxima);
+  }
 }
 
 function buildTree(secoes) {
@@ -28,6 +40,7 @@ function buildTree(secoes) {
     if (node.parentId) byId.get(node.parentId).children.push(node);
     else roots.push(node);
   }
+  numerar(roots);
   return roots;
 }
 
